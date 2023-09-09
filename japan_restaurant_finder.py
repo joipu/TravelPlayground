@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import urllib.parse
 
-GOOGLE_SEARCH_URL = "https://www.google.com/search?q="
 
+GOOGLE_SEARCH_URL = "https://www.google.com/search?q="
+data = []
 
 def get_html_from_url(url): return requests.get(url).text
 
@@ -81,11 +82,19 @@ def get_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     restaurant_name = get_restaurant_name(soup)
     food_type = get_food_type(soup)
     walking_time = get_walking_time(soup)
+    lunch_price = get_lunch_price(soup)
+    dinner_price = get_dinner_price(soup)
+    rating = get_tablog_rating_from_restaurant_name_and_context(restaurant_name, food_type + " " + walking_time)
+    
+    # Append a dictionary with restuarant data to the list
+    data.append({
+        "Restaurant Name": restaurant_name,
+        "Food Type": food_type,
+        "Walking Time": walking_time,
+        "Lunch Price": lunch_price,
+        "Dinner Price": dinner_price,
+        "Rating": rating,
+        "Reservation Link": ikyu_restaurant_link,
+    })
 
-    print(restaurant_name)
-    print(food_type)
-    print(walking_time)
-    print(get_lunch_price(soup))
-    print(get_dinner_price(soup))
-    print("Rating: " + get_tablog_rating_from_restaurant_name_and_context(
-        restaurant_name, food_type + " " + walking_time))
+    return data

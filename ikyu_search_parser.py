@@ -1,6 +1,7 @@
 import sys
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
 
 from japan_restaurant_finder import get_info_from_ikyu_restaurant_link
 
@@ -19,6 +20,7 @@ sections = soup.find_all('section', class_='restaurantCard_jpBMy')
 # Base URL for concatenation
 base_url = 'https://restaurant.ikyu.com'
 
+data = []
 # Iterate over the sections
 for section in sections:
     # Find the first href link in the section
@@ -26,4 +28,10 @@ for section in sections:
 
     # Concatenate with the base URL and print
     # print(base_url + link['href'])
-    get_info_from_ikyu_restaurant_link(base_url + link['href'])
+    data = get_info_from_ikyu_restaurant_link(base_url + link['href'])
+
+# Create a DataFrame from data
+df = pd.DataFrame(data)
+
+# Save the DataFrame to a CSV file
+df.to_csv('restaurants.csv', index=False)
