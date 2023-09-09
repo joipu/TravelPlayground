@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import urllib.parse
 from selenium import webdriver
+import os
 
 
 GOOGLE_SEARCH_URL = "https://www.google.com/search?q="
@@ -10,15 +11,20 @@ data = []
 
 
 def get_html_from_browser(url):
-    # start web browser
-    driver = webdriver.Firefox(
-        executable_path=r'/Users/linshu/Projects/Playground/utils/geckodriver')
+    # Get current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    driver_path = os.path.join(current_dir, 'geckodriver')
 
-    # get source code
+    # Start web browser
+    driver = webdriver.Firefox(executable_path=driver_path)
+
+    # Get source code
     driver.get(url)
     html = driver.page_source
-    # close web browser
+
+    # Close web browser
     driver.close()
+
     return html
 
 
