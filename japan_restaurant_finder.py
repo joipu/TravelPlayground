@@ -28,15 +28,17 @@ def get_food_type(ikyu_html_soup):
 
 
 def get_lunch_price(ikyu_html_soup):
-    try:
-        content = ikyu_html_soup.find_all(
-            class_="timeZoneListItem_3bRvf")
-        price_content = content[0].find_all(
-            class_="priceLabel_p2imo")
-        text_content = [item.get_text() for item in price_content][0]
-        return clean_string(text_content)
-    except:
+    content = ikyu_html_soup.find_all(
+        class_="timeZoneListItem_3bRvf")
+    lunch_content = None
+    for element in content:
+        if "ランチ" in element.get_text():
+            lunch_content = element
+            break
+    if lunch_content == None:
         return "No lunch price"
+    lunch_price = lunch_content.get_text().replace("ランチ", "")
+    return clean_string(lunch_price)
 
 
 def get_restaurant_name(ikyu_html_soup):
@@ -46,15 +48,17 @@ def get_restaurant_name(ikyu_html_soup):
 
 
 def get_dinner_price(ikyu_html_soup):
-    try:
-        content = ikyu_html_soup.find_all(
-            class_="timeZoneListItem_3bRvf")
-        price_content = content[1].find_all(
-            class_="priceLabel_p2imo")
-        text_content = [item.get_text() for item in price_content][0]
-        return clean_string(text_content)
-    except:
+    content = ikyu_html_soup.find_all(
+        class_="timeZoneListItem_3bRvf")
+    dinner_content = None
+    for element in content:
+        if "ディナー" in element.get_text():
+            dinner_content = element
+            break
+    if dinner_content == None:
         return "No dinner price"
+    dinner_price = dinner_content.get_text().replace("ディナー", "")
+    return clean_string(dinner_price)
 
 
 def get_tablog_rating_from_restaurant_name_and_context(restaurant_name, context):
