@@ -1,10 +1,26 @@
 import requests
 from bs4 import BeautifulSoup
 import urllib.parse
+from selenium import webdriver
 
 
 GOOGLE_SEARCH_URL = "https://www.google.com/search?q="
+BING_SEARCH_URL = "https://www.bing.com/search?q="
 data = []
+
+
+def get_html_from_browser(url):
+    # start web browser
+    driver = webdriver.Firefox(
+        executable_path=r'/Users/linshu/Projects/Playground/utils/geckodriver')
+
+    # get source code
+    driver.get(url)
+    html = driver.page_source
+    # close web browser
+    driver.close()
+    return html
+
 
 def get_html_from_url(url): return requests.get(url).text
 
@@ -62,14 +78,20 @@ def get_dinner_price(ikyu_html_soup):
     return clean_string(dinner_price)
 
 
-def get_tablog_rating_from_restaurant_name_and_context(restaurant_name, context):
-    search_url = GOOGLE_SEARCH_URL + \
-        urllib.parse.quote(restaurant_name + " " +
-                           context + "site: tabelog.com")
-    response = get_html_from_url(search_url)
+def get_tablog_link_from_restaurant_name(search_words):
+    search_url = BING_SEARCH_URL + \
+        urllib.parse.quote(search_words + "tabelog.com")
+    response = get_html_from_browser(search_url)
     soup = BeautifulSoup(response, 'html.parser')
-    main_element = soup.find(id="main")
-    rating_element = main_element.find_all(class_="oqSTJd")[0]
+    all_results = soup.find_all(id="b_results")
+    first_href = all_results[0].find('div', class_="tpmeta").get_text()
+    return first_href
+
+
+def get_tablog_rating_from_tablog_link(tablog_link):
+    response = get_html_from_url(tablog_link)
+    soup = BeautifulSoup(response, 'html.parser')
+    rating_element = soup.find(class_="rdheader-rating__score-val-dtl")
     return rating_element.get_text()
 
 
@@ -84,8 +106,9 @@ def get_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     walking_time = get_walking_time(soup)
     lunch_price = get_lunch_price(soup)
     dinner_price = get_dinner_price(soup)
-    rating = get_tablog_rating_from_restaurant_name_and_context(restaurant_name, food_type + " " + walking_time)
-    
+    rating = get_tablog_rating_from_tablog_link(get_tablog_link_from_restaurant_name(
+        restaurant_name + " " + food_type + " " + walking_time))
+
     # Append a dictionary with restuarant data to the list
     data.append({
         "Restaurant Name": restaurant_name,
