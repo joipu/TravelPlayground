@@ -1,5 +1,6 @@
 import sys
 import json
+import os
 import pandas as pd
 from urllib.parse import urlencode
 from ikyu_search_parser import run_ikyu_search
@@ -115,8 +116,11 @@ def main():
     df2 = pd.DataFrame(restaurants_sorted_by_dinner_price)
 
     # Save the DataFrame to a CSV file
-    df1.to_csv('lunch_restaurants.csv', index=True)
-    df2.to_csv('dinner_restaurants.csv', index=True)
+    output_dir = 'output'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    df1.to_csv(os.path.join(output_dir, 'lunch_restaurants.csv'), index=True)
+    df1.to_csv(os.path.join(output_dir, 'dinner_restaurants.csv'), index=True)
 
     print("🆗 Finished!")
 
