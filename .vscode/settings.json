@@ -18,5 +18,10 @@
     "titleBar.inactiveBackground": "#c291a399",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.color": "#c291a3"
+  "peacock.color": "#c291a3",
+  "python.pythonPath": "/usr/local/bin/python",
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.formatting.autopep8Path": "/Users/linshu/Library/Python/3.9/bin/autopep8",
+  "python.formatting.provider": "autopep8"
 }

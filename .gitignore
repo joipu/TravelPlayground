@@ -3,3 +3,5 @@ example.html
 test.py
 restaurants.csv
 .env
+.vscode/
+.vscode/settings.json
