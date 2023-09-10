@@ -91,8 +91,15 @@ def get_tablog_link_from_restaurant_name(search_words):
 def get_tablog_rating_from_tablog_link(tablog_link):
     response = get_html_from_url(tablog_link)
     soup = BeautifulSoup(response, 'html.parser')
+    main_element = soup.find(id="main")
     rating_element = soup.find(class_="rdheader-rating__score-val-dtl")
-    return rating_element.get_text()
+    rating_text = rating_element.get_text()
+    try:
+        rating = float(rating_text)
+    except ValueError:
+        # Handle the exception if conversion fails (e.g., if the text isn't a valid number)
+        rating = None
+    return rating
 
 
 def get_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
