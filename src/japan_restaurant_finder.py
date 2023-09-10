@@ -4,8 +4,8 @@ import urllib.parse
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-from cache import get_cached_restaurant_info_by_url, store_cached_restaurant_info_by_url
-from constants import *
+from .cache import get_cached_restaurant_info_by_url, store_cached_restaurant_info_by_url
+from .utils.constants import *
 
 
 def get_html_from_browser(url):
