@@ -1,0 +1,182 @@
+[
+  {
+    "japanese": "洋食",
+    "english": "Western Cuisine",
+    "code": "10000"
+  },
+  {
+    "japanese": "フランス料理",
+    "english": "French Cuisine",
+    "code": "10001"
+  },
+  {
+    "japanese": "イタリア料理",
+    "english": "Italian Cuisine",
+    "code": "10002"
+  },
+  {
+    "japanese": "スペイン料理",
+    "english": "Spanish Cuisine",
+    "code": "10004"
+  },
+  {
+    "japanese": "ステーキ／グリル料理",
+    "english": "Steak/Grill Cuisine",
+    "code": "10008"
+  },
+  {
+    "japanese": "洋食その他",
+    "english": "Other Western Cuisine",
+    "code": "10999"
+  },
+  {
+    "japanese": "和食",
+    "english": "Japanese Cuisine",
+    "code": "30000"
+  },
+  {
+    "japanese": "懐石・会席料理",
+    "english": "Kaiseki Cuisine",
+    "code": "30001"
+  },
+  {
+    "japanese": "割烹・小料理",
+    "english": "Kappo Cuisine",
+    "code": "30002"
+  },
+  {
+    "japanese": "京料理",
+    "english": "Kyoto Cuisine",
+    "code": "30003"
+  },
+  {
+    "japanese": "魚介・海鮮料理",
+    "english": "Seafood Cuisine",
+    "code": "30009"
+  },
+  {
+    "japanese": "鉄板焼",
+    "english": "Teppanyaki",
+    "code": "30005"
+  },
+  {
+    "japanese": "寿司",
+    "english": "Sushi",
+    "code": "30004"
+  },
+  {
+    "japanese": "天ぷら",
+    "english": "Tempura",
+    "code": "30006"
+  },
+  {
+    "japanese": "すき焼き／しゃぶしゃぶ",
+    "english": "Sukiyaki/Shabu-shabu",
+    "code": "30010"
+  },
+  {
+    "japanese": "焼鳥",
+    "english": "Yakitori",
+    "code": "30011"
+  },
+  {
+    "japanese": "鍋",
+    "english": "Hot Pot",
+    "code": "30012"
+  },
+  {
+    "japanese": "うなぎ料理",
+    "english": "Eel Cuisine",
+    "code": "30013"
+  },
+  {
+    "japanese": "和食その他",
+    "english": "Other Japanese Cuisine",
+    "code": "30999"
+  },
+  {
+    "japanese": "中華",
+    "english": "Chinese 20000",
+    "code": "20000"
+  },
+  {
+    "japanese": "中国料理",
+    "english": "Chinese Cuisine",
+    "code": "20007"
+  },
+  {
+    "japanese": "飲茶・点心",
+    "english": "Dim Sum",
+    "code": "20008"
+  },
+  {
+    "japanese": "中華その他",
+    "english": "Other Chinese Cuisine",
+    "code": "20999"
+  },
+  {
+    "japanese": "アジア・エスニック",
+    "english": "Asian/Ethnic",
+    "code": "80000"
+  },
+  {
+    "japanese": "焼肉",
+    "english": "Yakiniku (Grilled Meat)",
+    "code": "80001"
+  },
+  {
+    "japanese": "韓国料理",
+    "english": "Korean Cuisine",
+    "code": "80002"
+  },
+  {
+    "japanese": "タイ料理",
+    "english": "Thai Cuisine",
+    "code": "80003"
+  },
+  {
+    "japanese": "ベトナム料理",
+    "english": "Vietnamese Cuisine",
+    "code": "80004"
+  },
+  {
+    "japanese": "インド料理",
+    "english": "Indian Cuisine",
+    "code": "80005"
+  },
+  {
+    "japanese": "アジア・エスニックその他",
+    "english": "Other Asian/Ethnic",
+    "code": "80999"
+  },
+  {
+    "japanese": "その他",
+    "english": "Others",
+    "code": "90000"
+  },
+  {
+    "japanese": "ブッフェ",
+    "english": "Buffet",
+    "code": "90001"
+  },
+  {
+    "japanese": "ラウンジ",
+    "english": "Lounge",
+    "code": "90002"
+  },
+  {
+    "japanese": "バー",
+    "english": "Bar",
+    "code": "90003"
+  },
+  {
+    "japanese": "ワインバー",
+    "english": "Wine Bar",
+    "code": "90004"
+  },
+  {
+    "japanese": "ビアガーデン・BBQ",
+    "english": "Beer Garden/BBQ",
+    "code": "90005"
+  }
+]
