@@ -5,3 +5,4 @@ restaurants.csv
 .env
 .vscode/
 .vscode/settings.json
+output/

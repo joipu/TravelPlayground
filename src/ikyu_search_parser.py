@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-from japan_restaurant_finder import get_restaurant_info_from_ikyu_restaurant_link
+from .japan_restaurant_finder import get_restaurant_info_from_ikyu_restaurant_link
 
 
 def run_ikyu_search(url):
@@ -36,5 +36,7 @@ def run_ikyu_search(url):
         # print(base_url + link['href'])
         restaurant = get_restaurant_info_from_ikyu_restaurant_link(base_url + link['href'])
         restaurants.append(restaurant)
+        if (i == 1):
+            break
 
     return restaurants

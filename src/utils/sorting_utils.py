@@ -1,4 +1,4 @@
-from constants import RATING
+from .constants import RATING
 
 
 def sort_by_price(data, sort_criteria):
