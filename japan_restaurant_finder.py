@@ -1,12 +1,17 @@
+import re
 import requests
-from bs4 import BeautifulSoup
 import urllib.parse
+from bs4 import BeautifulSoup
 from selenium import webdriver
-import os
 
 BING_SEARCH_URL = "https://www.bing.com/search?q="
-data = []
-
+RESTAURANT_NAME = "Restaurant Name"
+FOOD_TYPE = "Food Type"
+LUNCH_PRICE = "Lunch Price (円)"
+DINNER_PRICE = "Dinner Price (円)"
+RATING = "Rating"
+RESERVATION_LINK = "Reservation Link"
+WALKING_TIME = "Walking Time"
 
 def get_html_from_browser(url):
     # Start web browser
@@ -29,6 +34,10 @@ def clean_string(input_string):
     cleaned_string = ' '.join(input_string.split()).strip()
     return cleaned_string
 
+def get_restaurant_name(ikyu_html_soup):
+    content = ikyu_html_soup.find_all(
+        class_="restaurantName_dvSu5")
+    return clean_string(content[0].get_text().strip())
 
 def get_walking_time(ikyu_html_soup):
     content = ikyu_html_soup.find_all(
@@ -36,13 +45,11 @@ def get_walking_time(ikyu_html_soup):
     text_content = [item.get_text() for item in content][0]
     return clean_string(text_content)
 
-
 def get_food_type(ikyu_html_soup):
     content = ikyu_html_soup.find_all(
         class_="contentHeaderItem_2RHAO")
     text_content = [item.get_text() for item in content][1]
     return clean_string(text_content)
-
 
 def get_lunch_price(ikyu_html_soup):
     content = ikyu_html_soup.find_all(
@@ -53,16 +60,10 @@ def get_lunch_price(ikyu_html_soup):
             lunch_content = element
             break
     if lunch_content == None:
-        return "No lunch price"
+        return 0
     lunch_price = lunch_content.get_text().replace("ランチ", "")
-    return clean_string(lunch_price)
-
-
-def get_restaurant_name(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(
-        class_="restaurantName_dvSu5")
-    return clean_string(content[0].get_text().strip())
-
+    cleaned_lunch_price = clean_string(lunch_price)
+    return extract_numeric_value(cleaned_lunch_price)
 
 def get_dinner_price(ikyu_html_soup):
     content = ikyu_html_soup.find_all(
@@ -73,9 +74,10 @@ def get_dinner_price(ikyu_html_soup):
             dinner_content = element
             break
     if dinner_content == None:
-        return "No dinner price"
+        return 0
     dinner_price = dinner_content.get_text().replace("ディナー", "")
-    return clean_string(dinner_price)
+    cleaned_dinner_price = clean_string(dinner_price)
+    return extract_numeric_value(cleaned_dinner_price)
 
 
 def get_tablog_link_from_restaurant_name(search_words):
@@ -87,7 +89,6 @@ def get_tablog_link_from_restaurant_name(search_words):
     first_href = all_results[0].find('div', class_="tpmeta").get_text()
     return first_href
 
-
 def get_tablog_rating_from_tablog_link(tablog_link):
     response = get_html_from_url(tablog_link)
     soup = BeautifulSoup(response, 'html.parser')
@@ -95,13 +96,13 @@ def get_tablog_rating_from_tablog_link(tablog_link):
     try:
         rating_text = rating_element.get_text()
         rating = float(rating_text)
-    except ValueError:
+    except AttributeError or ValueError:
         # Handle the exception if conversion fails (e.g., if the text isn't a valid number)
         rating = None
     return rating
 
 
-def get_sorted_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
+def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     print('🐳 Opening: ' + ikyu_restaurant_link)
     html = get_html_from_url(ikyu_restaurant_link)
 
@@ -114,19 +115,54 @@ def get_sorted_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     dinner_price = get_dinner_price(soup)
     rating = get_tablog_rating_from_tablog_link(get_tablog_link_from_restaurant_name(
         restaurant_name + " " + food_type + " " + walking_time))
+    
+    return {
+        RESTAURANT_NAME: restaurant_name,
+        FOOD_TYPE: food_type,
+        LUNCH_PRICE: lunch_price,
+        DINNER_PRICE: dinner_price,
+        RATING: rating,
+        RESERVATION_LINK: ikyu_restaurant_link,
+        WALKING_TIME: walking_time,
+    }
 
-    # Append a dictionary with restuarant data to the list
-    data.append({
-        "Restaurant Name": restaurant_name,
-        "Food Type": food_type,
-        "Walking Time": walking_time,
-        "Lunch Price": lunch_price,
-        "Dinner Price": dinner_price,
-        "Rating": rating,
-        "Reservation Link": ikyu_restaurant_link,
-    })
 
-    return sort_by_rating(data)
+def sort_by_multiple_criteria(data):
+    # 1. Sort all data by rating in descending order
+    sorted_data = sort_by_rating(data)
+
+    # 2. Gather data in different rating ranges
+    above_3_9 = [x for x in sorted_data if x[RATING] is not None and x[RATING] >= 3.9]
+    between_3_7_and_3_9 = [x for x in sorted_data if x[RATING] is not None and 3.7 <= x[RATING] < 3.9]
+    between_3_5_and_3_7 = [x for x in sorted_data if x[RATING] is not None and 3.5 <= x[RATING] < 3.7]
+    below_3_5 = [x for x in sorted_data if x[RATING] is not None and x[RATING] < 3.5]
+    # collect those with None rating
+    none_rating = [x for x in sorted_data if x[RATING] is None]
+
+
+    # 3. Sort each group by lunch price in ascending order
+    above_3_9 = sorted(above_3_9, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+    between_3_7_and_3_9 = sorted(between_3_7_and_3_9, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+    between_3_5_and_3_7 = sorted(between_3_5_and_3_7, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+    below_3_5 = sorted(below_3_5, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+    # Sort this none_rating list based on lunch price, similarly to how we sorted the other lists. Append these to the end of the sorted lists.
+    none_rating = sorted(none_rating, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+
+    # 4. Merge all the sorted lists back together
+    return above_3_9 + between_3_7_and_3_9 + between_3_5_and_3_7 + below_3_5 + none_rating
+
 
 def sort_by_rating(data):
-    return sorted(data, key=lambda x: x['Rating'], reverse=True)
+    return sorted(data, key=lambda x: (x[RATING] is not None, x[RATING]), reverse=True)
+
+
+def extract_numeric_value(s):
+    if s is None:
+        return 0
+    # Find all digits and comma characters and join them into a single string
+    numeric_str = ''.join(re.findall(r'[0-9,]', s))
+    # Remove the comma and convert to an integer
+    try:
+        return int(numeric_str.replace(',', ''))
+    except ValueError:
+        return 0

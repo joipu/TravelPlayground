@@ -1,9 +1,11 @@
 import sys
 import json
+import pandas as pd
 from urllib.parse import urlencode
 from ikyu_search_parser import run_ikyu_search
 
 from open_ai_utils import get_response_from_chatgpt
+from japan_restaurant_finder import sort_by_multiple_criteria
 
 
 def read_json_from_file(filename):
@@ -94,10 +96,29 @@ def main():
         restaurant_type_codes_japanese)
     print(
         f"Looking for restaurant types: {restaurant_type_codes_japanese_string} in {location_code_japanese}")
-    urls = build_query_urls(
-        restaurant_type_codes_japanese, location_code_japanese)
+    # urls = build_query_urls(
+    #     restaurant_type_codes_japanese, location_code_japanese)
+    urls = [
+        'https://restaurant.ikyu.com/area/kyoto/30001/?pups=2&rtpc=30001&xpge=1&rac1=07002&pndt=1&ptaround=0&xsrt=gourmet',
+        'https://restaurant.ikyu.com/area/kyoto/30001/?pups=2&rtpc=30001&xpge=3&rac1=07002&pndt=1&ptaround=0&xsrt=gourmet', 
+    ]
+    
+    # Find restaurants for all URLs
+    all_restaurants = []
     for url in urls:
-        run_ikyu_search(url)
+        restaurants_per_url = run_ikyu_search(url)
+        all_restaurants.extend(restaurants_per_url)
+
+    # Post-process the list of restaurants
+    sorted_restaruants = sort_by_multiple_criteria(all_restaurants)
+
+    # Create a DataFrame from data
+    df = pd.DataFrame(sorted_restaruants)
+
+    # Save the DataFrame to a CSV file
+    df.to_csv('restaurants.csv', index=False)
+
+    print("🆗 Finished!")
 
 
 if __name__ == "__main__":
