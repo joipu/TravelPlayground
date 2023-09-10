@@ -37,7 +37,4 @@ def run_ikyu_search(url):
         restaurant = get_restaurant_info_from_ikyu_restaurant_link(base_url + link['href'])
         restaurants.append(restaurant)
 
-        if (i == 1):
-            break
-
     return restaurants

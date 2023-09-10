@@ -96,12 +96,8 @@ def main():
         restaurant_type_codes_japanese)
     print(
         f"Looking for restaurant types: {restaurant_type_codes_japanese_string} in {location_code_japanese}")
-    # urls = build_query_urls(
-    #     restaurant_type_codes_japanese, location_code_japanese)
-    urls = [
-        'https://restaurant.ikyu.com/area/kyoto/30001/?pups=2&rtpc=30001&xpge=1&rac1=07002&pndt=1&ptaround=0&xsrt=gourmet',
-        'https://restaurant.ikyu.com/area/kyoto/30001/?pups=2&rtpc=30001&xpge=3&rac1=07002&pndt=1&ptaround=0&xsrt=gourmet', 
-    ]
+    urls = build_query_urls(
+        restaurant_type_codes_japanese, location_code_japanese)
     
     # Find restaurants for all URLs
     all_restaurants = []
