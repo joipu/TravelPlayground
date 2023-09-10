@@ -4,19 +4,13 @@ import urllib.parse
 from selenium import webdriver
 import os
 
-
-GOOGLE_SEARCH_URL = "https://www.google.com/search?q="
 BING_SEARCH_URL = "https://www.bing.com/search?q="
 data = []
 
 
 def get_html_from_browser(url):
-    # Get current script's directory
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    driver_path = os.path.join(current_dir, 'geckodriver')
-
     # Start web browser
-    driver = webdriver.Firefox(executable_path=driver_path)
+    driver = webdriver.Firefox()
 
     # Get source code
     driver.get(url)
