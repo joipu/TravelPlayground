@@ -80,7 +80,7 @@ def get_dinner_price(ikyu_html_soup):
 
 def get_tablog_link_from_restaurant_name(search_words):
     search_url = BING_SEARCH_URL + \
-        urllib.parse.quote(search_words + "tabelog.com")
+        urllib.parse.quote(search_words) + " site%3Atabelog.com"
     response = get_html_from_browser(search_url)
     soup = BeautifulSoup(response, 'html.parser')
     all_results = soup.find_all(id="b_results")
