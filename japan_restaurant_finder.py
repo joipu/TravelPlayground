@@ -91,10 +91,9 @@ def get_tablog_link_from_restaurant_name(search_words):
 def get_tablog_rating_from_tablog_link(tablog_link):
     response = get_html_from_url(tablog_link)
     soup = BeautifulSoup(response, 'html.parser')
-    main_element = soup.find(id="main")
     rating_element = soup.find(class_="rdheader-rating__score-val-dtl")
-    rating_text = rating_element.get_text()
     try:
+        rating_text = rating_element.get_text()
         rating = float(rating_text)
     except ValueError:
         # Handle the exception if conversion fails (e.g., if the text isn't a valid number)
@@ -102,7 +101,7 @@ def get_tablog_rating_from_tablog_link(tablog_link):
     return rating
 
 
-def get_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
+def get_sorted_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     print('🐳 Opening: ' + ikyu_restaurant_link)
     html = get_html_from_url(ikyu_restaurant_link)
 
@@ -127,4 +126,7 @@ def get_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
         "Reservation Link": ikyu_restaurant_link,
     })
 
-    return data
+    return sort_by_rating(data)
+
+def sort_by_rating(data):
+    return sorted(data, key=lambda x: x['Rating'], reverse=True)

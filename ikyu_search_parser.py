@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
-from japan_restaurant_finder import get_info_from_ikyu_restaurant_link
+from japan_restaurant_finder import get_sorted_info_from_ikyu_restaurant_link
 
 
 def run_ikyu_search(url):
@@ -19,6 +19,7 @@ def run_ikyu_search(url):
     # Base URL for concatenation
     base_url = 'https://restaurant.ikyu.com'
 
+<<<<<<< HEAD
     data = []
     # Iterate over the sections
     for section in sections:
@@ -28,6 +29,16 @@ def run_ikyu_search(url):
         # Concatenate with the base URL and print
         # print(base_url + link['href'])
         data = get_info_from_ikyu_restaurant_link(base_url + link['href'])
+=======
+# Iterate over the sections
+for section in sections:
+    # Find the first href link in the section
+    link = section.find('a', href=True)
+
+    # Concatenate with the base URL and print
+    # print(base_url + link['href'])
+    data = get_sorted_info_from_ikyu_restaurant_link(base_url + link['href'])
+>>>>>>> 088e8aa (sort data by rating)
 
     # Create a DataFrame from data
     df = pd.DataFrame(data)
