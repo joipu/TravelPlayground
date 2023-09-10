@@ -5,8 +5,6 @@ from ikyu_search_parser import run_ikyu_search
 
 from open_ai_utils import get_response_from_chatgpt
 
-LOCATION_CHOICES = ['tokyo', 'osaka', 'kyoto']
-
 
 def read_json_from_file(filename):
     with open(filename, 'r', encoding='utf-8') as f:
