@@ -139,14 +139,17 @@ def sort_by_multiple_criteria(data):
     # collect those with None rating
     none_rating = [x for x in sorted_data if x[RATING] is None]
 
+    def sort_by_prices(group):
+        # Sort by lunch price first and then dinner price
+        group = sorted(group, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+        return sorted(group, key=lambda x: x[DINNER_PRICE] if x[DINNER_PRICE] is not None else float('inf'))
 
     # 3. Sort each group by lunch price in ascending order
-    above_3_9 = sorted(above_3_9, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    between_3_7_and_3_9 = sorted(between_3_7_and_3_9, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    between_3_5_and_3_7 = sorted(between_3_5_and_3_7, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    below_3_5 = sorted(below_3_5, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    # Sort this none_rating list based on lunch price, similarly to how we sorted the other lists. Append these to the end of the sorted lists.
-    none_rating = sorted(none_rating, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
+    above_3_9 = sort_by_prices(above_3_9)
+    between_3_7_and_3_9 = sort_by_prices(between_3_7_and_3_9)
+    between_3_5_and_3_7 = sort_by_prices(between_3_5_and_3_7)
+    below_3_5 = sort_by_prices(below_3_5)
+    none_rating = sort_by_prices(none_rating)
 
     # 4. Merge all the sorted lists back together
     return above_3_9 + between_3_7_and_3_9 + between_3_5_and_3_7 + below_3_5 + none_rating
