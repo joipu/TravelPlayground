@@ -5,15 +5,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 from cache import get_cached_restaurant_info_by_url, store_cached_restaurant_info_by_url
-
-BING_SEARCH_URL = "https://www.bing.com/search?q="
-RESTAURANT_NAME = "Restaurant Name"
-FOOD_TYPE = "Food Type"
-LUNCH_PRICE = "Lunch Price (円)"
-DINNER_PRICE = "Dinner Price (円)"
-RATING = "Rating"
-RESERVATION_LINK = "Reservation Link"
-WALKING_TIME = "Walking Time"
+from constants import *
 
 
 def get_html_from_browser(url):
@@ -139,43 +131,6 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     }
     store_cached_restaurant_info_by_url(ikyu_restaurant_link, restaurant_info)
     return restaurant_info
-
-
-def sort_by_multiple_criteria(data):
-    # 1. Sort all data by rating in descending order
-    sorted_data = sort_by_rating(data)
-
-    # 2. Gather data in different rating ranges
-    above_3_9 = [x for x in sorted_data if x[RATING]
-                 is not None and x[RATING] >= 3.9]
-    between_3_7_and_3_9 = [
-        x for x in sorted_data if x[RATING] is not None and 3.7 <= x[RATING] < 3.9]
-    between_3_5_and_3_7 = [
-        x for x in sorted_data if x[RATING] is not None and 3.5 <= x[RATING] < 3.7]
-    below_3_5 = [x for x in sorted_data if x[RATING]
-                 is not None and x[RATING] < 3.5]
-    # collect those with None rating
-    none_rating = [x for x in sorted_data if x[RATING] is None]
-
-    # 3. Sort each group by lunch price in ascending order
-    above_3_9 = sorted(
-        above_3_9, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    between_3_7_and_3_9 = sorted(
-        between_3_7_and_3_9, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    between_3_5_and_3_7 = sorted(
-        between_3_5_and_3_7, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    below_3_5 = sorted(
-        below_3_5, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-    # Sort this none_rating list based on lunch price, similarly to how we sorted the other lists. Append these to the end of the sorted lists.
-    none_rating = sorted(
-        none_rating, key=lambda x: x[LUNCH_PRICE] if x[LUNCH_PRICE] is not None else float('inf'))
-
-    # 4. Merge all the sorted lists back together
-    return above_3_9 + between_3_7_and_3_9 + between_3_5_and_3_7 + below_3_5 + none_rating
-
-
-def sort_by_rating(data):
-    return sorted(data, key=lambda x: (x[RATING] is not None, x[RATING]), reverse=True)
 
 
 def extract_numeric_value(s):

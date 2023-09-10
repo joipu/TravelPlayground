@@ -5,7 +5,8 @@ from urllib.parse import urlencode
 from ikyu_search_parser import run_ikyu_search
 
 from open_ai_utils import get_response_from_chatgpt
-from japan_restaurant_finder import sort_by_multiple_criteria
+from sorting_utils import sort_by_price
+from constants import LUNCH_PRICE, DINNER_PRICE
 
 
 def read_json_from_file(filename):
@@ -63,7 +64,7 @@ def get_suggested_restaurant_type_codes(query):
 
     system_message = f"""If user wants to find food related to {query}, which ones of the following may contain food they want to consider?\n{
       ", ".join(type_array_japanese)}.
-Return your answer in comma separately list.
+Return your up to three best answers in comma separately list.
     """
     suggested_types = get_response_from_chatgpt(query, system_message, 'gpt-4')
     suggested_types = suggested_types.strip()
@@ -106,13 +107,16 @@ def main():
         all_restaurants.extend(restaurants_per_url)
 
     # Post-process the list of restaurants
-    sorted_restaruants = sort_by_multiple_criteria(all_restaurants)
+    restaurants_sorted_by_lunch_price = sort_by_price(all_restaurants, LUNCH_PRICE)
+    restaurants_sorted_by_dinner_price = sort_by_price(all_restaurants, DINNER_PRICE)
 
     # Create a DataFrame from data
-    df = pd.DataFrame(sorted_restaruants)
+    df1 = pd.DataFrame(restaurants_sorted_by_lunch_price)
+    df2 = pd.DataFrame(restaurants_sorted_by_dinner_price)
 
     # Save the DataFrame to a CSV file
-    df.to_csv('restaurants.csv', index=False)
+    df1.to_csv('lunch_restaurants.csv', index=True)
+    df2.to_csv('dinner_restaurants.csv', index=True)
 
     print("🆗 Finished!")
 

@@ -17,7 +17,7 @@ def get_response_from_chatgpt(prompt, system_message, model):
     try:
         completion = openai.ChatCompletion.create(
             model=model,
-            temperature=0.5,
+            temperature=0,
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": prompt},
