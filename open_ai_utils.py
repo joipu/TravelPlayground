@@ -1,10 +1,19 @@
 
 import openai
+from dotenv import load_dotenv
+import os
 
-openai.api_key = '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'
+# Load .env file
+load_dotenv()
+
+# Get the API key from the environment variable
+OPEN_AI_KEY = os.getenv('TRAVEL_PLAYGROUND_OPENAI_API_KEY')
 
 
 def get_response_from_chatgpt(prompt, system_message, model):
+    if not OPEN_AI_KEY:
+        print("OPEN_AI_KEY is not set. Please create a .env file and set TRAVEL_PLAYGROUND_OPENAI_API_KEY to your OpenAI API key.")
+    openai.api_key = OPEN_AI_KEY
     try:
         completion = openai.ChatCompletion.create(
             model=model,
