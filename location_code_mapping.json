@@ -1,0 +1,130 @@
+[
+  {
+    "code": "01001",
+    "japanese": "北海道"
+  },
+  {
+    "code": "02002",
+    "japanese": "岩手"
+  },
+  {
+    "code": "02004",
+    "japanese": "秋田"
+  },
+  {
+    "code": "03001",
+    "japanese": "東京"
+  },
+  {
+    "code": "03002",
+    "japanese": "神奈川"
+  },
+  {
+    "code": "03003",
+    "japanese": "埼玉"
+  },
+  {
+    "code": "03004",
+    "japanese": "千葉"
+  },
+  {
+    "code": "03006",
+    "japanese": "栃木"
+  },
+  {
+    "code": "03007",
+    "japanese": "群馬"
+  },
+  {
+    "code": "05003",
+    "japanese": "福井"
+  },
+  {
+    "code": "05002",
+    "japanese": "石川"
+  },
+  {
+    "code": "06001",
+    "japanese": "愛知"
+  },
+  {
+    "code": "06002",
+    "japanese": "岐阜"
+  },
+  {
+    "code": "06003",
+    "japanese": "静岡"
+  },
+  {
+    "code": "06004",
+    "japanese": "三重"
+  },
+  {
+    "code": "07001",
+    "japanese": "大阪"
+  },
+  {
+    "code": "07002",
+    "japanese": "京都"
+  },
+  {
+    "code": "07003",
+    "japanese": "兵庫"
+  },
+  {
+    "code": "07004",
+    "japanese": "滋賀"
+  },
+  {
+    "code": "07005",
+    "japanese": "奈良"
+  },
+  {
+    "code": "08004",
+    "japanese": "広島"
+  },
+  {
+    "code": "08003",
+    "japanese": "岡山"
+  },
+  {
+    "code": "09002",
+    "japanese": "香川"
+  },
+  {
+    "code": "09003",
+    "japanese": "愛媛"
+  },
+  {
+    "code": "10001",
+    "japanese": "福岡"
+  },
+  {
+    "code": "10005",
+    "japanese": "大分"
+  },
+  {
+    "code": "10007",
+    "japanese": "鹿児島"
+  },
+  {
+    "code": "10006",
+    "japanese": "宮崎"
+  },
+  {
+    "code": "10003",
+    "japanese": "長崎"
+  },
+  {
+    "code": "10004",
+    "japanese": "熊本"
+  },
+  {
+    "code": "10002",
+    "japanese": "佐賀"
+  },
+  {
+    "code": "11001",
+    "japanese": "沖縄"
+  }
+]
