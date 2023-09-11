@@ -20,8 +20,6 @@
   },
   "peacock.color": "#c291a3",
   "python.pythonPath": "/usr/local/bin/python",
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true,
   "python.formatting.autopep8Path": "/Users/linshu/Library/Python/3.9/bin/autopep8",
   "python.formatting.provider": "autopep8"
 }

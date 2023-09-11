@@ -6,3 +6,7 @@ restaurants.csv
 .vscode/
 .vscode/settings.json
 output/
+.DS_Store
+.venv/
+food_finder.egg-info/
+__pycache__
