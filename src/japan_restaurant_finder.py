@@ -84,13 +84,15 @@ def get_tablog_link_from_restaurant_name(search_words):
     try:
         search_url = BING_SEARCH_URL + \
             urllib.parse.quote(search_words) + " site%3Atabelog.com"
+        print("Getting tablog link with: ", search_url)
         response = get_html_from_browser(search_url)
         soup = BeautifulSoup(response, 'html.parser')
         all_results = soup.find_all(id="b_results")
         first_href = all_results[0].find('div', class_="tpmeta").get_text()
+        return first_href
     except:
-        first_href = ""
-    return None
+        print("🚨 Couldn't get tablog link for: ", search_words)
+        return None
 
 
 def get_tablog_rating_from_tablog_link(tablog_link):
@@ -126,7 +128,7 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     if tablog_link is None:
         print(
             f"❗ Couldn't find tablog link for: {restaurant_name}, using 0 for rating.")
-        rating = "0"
+        rating = 0
     else:
         rating = get_tablog_rating_from_tablog_link(tablog_link)
     restaurant_info = {
