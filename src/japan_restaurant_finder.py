@@ -81,13 +81,16 @@ def get_dinner_price(ikyu_html_soup):
 
 
 def get_tablog_link_from_restaurant_name(search_words):
-    search_url = BING_SEARCH_URL + \
-        urllib.parse.quote(search_words) + " site%3Atabelog.com"
-    response = get_html_from_browser(search_url)
-    soup = BeautifulSoup(response, 'html.parser')
-    all_results = soup.find_all(id="b_results")
-    first_href = all_results[0].find('div', class_="tpmeta").get_text()
-    return first_href
+    try:
+        search_url = BING_SEARCH_URL + \
+            urllib.parse.quote(search_words) + " site%3Atabelog.com"
+        response = get_html_from_browser(search_url)
+        soup = BeautifulSoup(response, 'html.parser')
+        all_results = soup.find_all(id="b_results")
+        first_href = all_results[0].find('div', class_="tpmeta").get_text()
+    except:
+        first_href = ""
+    return None
 
 
 def get_tablog_rating_from_tablog_link(tablog_link):
@@ -106,7 +109,7 @@ def get_tablog_rating_from_tablog_link(tablog_link):
 def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     restaurant_info = get_cached_restaurant_info_by_url(ikyu_restaurant_link)
     if restaurant_info:
-        print("💾 Using cached data for: " + ikyu_restaurant_link)
+        print("💾 Using cached data for: " + restaurant_info[RESTAURANT_NAME])
         return restaurant_info
     print('🐳 Opening: ' + ikyu_restaurant_link)
     html = get_html_from_url(ikyu_restaurant_link)
@@ -118,8 +121,14 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     walking_time = get_walking_time(soup)
     lunch_price = get_lunch_price(soup)
     dinner_price = get_dinner_price(soup)
-    rating = get_tablog_rating_from_tablog_link(get_tablog_link_from_restaurant_name(
-        restaurant_name + " " + food_type + " " + walking_time))
+    tablog_link = get_tablog_link_from_restaurant_name(
+        restaurant_name + " " + food_type + " " + walking_time)
+    if tablog_link is None:
+        print(
+            f"❗ Couldn't find tablog link for: {restaurant_name}, using 0 for rating.")
+        rating = "0"
+    else:
+        rating = get_tablog_rating_from_tablog_link(tablog_link)
     restaurant_info = {
         RESTAURANT_NAME: restaurant_name,
         FOOD_TYPE: food_type,
@@ -129,6 +138,7 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
         RESERVATION_LINK: ikyu_restaurant_link,
         WALKING_TIME: walking_time,
     }
+    print("🍱 Retrieved data for: " + restaurant_info[RESTAURANT_NAME])
     store_cached_restaurant_info_by_url(ikyu_restaurant_link, restaurant_info)
     return restaurant_info
 

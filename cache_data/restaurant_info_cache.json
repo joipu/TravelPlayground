@@ -538,5 +538,59 @@
         "Rating": 3.74,
         "Reservation Link": "https://restaurant.ikyu.com/117175/?num_guests=2",
         "Walking Time": "祇園四条駅 徒歩4分"
+    },
+    "109616?num_guests=2": {
+        "Restaurant Name": "青空",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 45000,
+        "Rating": 4.36,
+        "Reservation Link": "https://restaurant.ikyu.com/109616?num_guests=2",
+        "Walking Time": "新橋駅 徒歩5分"
+    },
+    "108103?num_guests=2": {
+        "Restaurant Name": "日本料理 龍吟",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 66550,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/108103?num_guests=2",
+        "Walking Time": "日比谷駅 駅直結"
+    },
+    "109224?num_guests=2": {
+        "Restaurant Name": "虎峰",
+        "Food Type": "中国料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 20000,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/109224?num_guests=2",
+        "Walking Time": "六本木駅 5番出口より徒歩3分"
+    },
+    "109792?num_guests=2": {
+        "Restaurant Name": "サンプリシテ",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 22990,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/109792?num_guests=2",
+        "Walking Time": "代官山駅 徒歩5分"
+    },
+    "107809?num_guests=2": {
+        "Restaurant Name": "匠 進吾",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 33000,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/107809?num_guests=2",
+        "Walking Time": "青山一丁目駅 5番出口より徒歩2分"
+    },
+    "112977?num_guests=2": {
+        "Restaurant Name": "l’algorithme アルゴリズム",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 8400,
+        "Dinner Price (円)": 15225,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/112977?num_guests=2",
+        "Walking Time": "白金高輪駅 徒歩11分"
     }
 }

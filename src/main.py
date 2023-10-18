@@ -38,10 +38,12 @@ def lookup_location_code(location_name):
 def build_query_urls(
     restaurant_types, location_code, base_url="https://restaurant.ikyu.com/search"
 ):
-    restaurant_type_codes = [lookup_restaurant_type_code(rt) for rt in restaurant_types]
+    restaurant_type_codes = [
+        lookup_restaurant_type_code(rt) for rt in restaurant_types]
     location_code = lookup_location_code(location_code)
     urls = []
     pages_to_search = 3
+    print(f"🚧 Searching the first {pages_to_search} pages of results 🚧")
     for xpge_value in range(1, pages_to_search + 1):
         codes_param = ",".join(restaurant_type_codes)
         params = {
@@ -98,25 +100,26 @@ def main():
     query = sys.argv[1]
     location_code_japanese = get_suggested_location_codes(query)[0]
     restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
-    restaurant_type_codes_japanese_string = ", ".join(restaurant_type_codes_japanese)
+    restaurant_type_codes_japanese_string = ", ".join(
+        restaurant_type_codes_japanese)
     print(
         f"Looking for restaurant types: {restaurant_type_codes_japanese_string} in {location_code_japanese}"
     )
-    # urls = build_query_urls(
-    #     restaurant_type_codes_japanese, location_code_japanese)
-    urls = [
-        "https://restaurant.ikyu.com/area/kyoto/30002/",
-    ]
+    urls = build_query_urls(
+        restaurant_type_codes_japanese, location_code_japanese)
 
     # Find restaurants for all URLs
     all_restaurants = []
     for url in urls:
         restaurants_per_url = run_ikyu_search(url)
+        print(f"Found {len(restaurants_per_url)} restaurants.")
         all_restaurants.extend(restaurants_per_url)
 
     # Post-process the list of restaurants
-    restaurants_sorted_by_lunch_price = sort_by_price(all_restaurants, LUNCH_PRICE)
-    restaurants_sorted_by_dinner_price = sort_by_price(all_restaurants, DINNER_PRICE)
+    restaurants_sorted_by_lunch_price = sort_by_price(
+        all_restaurants, LUNCH_PRICE)
+    restaurants_sorted_by_dinner_price = sort_by_price(
+        all_restaurants, DINNER_PRICE)
 
     # Create a DataFrame from data
     df1 = pd.DataFrame(restaurants_sorted_by_lunch_price)
