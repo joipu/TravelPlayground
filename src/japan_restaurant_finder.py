@@ -1,19 +1,28 @@
 import re
+import time
 import requests
 import urllib.parse
 from bs4 import BeautifulSoup
 from selenium import webdriver
-
+from selenium.webdriver.firefox.options import Options
 from .cache import get_cached_restaurant_info_by_url, store_cached_restaurant_info_by_url
 from .utils.constants import *
 
 
 def get_html_from_browser(url):
+    # Configure Firefox options for headless mode
+    options = Options()
+    options.headless = True
+
     # Start web browser
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=options)
 
     # Get source code
     driver.get(url)
+
+    # Wait for 3 seconds
+    time.sleep(3)
+
     html = driver.page_source
 
     # Close web browser
@@ -22,7 +31,8 @@ def get_html_from_browser(url):
     return html
 
 
-def get_html_from_url(url): return requests.get(url).text
+def get_html_from_url(url):
+    return requests.get(url).text
 
 
 def clean_string(input_string):
@@ -88,33 +98,42 @@ def get_tablog_link_from_restaurant_name(search_words):
         response = get_html_from_browser(search_url)
         soup = BeautifulSoup(response, 'html.parser')
         all_results = soup.find_all(id="b_results")
-        first_href = all_results[0].find('div', class_="tpmeta").get_text()
-        return first_href
+        # Loop through all_results to find links
+        for result in all_results:
+            for cite in result.find_all('cite'):
+                link = cite.get_text()
+                if link.startswith('https://tabelog.com/'):
+                    return link
+
     except:
         print("🚨 Couldn't get tablog link for: ", search_words)
         return None
 
 
 def get_tablog_rating_from_tablog_link(tablog_link):
-    response = get_html_from_url(tablog_link)
-    soup = BeautifulSoup(response, 'html.parser')
-    rating_element = soup.find(class_="rdheader-rating__score-val-dtl")
     try:
+        response = get_html_from_url(tablog_link)
+        soup = BeautifulSoup(response, 'html.parser')
+        rating_element = soup.find(class_="rdheader-rating__score-val-dtl")
         rating_text = rating_element.get_text()
         rating = float(rating_text)
     except AttributeError or ValueError:
-        # Handle the exception if conversion fails (e.g., if the text isn't a valid number)
+        print("🚨 Couldn't get rating from tablog link: ", tablog_link)
         rating = None
     return rating
 
 
 def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     restaurant_info = get_cached_restaurant_info_by_url(ikyu_restaurant_link)
-    if restaurant_info:
+    if restaurant_info and restaurant_info[RATING] is not None and restaurant_info[RATING] > 0:
         print("💾 Using cached data for: " + restaurant_info[RESTAURANT_NAME])
         return restaurant_info
     print('🐳 Opening: ' + ikyu_restaurant_link)
-    html = get_html_from_url(ikyu_restaurant_link)
+    try:
+        html = get_html_from_url(ikyu_restaurant_link)
+    except:
+        print("🚨 Couldn't get HTML for: ", ikyu_restaurant_link)
+        return None
 
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -140,7 +159,8 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
         RESERVATION_LINK: ikyu_restaurant_link,
         WALKING_TIME: walking_time,
     }
-    print("🍱 Retrieved data for: " + restaurant_info[RESTAURANT_NAME])
+    print(
+        f"🍱 Retrieved data for: {restaurant_info[RESTAURANT_NAME]} with rating {restaurant_info[RATING]}")
     store_cached_restaurant_info_by_url(ikyu_restaurant_link, restaurant_info)
     return restaurant_info
 

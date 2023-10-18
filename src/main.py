@@ -9,6 +9,8 @@ from .utils.open_ai_utils import get_response_from_chatgpt
 from .utils.sorting_utils import sort_by_price
 from .utils.constants import LUNCH_PRICE, DINNER_PRICE
 
+PAGES_TO_SEARCH = 10
+
 
 def read_json_from_file(filename):
     # Build the full path to the JSON file to avoid depending on the current working directory from which the script is run
@@ -35,6 +37,15 @@ def lookup_location_code(location_name):
     return ""
 
 
+def build_query_urls_from_known_url(known_url):
+    # Assume "&xpge=" is the last param. Find "&xpge=" in the url and remove it and the number after it
+    baseUrl = known_url.split("&xpge=")[0]
+    urls = []
+    for xpge_value in range(1, PAGES_TO_SEARCH + 1):
+        urls.append(f"{baseUrl}&xpge={xpge_value}")
+    return urls
+
+
 def build_query_urls(
     restaurant_types, location_code, base_url="https://restaurant.ikyu.com/search"
 ):
@@ -42,18 +53,17 @@ def build_query_urls(
         lookup_restaurant_type_code(rt) for rt in restaurant_types]
     location_code = lookup_location_code(location_code)
     urls = []
-    pages_to_search = 3
-    print(f"🚧 Searching the first {pages_to_search} pages of results 🚧")
-    for xpge_value in range(1, pages_to_search + 1):
+    print(f"🚧 Searching the first {PAGES_TO_SEARCH} pages of results 🚧")
+    for xpge_value in range(1, PAGES_TO_SEARCH + 1):
         codes_param = ",".join(restaurant_type_codes)
         params = {
             "pups": 2,
             "rtpc": codes_param,
-            "xpge": xpge_value,
             "rac1": location_code,
             "pndt": 1,
             "ptaround": 0,
             "xsrt": "gourmet",
+            "xpge": xpge_value,
         }
 
         query_string = urlencode(params, doseq=True)
@@ -112,7 +122,7 @@ def main():
     all_restaurants = []
     for url in urls:
         restaurants_per_url = run_ikyu_search(url)
-        print(f"Found {len(restaurants_per_url)} restaurants.")
+        print(f"🚧 Found {len(restaurants_per_url)} restaurants for {url} 🚧")
         all_restaurants.extend(restaurants_per_url)
 
     # Post-process the list of restaurants
