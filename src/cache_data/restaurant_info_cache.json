@@ -1,0 +1,20 @@
+{
+    "115545": {
+        "Restaurant Name": "祇園にしかわ",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 12650,
+        "Dinner Price (円)": 25300,
+        "Rating": 4.04,
+        "Reservation Link": "https://restaurant.ikyu.com/115545/?num_guests=2",
+        "Walking Time": "高台寺、八坂神社、市バス東山安井バス停の近く"
+    },
+    "110177": {
+        "Restaurant Name": "八寸",
+        "Food Type": "京料理・懐石料理",
+        "Lunch Price (円)": 11000,
+        "Dinner Price (円)": 22000,
+        "Rating": 4.2,
+        "Reservation Link": "https://restaurant.ikyu.com/110177/?num_guests=2",
+        "Walking Time": "祇園四条駅 徒歩5分"
+    }
+}
