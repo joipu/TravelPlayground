@@ -2,7 +2,7 @@ import sys
 import json
 import os
 import pandas as pd
-from urllib.parse import urlencode
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 from .ikyu_search_parser import run_ikyu_search
 
 from .utils.open_ai_utils import get_response_from_chatgpt
@@ -10,6 +10,7 @@ from .utils.sorting_utils import sort_by_price
 from .utils.constants import LUNCH_PRICE, DINNER_PRICE
 
 PAGES_TO_SEARCH = 10
+USE_KNOWN_URL = False
 
 
 def read_json_from_file(filename):
@@ -38,19 +39,29 @@ def lookup_location_code(location_name):
 
 
 def build_query_urls_from_known_url(known_url):
-    # Assume "&xpge=" is the last param. Find "&xpge=" in the url and remove it and the number after it
-    baseUrl = known_url.split("&xpge=")[0]
+    # Parse the URL and its parameters
+    url_parts = urlparse(known_url)
+    query_params = parse_qs(url_parts.query)
+
     urls = []
     for xpge_value in range(1, PAGES_TO_SEARCH + 1):
-        urls.append(f"{baseUrl}&xpge={xpge_value}")
+        # Update the 'xpge' parameter
+        query_params["xpge"] = xpge_value
+
+        # Construct the new URL
+        new_query_string = urlencode(query_params, doseq=True)
+        new_url_parts = url_parts._replace(query=new_query_string)
+        new_url = urlunparse(new_url_parts)
+
+        urls.append(new_url)
+
     return urls
 
 
 def build_query_urls(
     restaurant_types, location_code, base_url="https://restaurant.ikyu.com/search"
 ):
-    restaurant_type_codes = [
-        lookup_restaurant_type_code(rt) for rt in restaurant_types]
+    restaurant_type_codes = [lookup_restaurant_type_code(rt) for rt in restaurant_types]
     location_code = lookup_location_code(location_code)
     urls = []
     print(f"🚧 Searching the first {PAGES_TO_SEARCH} pages of results 🚧")
@@ -107,16 +118,21 @@ Return just one location from the list and nothing else. Do not be conversationa
 
 
 def main():
-    query = sys.argv[1]
-    location_code_japanese = get_suggested_location_codes(query)[0]
-    restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
-    restaurant_type_codes_japanese_string = ", ".join(
-        restaurant_type_codes_japanese)
-    print(
-        f"Looking for restaurant types: {restaurant_type_codes_japanese_string} in {location_code_japanese}"
-    )
-    urls = build_query_urls(
-        restaurant_type_codes_japanese, location_code_japanese)
+    if USE_KNOWN_URL:
+        known_url = sys.argv[1]
+        urls = build_query_urls_from_known_url(known_url)
+    else:
+        query = sys.argv[1]
+        location_code_japanese = get_suggested_location_codes(query)[0]
+        restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
+        restaurant_type_codes_japanese_string = ", ".join(
+            restaurant_type_codes_japanese
+        )
+        print(
+            f"Looking for restaurant types: {restaurant_type_codes_japanese_string} in {location_code_japanese}"
+        )
+        urls = build_query_urls(restaurant_type_codes_japanese, location_code_japanese)
+        print(f"🚧 Found {len(urls)} URLs to search 🚧")
 
     # Find restaurants for all URLs
     all_restaurants = []
@@ -126,10 +142,8 @@ def main():
         all_restaurants.extend(restaurants_per_url)
 
     # Post-process the list of restaurants
-    restaurants_sorted_by_lunch_price = sort_by_price(
-        all_restaurants, LUNCH_PRICE)
-    restaurants_sorted_by_dinner_price = sort_by_price(
-        all_restaurants, DINNER_PRICE)
+    restaurants_sorted_by_lunch_price = sort_by_price(all_restaurants, LUNCH_PRICE)
+    restaurants_sorted_by_dinner_price = sort_by_price(all_restaurants, DINNER_PRICE)
 
     # Create a DataFrame from data
     df1 = pd.DataFrame(restaurants_sorted_by_lunch_price)
