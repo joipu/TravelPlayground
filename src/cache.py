@@ -2,6 +2,8 @@ import os
 import json
 import re
 
+from src.utils.constants import IKYU_ID
+
 CACHE_DIR = "cache_data"
 RESTAURANT_INFO_CACHE_FILE_NAME = "restaurant_info_cache.json"
 if not os.path.exists(CACHE_DIR):
@@ -20,7 +22,10 @@ def get_ikyu_id_from_url(ikyu_url):
 
 def get_cached_restaurant_info_by_url(ikyu_url):
     ikyu_id = get_ikyu_id_from_url(ikyu_url)
-    return get_cached_restaurant_info_by_ikyu_id(ikyu_id)
+    cached_info = get_cached_restaurant_info_by_ikyu_id(ikyu_id)
+    if cached_info:
+        cached_info[IKYU_ID] = ikyu_id
+    return cached_info
 
 
 def store_cached_restaurant_info_by_url(ikyu_url, restaurant_info):

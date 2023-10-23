@@ -10,8 +10,8 @@ from .utils.sorting_utils import sort_by_price
 from .utils.constants import LUNCH_PRICE, DINNER_PRICE
 
 PAGES_TO_SEARCH = 10
-USE_KNOWN_URL = False
-SEARCH_IN_KYOTO = False
+USE_KNOWN_URL = True
+SEARCH_IN_KYOTO = True
 
 
 def read_json_from_file(filename):

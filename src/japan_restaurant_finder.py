@@ -5,8 +5,11 @@ import urllib.parse
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+
+from src.utils.ikyu_availability_utils import get_availabilities_for_ikyu_restaurant
 from .cache import (
     get_cached_restaurant_info_by_url,
+    get_ikyu_id_from_url,
     store_cached_restaurant_info_by_url,
 )
 from .utils.constants import *
@@ -131,6 +134,13 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
         and restaurant_info[RATING] > 0
     ):
         print("💾 Using cached data for: " + restaurant_info[RESTAURANT_NAME])
+        if (AVAILABILITY not in restaurant_info.keys()) or (
+            RESERVATION_STATUS not in restaurant_info[AVAILABILITY].keys()
+        ):
+            restaurant_info[AVAILABILITY] = get_availabilities_for_ikyu_restaurant(
+                restaurant_info[IKYU_ID]
+            )
+            store_cached_restaurant_info_by_url(ikyu_restaurant_link, restaurant_info)
         return restaurant_info
     try:
         html = get_html_from_url(ikyu_restaurant_link)
@@ -155,14 +165,17 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
         rating = 0
     else:
         rating = get_tablog_rating_from_tablog_link(tablog_link)
+    ikyu_id = get_ikyu_id_from_url(ikyu_restaurant_link)
     restaurant_info = {
         RESTAURANT_NAME: restaurant_name,
+        IKYU_ID: ikyu_id,
         FOOD_TYPE: food_type,
         LUNCH_PRICE: lunch_price,
         DINNER_PRICE: dinner_price,
         RATING: rating,
         RESERVATION_LINK: ikyu_restaurant_link,
         WALKING_TIME: walking_time,
+        AVAILABILITY: get_availabilities_for_ikyu_restaurant(ikyu_id),
     }
     print(
         f"🍱 Retrieved data for: {restaurant_info[RESTAURANT_NAME]} with rating {restaurant_info[RATING]}"
