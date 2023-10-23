@@ -814,7 +814,7 @@
         "Food Type": "イタリア料理",
         "Lunch Price (円)": 8000,
         "Dinner Price (円)": 9670,
-        "Rating": 0,
+        "Rating": 3.72,
         "Reservation Link": "https://restaurant.ikyu.com/112661?num_guests=2",
         "Walking Time": "牛込柳町駅 東口から徒歩6分"
     },
@@ -877,7 +877,7 @@
         "Food Type": "鉄板焼",
         "Lunch Price (円)": 3850,
         "Dinner Price (円)": 15730,
-        "Rating": 0,
+        "Rating": 3.71,
         "Reservation Link": "https://restaurant.ikyu.com/115308?num_guests=2",
         "Walking Time": "銀座駅 B9番出口 徒歩2分"
     },
@@ -2083,7 +2083,7 @@
         "Food Type": "フランス料理",
         "Lunch Price (円)": 7800,
         "Dinner Price (円)": 10000,
-        "Rating": null,
+        "Rating": 3.78,
         "Reservation Link": "https://restaurant.ikyu.com/110904?num_guests=2",
         "Walking Time": "乃木坂駅 徒歩6分"
     },
@@ -5056,5 +5056,356 @@
         "Rating": 3.02,
         "Reservation Link": "https://restaurant.ikyu.com/117511?num_guests=2&visit_date=2023-12-04&visit_time=17%3A00",
         "Walking Time": "中目黒駅 徒歩12分"
+    },
+    "120559": {
+        "Restaurant Name": "江戸焼肉",
+        "Food Type": "焼肉",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 36300,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/120559?num_guests=2",
+        "Walking Time": "東銀座駅 徒歩5分"
+    },
+    "115625": {
+        "Restaurant Name": "神田 雲林",
+        "Food Type": "中国料理",
+        "Lunch Price (円)": 6930,
+        "Dinner Price (円)": 13915,
+        "Rating": 3.72,
+        "Reservation Link": "https://restaurant.ikyu.com/115625?num_guests=2",
+        "Walking Time": "淡路町駅 A3出口より徒歩2分"
+    },
+    "120073": {
+        "Restaurant Name": "寛幸",
+        "Food Type": "割烹・小料理",
+        "Lunch Price (円)": 16500,
+        "Dinner Price (円)": 24200,
+        "Rating": 3.8,
+        "Reservation Link": "https://restaurant.ikyu.com/120073?num_guests=2",
+        "Walking Time": "東銀座駅 (A2)徒歩1分"
+    },
+    "113219": {
+        "Restaurant Name": "ルボーズ",
+        "Food Type": "ビストロ",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 0,
+        "Rating": 3.69,
+        "Reservation Link": "https://restaurant.ikyu.com/113219?num_guests=2",
+        "Walking Time": "東銀座駅 A2出口 徒歩2分"
+    },
+    "120154": {
+        "Restaurant Name": "神戸牛炉釜炭焼ステーキ銀座一宮",
+        "Food Type": "ステーキ・グリル料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 30250,
+        "Rating": 3.79,
+        "Reservation Link": "https://restaurant.ikyu.com/120154?num_guests=2",
+        "Walking Time": "東銀座駅 徒歩1分"
+    },
+    "107764": {
+        "Restaurant Name": "シノワ 渋谷店",
+        "Food Type": "ワインバー・フランス料理",
+        "Lunch Price (円)": 5280,
+        "Dinner Price (円)": 5808,
+        "Rating": 3.71,
+        "Reservation Link": "https://restaurant.ikyu.com/107764?num_guests=2",
+        "Walking Time": "渋谷駅 ハチ公口より徒歩5分"
+    },
+    "117442": {
+        "Restaurant Name": "徳 うち山",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 6600,
+        "Dinner Price (円)": 14600,
+        "Rating": 3.74,
+        "Reservation Link": "https://restaurant.ikyu.com/117442?num_guests=2",
+        "Walking Time": "東銀座駅 徒歩3分"
+    },
+    "117151": {
+        "Restaurant Name": "あじゅう田",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 33000,
+        "Rating": 3.75,
+        "Reservation Link": "https://restaurant.ikyu.com/117151?num_guests=2",
+        "Walking Time": "渋谷駅 徒歩7分"
+    },
+    "122171": {
+        "Restaurant Name": "中国意境菜 白燕",
+        "Food Type": "中華料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 13000,
+        "Rating": 3.75,
+        "Reservation Link": "https://restaurant.ikyu.com/122171?num_guests=2",
+        "Walking Time": "稲荷町駅 徒歩1分"
+    },
+    "117486": {
+        "Restaurant Name": "鮨石島",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 6600,
+        "Dinner Price (円)": 33000,
+        "Rating": 3.65,
+        "Reservation Link": "https://restaurant.ikyu.com/117486?num_guests=2",
+        "Walking Time": "新富町駅 徒歩3分"
+    },
+    "112558": {
+        "Restaurant Name": "鮨 Ishijima 新富店",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 6600,
+        "Dinner Price (円)": 22000,
+        "Rating": 3.56,
+        "Reservation Link": "https://restaurant.ikyu.com/112558?num_guests=2",
+        "Walking Time": "新富町駅 徒歩2分"
+    },
+    "103530": {
+        "Restaurant Name": "リストランテ イマイ",
+        "Food Type": "イタリア料理",
+        "Lunch Price (円)": 3850,
+        "Dinner Price (円)": 12100,
+        "Rating": 3.54,
+        "Reservation Link": "https://restaurant.ikyu.com/103530?num_guests=2",
+        "Walking Time": "吉祥寺駅 徒歩5分"
+    },
+    "109013": {
+        "Restaurant Name": "根津 雙柿庵",
+        "Food Type": "蕎麦",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 12100,
+        "Rating": 3.59,
+        "Reservation Link": "https://restaurant.ikyu.com/109013?num_guests=2",
+        "Walking Time": "根津駅 1番出口 徒歩3分"
+    },
+    "108192": {
+        "Restaurant Name": "いまここ",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 5940,
+        "Dinner Price (円)": 10000,
+        "Rating": 3.52,
+        "Reservation Link": "https://restaurant.ikyu.com/108192?num_guests=2",
+        "Walking Time": "神泉駅 徒歩2分"
+    },
+    "121724": {
+        "Restaurant Name": "厳選洋食さくらい",
+        "Food Type": "洋食",
+        "Lunch Price (円)": 4500,
+        "Dinner Price (円)": 4500,
+        "Rating": 3.62,
+        "Reservation Link": "https://restaurant.ikyu.com/121724?num_guests=2",
+        "Walking Time": "上野広小路駅 A4出口より徒歩1分"
+    },
+    "106620": {
+        "Restaurant Name": "mon atelier",
+        "Food Type": "イタリア料理、フランス料理",
+        "Lunch Price (円)": 4950,
+        "Dinner Price (円)": 14520,
+        "Rating": 3.52,
+        "Reservation Link": "https://restaurant.ikyu.com/106620?num_guests=2",
+        "Walking Time": "渋谷駅 徒歩5分"
+    },
+    "105846": {
+        "Restaurant Name": "レストラン エクロール",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 2900,
+        "Dinner Price (円)": 4840,
+        "Rating": 3.5,
+        "Reservation Link": "https://restaurant.ikyu.com/105846?num_guests=2",
+        "Walking Time": "築地駅 徒歩2分"
+    },
+    "105694": {
+        "Restaurant Name": "Steak Dining 鷹",
+        "Food Type": "ステーキ・鉄板焼き",
+        "Lunch Price (円)": 6930,
+        "Dinner Price (円)": 12474,
+        "Rating": 3.54,
+        "Reservation Link": "https://restaurant.ikyu.com/105694?num_guests=2",
+        "Walking Time": "上野広小路駅 A3出口より徒歩1分"
+    },
+    "120707": {
+        "Restaurant Name": "石臼碾きそば つきじ 文化人",
+        "Food Type": "そば",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 7000,
+        "Rating": 3.58,
+        "Reservation Link": "https://restaurant.ikyu.com/120707?num_guests=2",
+        "Walking Time": "東銀座駅 徒歩3分"
+    },
+    "111560": {
+        "Restaurant Name": "流石",
+        "Food Type": "そば・懐石・会席料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 10000,
+        "Rating": 3.62,
+        "Reservation Link": "https://restaurant.ikyu.com/111560?num_guests=2",
+        "Walking Time": "銀座駅 A13番出口 徒歩5分"
+    },
+    "108876": {
+        "Restaurant Name": "鮓 かね庄",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 7500,
+        "Dinner Price (円)": 14000,
+        "Rating": 3.51,
+        "Reservation Link": "https://restaurant.ikyu.com/108876?num_guests=2",
+        "Walking Time": "浅草駅 A2番出口 徒歩9分"
+    },
+    "113466": {
+        "Restaurant Name": "タワーズレストラン「クーカーニョ」／セルリアンタワー東急ホテル",
+        "Food Type": "洋食／フランス料理",
+        "Lunch Price (円)": 7600,
+        "Dinner Price (円)": 14900,
+        "Rating": 3.61,
+        "Reservation Link": "https://restaurant.ikyu.com/113466?num_guests=2",
+        "Walking Time": "渋谷駅 渋谷駅西口 歩道橋渡り 国道246号沿い 徒歩5分"
+    },
+    "105433": {
+        "Restaurant Name": "上野精養軒 グリルフクシマ",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 9680,
+        "Dinner Price (円)": 13200,
+        "Rating": 3.46,
+        "Reservation Link": "https://restaurant.ikyu.com/105433?num_guests=2",
+        "Walking Time": "上野駅 徒歩5分"
+    },
+    "113911": {
+        "Restaurant Name": "天ぷら 大塚",
+        "Food Type": "天ぷら",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 7500,
+        "Rating": 3.56,
+        "Reservation Link": "https://restaurant.ikyu.com/113911?num_guests=2",
+        "Walking Time": "入谷駅 徒歩6分"
+    },
+    "117656": {
+        "Restaurant Name": "銀座 四代目 高橋屋",
+        "Food Type": "うなぎ料理・割烹料理・懐石料理",
+        "Lunch Price (円)": 5000,
+        "Dinner Price (円)": 5000,
+        "Rating": 3.58,
+        "Reservation Link": "https://restaurant.ikyu.com/117656?num_guests=2",
+        "Walking Time": "銀座駅 徒歩4分"
+    },
+    "112404": {
+        "Restaurant Name": "KAIRADA",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 0,
+        "Rating": 3.54,
+        "Reservation Link": "https://restaurant.ikyu.com/112404?num_guests=2",
+        "Walking Time": "東銀座駅 3番出口 徒歩5分"
+    },
+    "112944": {
+        "Restaurant Name": "天麩羅 中清",
+        "Food Type": "天ぷら",
+        "Lunch Price (円)": 10890,
+        "Dinner Price (円)": 10890,
+        "Rating": 3.44,
+        "Reservation Link": "https://restaurant.ikyu.com/112944?num_guests=2",
+        "Walking Time": "浅草駅 A1出口から徒歩5分"
+    },
+    "109371": {
+        "Restaurant Name": "天麩羅 四季彩 村松",
+        "Food Type": "天ぷら",
+        "Lunch Price (円)": 10120,
+        "Dinner Price (円)": 18700,
+        "Rating": 3.41,
+        "Reservation Link": "https://restaurant.ikyu.com/109371?num_guests=2",
+        "Walking Time": "湯島駅 徒歩3分"
+    },
+    "105432": {
+        "Restaurant Name": "Restaurant piu",
+        "Food Type": "イタリア料理",
+        "Lunch Price (円)": 3850,
+        "Dinner Price (円)": 6000,
+        "Rating": 3.68,
+        "Reservation Link": "https://restaurant.ikyu.com/105432?num_guests=2",
+        "Walking Time": "東銀座駅 徒歩3分"
+    },
+    "107595": {
+        "Restaurant Name": "築地フレンチ Maison Michel",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 4750,
+        "Dinner Price (円)": 6400,
+        "Rating": 3.42,
+        "Reservation Link": "https://restaurant.ikyu.com/107595?num_guests=2",
+        "Walking Time": "新富町駅 7番出口より2分"
+    },
+    "107690": {
+        "Restaurant Name": "plenitude",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 5500,
+        "Dinner Price (円)": 11000,
+        "Rating": 3.41,
+        "Reservation Link": "https://restaurant.ikyu.com/107690?num_guests=2",
+        "Walking Time": "新富町駅 2番出口より徒歩2分"
+    },
+    "107342": {
+        "Restaurant Name": "築地 はん亭",
+        "Food Type": "串揚げ・串かつ",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 5500,
+        "Rating": 3.52,
+        "Reservation Link": "https://restaurant.ikyu.com/107342?num_guests=2",
+        "Walking Time": "築地市場駅 徒歩3分"
+    },
+    "112256": {
+        "Restaurant Name": "御料理 花ぶさ",
+        "Food Type": "割烹・小料理",
+        "Lunch Price (円)": 4620,
+        "Dinner Price (円)": 7865,
+        "Rating": 3.53,
+        "Reservation Link": "https://restaurant.ikyu.com/112256?num_guests=2",
+        "Walking Time": "末広町駅 4番出口から徒歩2分"
+    },
+    "105297": {
+        "Restaurant Name": "R restaurant & bar／ザ・ゲートホテル雷門byHULIC 13階",
+        "Food Type": "西洋料理・バー",
+        "Lunch Price (円)": 3200,
+        "Dinner Price (円)": 7800,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/105297?num_guests=2",
+        "Walking Time": "浅草駅 出口2より徒歩2分"
+    },
+    "122196": {
+        "Restaurant Name": "fileja",
+        "Food Type": "イタリア料理/パスタ",
+        "Lunch Price (円)": 10890,
+        "Dinner Price (円)": 10890,
+        "Rating": 0,
+        "Reservation Link": "https://restaurant.ikyu.com/122196?num_guests=2",
+        "Walking Time": "岩本町駅 A2出口から徒歩1分"
+    },
+    "117570": {
+        "Restaurant Name": "西麻布 香宮",
+        "Food Type": "中華料理",
+        "Lunch Price (円)": 5500,
+        "Dinner Price (円)": 30800,
+        "Rating": 3.73,
+        "Reservation Link": "https://restaurant.ikyu.com/117570?num_guests=2",
+        "Walking Time": "広尾駅 徒歩約7分、3番出入口を右方向に進み、笄公園を過ぎて右折（公園前の建物、"
+    },
+    "116750": {
+        "Restaurant Name": "ルグドゥノム ブション リヨネ",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 5989,
+        "Dinner Price (円)": 9075,
+        "Rating": 3.72,
+        "Reservation Link": "https://restaurant.ikyu.com/116750?num_guests=2",
+        "Walking Time": "飯田橋駅 B3出口 徒歩3分"
+    },
+    "122438": {
+        "Restaurant Name": "紀尾井町三谷別邸",
+        "Food Type": "鮨",
+        "Lunch Price (円)": 35200,
+        "Dinner Price (円)": 35200,
+        "Rating": 3.87,
+        "Reservation Link": "https://restaurant.ikyu.com/122438?num_guests=2",
+        "Walking Time": "永田町駅 9a出口 徒歩4分"
+    },
+    "112798": {
+        "Restaurant Name": "TAIAN TOKYO",
+        "Food Type": "フランス料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 29040,
+        "Rating": 3.77,
+        "Reservation Link": "https://restaurant.ikyu.com/112798?num_guests=2",
+        "Walking Time": "広尾駅 4番出口より徒歩10分"
     }
 }

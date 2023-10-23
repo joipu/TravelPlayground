@@ -11,6 +11,7 @@ from .utils.constants import LUNCH_PRICE, DINNER_PRICE
 
 PAGES_TO_SEARCH = 10
 USE_KNOWN_URL = False
+SEARCH_IN_KYOTO = False
 
 
 def read_json_from_file(filename):
@@ -38,6 +39,14 @@ def lookup_location_code(location_name):
     return ""
 
 
+def lookup_tokyo_subregion_code(subregion_name):
+    table = read_json_from_file("tokyo_subregion_code_mapping.json")
+    for item in table:
+        if item["japanese"] == subregion_name:
+            return item["code"]
+    return ""
+
+
 def build_query_urls_from_known_url(known_url):
     # Parse the URL and its parameters
     url_parts = urlparse(known_url)
@@ -59,10 +68,11 @@ def build_query_urls_from_known_url(known_url):
 
 
 def build_query_urls(
-    restaurant_types, location_code, base_url="https://restaurant.ikyu.com/search"
+    restaurant_type_codes,
+    location_code,
+    sub_region_codes,
+    base_url="https://restaurant.ikyu.com/search",
 ):
-    restaurant_type_codes = [lookup_restaurant_type_code(rt) for rt in restaurant_types]
-    location_code = lookup_location_code(location_code)
     urls = []
     print(f"🚧 Searching the first {PAGES_TO_SEARCH} pages of results 🚧")
     for xpge_value in range(1, PAGES_TO_SEARCH + 1):
@@ -71,6 +81,7 @@ def build_query_urls(
             "pups": 2,
             "rtpc": codes_param,
             "rac1": location_code,
+            "rac3": ",".join(sub_region_codes),
             "pndt": 1,
             "ptaround": 0,
             "xsrt": "gourmet",
@@ -90,14 +101,21 @@ def get_suggested_restaurant_type_codes(query):
     for each in code_json:
         type_array_japanese.append(each["japanese"])
 
-    system_message = f"""If user wants to find food related to {query}, which ones of the following may contain food they want to consider?\n{
+    system_message = f"""If user wants to find food related to {query}, which ones of the following types may contain food they want to consider?\n{
       ", ".join(type_array_japanese)}.
-Return your up to three best answers in comma separately list.
+Return all types that satisfy user's query in comma separately list on the first line. Do not end sentence with period. Do not format. Do not be conversational.
+On your following lines, explain why you chose each of those types. Use the language of the user's query in your explanation.
+Example answer:
+焼肉, 鉄板焼
+User asked for bbq in their query, and both 焼肉 and 鉄板焼 are types of bbq.
     """
-    suggested_types = get_response_from_chatgpt(query, system_message, "gpt-4")
-    suggested_types = suggested_types.strip()
-    suggested_types = suggested_types.replace(" ,", ",").replace(", ", ",")
-    return suggested_types.split(",")
+    # print(system_message)
+    answer = get_response_from_chatgpt(query, system_message, "gpt-4")
+    answer = answer.strip()
+    answer = answer.replace(" ,", ",").replace(", ", ",")
+    suggested_types_string = answer.split("\n")[0]
+    print(answer)
+    return suggested_types_string.split(",")
 
 
 def get_suggested_location_codes(query):
@@ -108,19 +126,75 @@ def get_suggested_location_codes(query):
 
     system_message = f"""If user wants to find food according to {query}, which one of the following location fits the best for their search?\n{
       ", ".join(type_array_japanese)}.
-Return just one location from the list and nothing else. Do not be conversational.
+Return just one location from the list and nothing else on the first line. Do not end sentence with period. Do not format. Do not be conversational.
+On your following lines, explain why you chose that location. Use the language of the user's query in your explanation.
+Example answer:
+東京
+東京 is a direct match as user asked for Tokyo in their query.
     """
     # print(system_message)
-    suggested_types = get_response_from_chatgpt(query, system_message, "gpt-4")
-    suggested_types = suggested_types.strip()
-    suggested_types = suggested_types.replace(" ,", ",").replace(", ", ",")
-    return suggested_types.split(",")
+    answer = get_response_from_chatgpt(query, system_message, "gpt-4")
+    answer = answer.strip()
+    answer = answer.replace(" ,", ",").replace(", ", ",")
+    suggested_types_string = answer.split("\n")[0]
+    print(answer)
+    return suggested_types_string.split(",")
+
+
+def get_suggested_tokyo_subregion_codes(query):
+    type_array_japanese = []
+    code_json = read_json_from_file("tokyo_subregion_code_mapping.json")
+    for each in code_json:
+        type_array_japanese.append(each["japanese"])
+
+    system_message = f"""If user wants to find all restaurants in Tokyo, and asked this: {query},  which ones of the following region names may contain food they want to consider?\n{
+      ", ".join(type_array_japanese)}.
+Return all region names verbatim that satisfy user's query in comma separately list on the first line. Do not end sentence with period. Do not format. Do not be conversational.
+On your following lines, explain why you chose each one of those locations. Use the language of the user's query in your explanation.
+Example answer:
+浅草, 銀座, 東銀座
+User said they'll be shopping in Ginza, which translates to 銀座 and 東銀座 subregion. 浅草 is a nearby subregion.
+    """
+    # print(system_message)
+    answer = get_response_from_chatgpt(query, system_message, "gpt-4")
+    answer = answer.strip()
+    answer = answer.replace(" ,", ",").replace(", ", ",")
+    suggested_subregions = answer.split("\n")[0]
+    print(answer)
+    return suggested_subregions.split(",")
+
+
+def print_search_scope(restaurant_types, area, subregions):
+    types_string = ", ".join(restaurant_types)
+    if len(subregions) == 0:
+        subregions_string = "all subregions"
+    else:
+        subregions_string = ", ".join(subregions)
+    print(f"🔍 Looking for {types_string} in {area} ({subregions_string}) 🔍")
 
 
 def main():
     if USE_KNOWN_URL:
         known_url = sys.argv[1]
         urls = build_query_urls_from_known_url(known_url)
+    elif SEARCH_IN_KYOTO:
+        query = sys.argv[1]
+        location_code = "03001"
+        subregion_codes_japanese = get_suggested_tokyo_subregion_codes(query)
+        restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
+        print_search_scope(
+            restaurant_type_codes_japanese, "Tokyo", subregion_codes_japanese
+        )
+        restaurant_type_codes = [
+            lookup_restaurant_type_code(rt) for rt in restaurant_type_codes_japanese
+        ]
+
+        subregion_codes = [
+            lookup_tokyo_subregion_code(code) for code in subregion_codes_japanese
+        ]
+        urls = build_query_urls(restaurant_type_codes, location_code, subregion_codes)
+        print("🔗 Example search url:")
+        print(urls[0])
     else:
         query = sys.argv[1]
         location_code_japanese = get_suggested_location_codes(query)[0]
@@ -128,11 +202,17 @@ def main():
         restaurant_type_codes_japanese_string = ", ".join(
             restaurant_type_codes_japanese
         )
-        print(
-            f"Looking for restaurant types: {restaurant_type_codes_japanese_string} in {location_code_japanese}"
+        print_search_scope(
+            restaurant_type_codes_japanese_string, location_code_japanese, []
         )
-        urls = build_query_urls(restaurant_type_codes_japanese, location_code_japanese)
-        print(f"🚧 Found {len(urls)} URLs to search 🚧")
+
+        restaurant_type_codes = [
+            lookup_restaurant_type_code(rt) for rt in restaurant_type_codes_japanese
+        ]
+        location_code = lookup_location_code(location_code)
+        urls = build_query_urls(restaurant_type_codes, location_code, [])
+        print("🔗 Example search url:")
+        print(urls[0])
 
     # Find restaurants for all URLs
     all_restaurants = []

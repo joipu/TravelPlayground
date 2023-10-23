@@ -1,0 +1,538 @@
+[
+  {
+    "japanese": "銀座",
+    "code": "0022"
+  },
+  {
+    "japanese": "東銀座",
+    "code": "0024"
+  },
+  {
+    "japanese": "有楽町",
+    "code": "0127"
+  },
+  {
+    "japanese": "日比谷",
+    "code": "0023"
+  },
+  {
+    "japanese": "築地",
+    "code": "0128"
+  },
+  {
+    "japanese": "月島",
+    "code": "0129"
+  },
+  {
+    "japanese": "八重洲",
+    "code": "0130"
+  },
+  {
+    "japanese": "東京駅周辺",
+    "code": "0025"
+  },
+  {
+    "japanese": "丸の内",
+    "code": "0026"
+  },
+  {
+    "japanese": "日本橋",
+    "code": "0027"
+  },
+  {
+    "japanese": "三越前",
+    "code": "0131"
+  },
+  {
+    "japanese": "京橋",
+    "code": "0028"
+  },
+  {
+    "japanese": "人形町",
+    "code": "0132"
+  },
+  {
+    "japanese": "茅場町",
+    "code": "0133"
+  },
+  {
+    "japanese": "水天宮",
+    "code": "0249"
+  },
+  {
+    "japanese": "新宿",
+    "code": "0004"
+  },
+  {
+    "japanese": "西新宿",
+    "code": "0005"
+  },
+  {
+    "japanese": "新宿三丁目",
+    "code": "0242"
+  },
+  {
+    "japanese": "新宿御苑前",
+    "code": "0120"
+  },
+  {
+    "japanese": "代々木",
+    "code": "0006"
+  },
+  {
+    "japanese": "大久保",
+    "code": "0245"
+  },
+  {
+    "japanese": "初台",
+    "code": "0121"
+  },
+  {
+    "japanese": "高田馬場",
+    "code": "0122"
+  },
+  {
+    "japanese": "千駄ヶ谷",
+    "code": "0243"
+  },
+  {
+    "japanese": "笹塚",
+    "code": "0247"
+  },
+  {
+    "japanese": "代々木上原",
+    "code": "0244"
+  },
+  {
+    "japanese": "幡ヶ谷",
+    "code": "0246"
+  },
+  {
+    "japanese": "六本木",
+    "code": "0016"
+  },
+  {
+    "japanese": "乃木坂",
+    "code": "0126"
+  },
+  {
+    "japanese": "西麻布",
+    "code": "0017"
+  },
+  {
+    "japanese": "麻布十番",
+    "code": "0018"
+  },
+  {
+    "japanese": "白金",
+    "code": "0021"
+  },
+  {
+    "japanese": "広尾",
+    "code": "0020"
+  },
+  {
+    "japanese": "神谷町",
+    "code": "0019"
+  },
+  {
+    "japanese": "新橋",
+    "code": "0031"
+  },
+  {
+    "japanese": "汐留",
+    "code": "0032"
+  },
+  {
+    "japanese": "浜松町",
+    "code": "0138"
+  },
+  {
+    "japanese": "竹芝",
+    "code": "0034"
+  },
+  {
+    "japanese": "大門",
+    "code": "0033"
+  },
+  {
+    "japanese": "東京タワー周辺",
+    "code": "0139"
+  },
+  {
+    "japanese": "芝公園",
+    "code": "0035"
+  },
+  {
+    "japanese": "天王洲",
+    "code": "0036"
+  },
+  {
+    "japanese": "羽田空港",
+    "code": "0140"
+  },
+  {
+    "japanese": "恵比寿",
+    "code": "0012"
+  },
+  {
+    "japanese": "代官山",
+    "code": "0013"
+  },
+  {
+    "japanese": "中目黒",
+    "code": "0014"
+  },
+  {
+    "japanese": "目黒",
+    "code": "0015"
+  },
+  {
+    "japanese": "赤坂",
+    "code": "0054"
+  },
+  {
+    "japanese": "溜池山王",
+    "code": "0056"
+  },
+  {
+    "japanese": "永田町",
+    "code": "0055"
+  },
+  {
+    "japanese": "虎ノ門",
+    "code": "0057"
+  },
+  {
+    "japanese": "半蔵門",
+    "code": "0058"
+  },
+  {
+    "japanese": "霞が関",
+    "code": "0256"
+  },
+  {
+    "japanese": "表参道",
+    "code": "0009"
+  },
+  {
+    "japanese": "外苑前",
+    "code": "0010"
+  },
+  {
+    "japanese": "青山一丁目",
+    "code": "0124"
+  },
+  {
+    "japanese": "原宿",
+    "code": "0011"
+  },
+  {
+    "japanese": "上野",
+    "code": "0045"
+  },
+  {
+    "japanese": "浅草",
+    "code": "0046"
+  },
+  {
+    "japanese": "御徒町",
+    "code": "0252"
+  },
+  {
+    "japanese": "スカイツリー周辺",
+    "code": "0149"
+  },
+  {
+    "japanese": "錦糸町",
+    "code": "0150"
+  },
+  {
+    "japanese": "押上",
+    "code": "0047"
+  },
+  {
+    "japanese": "住吉",
+    "code": "0152"
+  },
+  {
+    "japanese": "両国",
+    "code": "0048"
+  },
+  {
+    "japanese": "蔵前",
+    "code": "0254"
+  },
+  {
+    "japanese": "門前仲町",
+    "code": "0153"
+  },
+  {
+    "japanese": "北千住",
+    "code": "0049"
+  },
+  {
+    "japanese": "東陽町",
+    "code": "0050"
+  },
+  {
+    "japanese": "千駄木",
+    "code": "0154"
+  },
+  {
+    "japanese": "亀戸",
+    "code": "0151"
+  },
+  {
+    "japanese": "日暮里",
+    "code": "0253"
+  },
+  {
+    "japanese": "木場",
+    "code": "0255"
+  },
+  {
+    "japanese": "渋谷",
+    "code": "0007"
+  },
+  {
+    "japanese": "神泉",
+    "code": "0123"
+  },
+  {
+    "japanese": "代々木公園",
+    "code": "0008"
+  },
+  {
+    "japanese": "池尻大橋",
+    "code": "0248"
+  },
+  {
+    "japanese": "品川",
+    "code": "0037"
+  },
+  {
+    "japanese": "北品川",
+    "code": "0142"
+  },
+  {
+    "japanese": "五反田",
+    "code": "0039"
+  },
+  {
+    "japanese": "大崎",
+    "code": "0143"
+  },
+  {
+    "japanese": "大森",
+    "code": "0145"
+  },
+  {
+    "japanese": "田町",
+    "code": "0038"
+  },
+  {
+    "japanese": "三田",
+    "code": "0141"
+  },
+  {
+    "japanese": "大井町",
+    "code": "0144"
+  },
+  {
+    "japanese": "蒲田",
+    "code": "0251"
+  },
+  {
+    "japanese": "吉祥寺",
+    "code": "0059"
+  },
+  {
+    "japanese": "立川",
+    "code": "0159"
+  },
+  {
+    "japanese": "町田",
+    "code": "0257"
+  },
+  {
+    "japanese": "東京西部",
+    "code": "0061"
+  },
+  {
+    "japanese": "八王子",
+    "code": "0260"
+  },
+  {
+    "japanese": "荻窪",
+    "code": "0161"
+  },
+  {
+    "japanese": "国分寺",
+    "code": "0258"
+  },
+  {
+    "japanese": "東中野",
+    "code": "0263"
+  },
+  {
+    "japanese": "阿佐ヶ谷",
+    "code": "0264"
+  },
+  {
+    "japanese": "仙川",
+    "code": "0266"
+  },
+  {
+    "japanese": "中野",
+    "code": "0060"
+  },
+  {
+    "japanese": "国立",
+    "code": "0163"
+  },
+  {
+    "japanese": "三鷹",
+    "code": "0160"
+  },
+  {
+    "japanese": "武蔵小金井",
+    "code": "0265"
+  },
+  {
+    "japanese": "府中",
+    "code": "0261"
+  },
+  {
+    "japanese": "高円寺",
+    "code": "0259"
+  },
+  {
+    "japanese": "西荻窪",
+    "code": "0162"
+  },
+  {
+    "japanese": "飯田橋",
+    "code": "0042"
+  },
+  {
+    "japanese": "神楽坂",
+    "code": "0043"
+  },
+  {
+    "japanese": "四ツ谷",
+    "code": "0044"
+  },
+  {
+    "japanese": "四谷三丁目",
+    "code": "0148"
+  },
+  {
+    "japanese": "市ケ谷",
+    "code": "0147"
+  },
+  {
+    "japanese": "池袋",
+    "code": "0001"
+  },
+  {
+    "japanese": "目白",
+    "code": "0002"
+  },
+  {
+    "japanese": "大塚",
+    "code": "0239"
+  },
+  {
+    "japanese": "護国寺",
+    "code": "0119"
+  },
+  {
+    "japanese": "駒込",
+    "code": "0003"
+  },
+  {
+    "japanese": "巣鴨",
+    "code": "0118"
+  },
+  {
+    "japanese": "新江古田",
+    "code": "0241"
+  },
+  {
+    "japanese": "江古田",
+    "code": "0240"
+  },
+  {
+    "japanese": "神田",
+    "code": "0135"
+  },
+  {
+    "japanese": "神保町",
+    "code": "0137"
+  },
+  {
+    "japanese": "秋葉原",
+    "code": "0136"
+  },
+  {
+    "japanese": "御茶ノ水",
+    "code": "0030"
+  },
+  {
+    "japanese": "水道橋",
+    "code": "0029"
+  },
+  {
+    "japanese": "後楽園",
+    "code": "0134"
+  },
+  {
+    "japanese": "九段下",
+    "code": "0250"
+  },
+  {
+    "japanese": "自由が丘",
+    "code": "0051"
+  },
+  {
+    "japanese": "二子玉川",
+    "code": "0052"
+  },
+  {
+    "japanese": "三軒茶屋",
+    "code": "0053"
+  },
+  {
+    "japanese": "経堂",
+    "code": "0157"
+  },
+  {
+    "japanese": "世田谷",
+    "code": "0155"
+  },
+  {
+    "japanese": "都立大学",
+    "code": "0158"
+  },
+  {
+    "japanese": "学芸大学",
+    "code": "0125"
+  },
+  {
+    "japanese": "下北沢",
+    "code": "0156"
+  },
+  {
+    "japanese": "お台場",
+    "code": "0040"
+  },
+  {
+    "japanese": "豊洲",
+    "code": "0041"
+  },
+  {
+    "japanese": "有明",
+    "code": "0146"
+  }
+]
