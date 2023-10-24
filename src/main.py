@@ -4,14 +4,25 @@ import os
 import pandas as pd
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 from .ikyu_search_parser import run_ikyu_search
-
+from datetime import datetime, timedelta
 from .utils.open_ai_utils import get_response_from_chatgpt
 from .utils.sorting_utils import sort_by_price
-from .utils.constants import LUNCH_PRICE, DINNER_PRICE
+from .utils.constants import (
+    AVAILABILITY,
+    DINNER,
+    FOOD_TYPE,
+    LUNCH,
+    LUNCH_PRICE,
+    DINNER_PRICE,
+    RATING,
+    RESERVATION_STATUS,
+    RESTAURANT_NAME,
+    WALKING_TIME,
+)
 
-PAGES_TO_SEARCH = 10
-USE_KNOWN_URL = True
-SEARCH_IN_KYOTO = True
+PAGES_TO_SEARCH = 5
+USE_KNOWN_URL = False
+SEARCH_IN_KYOTO = False
 
 
 def read_json_from_file(filename):
@@ -173,6 +184,95 @@ def print_search_scope(restaurant_types, area, subregions):
     print(f"🔍 Looking for {types_string} in {area} ({subregions_string}) 🔍")
 
 
+def get_output_dir():
+    output_dir = "output"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    return os.path.abspath(output_dir)
+
+
+def yenToUSD(yen):
+    return int(yen / 149.0)
+
+def describe_availability(data):
+    # Sort the data by date
+    sorted_dates = sorted(data.keys())
+
+    # Initialize variables
+    output = "Available on "
+    prev_date = None
+    range_start = None
+
+    for i, date_str in enumerate(sorted_dates):
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+        # Check for consecutive dates
+        if prev_date is not None and date_obj == prev_date + timedelta(days=1):
+            if range_start is None:
+                range_start = prev_date
+        else:
+            if range_start is not None:
+                output += f"{range_start.strftime('%m/%d')} to {prev_date.strftime('%m/%d')}, "
+                range_start = None
+            else:
+                output += f"{prev_date.strftime('%m/%d')}, " if prev_date else ""
+
+        prev_date = date_obj
+
+    # Add the last date or range
+    if range_start is not None:
+        output += (
+            f"{range_start.strftime('%m/%d')} through {prev_date.strftime('%m/%d')}"
+        )
+    else:
+        output += f"{prev_date.strftime('%m/%d')}"
+
+    # Add price information
+    price = next(iter(data.values()))
+
+    return output
+    
+    
+
+def print_output_in_human_readable_format(all_restaurants, filtered, output_file):
+    all_results = ""
+    for restaurant in all_restaurants:
+        output = ""
+        output += f"{restaurant[RESTAURANT_NAME]}\n"
+        output += f"{restaurant[FOOD_TYPE]}\n"
+        output += f"Rating: {restaurant[RATING]}/5\n"
+        output += f"Location: {restaurant[WALKING_TIME]}\n"
+        output += f"Lunch: ${yenToUSD(restaurant[LUNCH_PRICE])}\n"
+        output += f"Dinner: ${yenToUSD(restaurant[DINNER_PRICE])}\n"
+        
+        should_print = False
+        if LUNCH in restaurant[AVAILABILITY].keys():
+            should_print = True
+            output += f"Lunch availability:\n"
+            output += f"{describe_availability(restaurant[AVAILABILITY][LUNCH])}\n"
+        if DINNER in restaurant[AVAILABILITY].keys():
+            should_print = True
+            output += f"Dinner availability:\n"
+            output += f"{describe_availability(restaurant[AVAILABILITY][DINNER])}\n"
+        if RESERVATION_STATUS in restaurant[AVAILABILITY].keys():
+            if restaurant[AVAILABILITY][RESERVATION_STATUS].endswith("True"):
+                prefix = "👍"
+                should_print = True
+            else:
+                prefix = "❌"    
+            output += f"{prefix} {restaurant[AVAILABILITY][RESERVATION_STATUS]}\n"
+        output += "\n"
+        if filtered:
+            if should_print:
+                all_results += output
+        else:
+            all_results += output
+
+    output_file = os.path.join(get_output_dir(), output_file)
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(all_results)
+
+
 def main():
     if USE_KNOWN_URL:
         known_url = sys.argv[1]
@@ -230,11 +330,12 @@ def main():
     df2 = pd.DataFrame(restaurants_sorted_by_dinner_price)
 
     # Save the DataFrame to a CSV file
-    output_dir = "output"
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    output_dir = get_output_dir()
     df1.to_csv(os.path.join(output_dir, "lunch_restaurants.csv"), index=True)
     df1.to_csv(os.path.join(output_dir, "dinner_restaurants.csv"), index=True)
+
+    print_output_in_human_readable_format(all_restaurants, False, "all_restaurants.txt")
+    print_output_in_human_readable_format(all_restaurants, True, "restaurants_with_spots.txt")
 
     print("🆗 Finished!")
 

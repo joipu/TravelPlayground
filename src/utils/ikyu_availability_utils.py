@@ -7,8 +7,10 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 from src.utils.constants import (
+    DINNER,
     EARLIEST_TARGET_RESERVATION_DATE,
     LATEST_TARGET_RESERVATION_DATE,
+    LUNCH,
     RESERVATION_STATUS,
 )
 
@@ -151,7 +153,7 @@ def get_availabilities_for_ikyu_restaurant(ikyu_id):
     )
 
     if filtered_dinner_json.keys():
-        result["dinner"] = filtered_dinner_json
+        result[DINNER] = filtered_dinner_json
 
     if lunch_html is not None:
         lunch_json = get_available_dates_and_price_from_html(lunch_html)
@@ -166,7 +168,7 @@ def get_availabilities_for_ikyu_restaurant(ikyu_id):
         )
 
         if filtered_lunch_json.keys():
-            result["lunch"] = filtered_lunch_json
+            result[LUNCH] = filtered_lunch_json
 
     result[
         RESERVATION_STATUS

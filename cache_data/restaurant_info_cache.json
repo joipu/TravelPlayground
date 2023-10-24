@@ -7369,7 +7369,7 @@
         "Food Type": "フランス料理",
         "Lunch Price (円)": 5808,
         "Dinner Price (円)": 11858,
-        "Rating": 0,
+        "Rating": 3.61,
         "Reservation Link": "https://restaurant.ikyu.com/105607?num_guests=2",
         "Walking Time": "外苑前駅 1a出口 徒歩5分",
         "Availability": {
@@ -7439,7 +7439,7 @@
         "Food Type": "鉄板焼",
         "Lunch Price (円)": 10000,
         "Dinner Price (円)": 33000,
-        "Rating": 0,
+        "Rating": 3.6,
         "Reservation Link": "https://restaurant.ikyu.com/100972?num_guests=2",
         "Walking Time": "日比谷駅 A13出口より徒歩3分",
         "Availability": {
@@ -8506,7 +8506,7 @@
         "Food Type": "洋食",
         "Lunch Price (円)": 3380,
         "Dinner Price (円)": 5800,
-        "Rating": null,
+        "Rating": 3.54,
         "Reservation Link": "https://restaurant.ikyu.com/119537?num_guests=2",
         "Walking Time": "浅草駅 徒歩4分",
         "Availability": {
@@ -8527,6 +8527,19 @@
                 "2023-12-09": 3380
             },
             "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "101674": {
+        "Restaurant Name": "Ristorante Italiano Etruschi",
+        "Ikyu ID": "101674",
+        "Food Type": "イタリア料理",
+        "Lunch Price (円)": 7000,
+        "Dinner Price (円)": 12100,
+        "Rating": 3.54,
+        "Reservation Link": "https://restaurant.ikyu.com/101674?num_guests=2",
+        "Walking Time": "表参道駅 A4出口徒歩3分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
         }
     }
 }
