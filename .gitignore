@@ -10,3 +10,4 @@ output/
 .venv/
 food_finder.egg-info/
 __pycache__
+search_groups.json

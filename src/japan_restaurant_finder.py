@@ -108,8 +108,9 @@ def get_tablog_link_from_restaurant_name(search_words):
                 if link.startswith("https://tabelog.com/"):
                     return link
 
-    except:
+    except Exception as e:
         print("🚨 Couldn't get tablog link for: ", search_words)
+        print(f"Error: {e}")
         return None
 
 
@@ -155,16 +156,25 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
     walking_time = get_walking_time_ikyu(soup)
     lunch_price = get_lunch_price_ikyu(soup)
     dinner_price = get_dinner_price_ikyu(soup)
-    tablog_link = get_tablog_link_from_restaurant_name(
-        restaurant_name + " " + food_type + " " + walking_time
-    )
-    if tablog_link is None:
-        print(
-            f"❗ Couldn't find tablog link for: {restaurant_name}, using 0 for rating."
-        )
-        rating = 0
-    else:
+    if (
+        restaurant_info
+        and TABLOG_LINK in restaurant_info.keys()
+        and restaurant_info[TABLOG_LINK]
+    ):
+        tablog_link = restaurant_info[TABLOG_LINK]
         rating = get_tablog_rating_from_tablog_link(tablog_link)
+    else:
+        tablog_link = get_tablog_link_from_restaurant_name(
+            restaurant_name + " " + food_type + " " + walking_time
+        )
+        if tablog_link is None:
+            tablog_link = ""
+            print(
+                f"❗ Couldn't find tablog link for: {restaurant_name}, using 0 for rating."
+            )
+            rating = 0
+        else:
+            rating = get_tablog_rating_from_tablog_link(tablog_link)
     ikyu_id = get_ikyu_id_from_url(ikyu_restaurant_link)
     restaurant_info = {
         RESTAURANT_NAME: restaurant_name,
@@ -172,6 +182,7 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
         FOOD_TYPE: food_type,
         LUNCH_PRICE: lunch_price,
         DINNER_PRICE: dinner_price,
+        TABLOG_LINK: tablog_link,
         RATING: rating,
         RESERVATION_LINK: ikyu_restaurant_link,
         WALKING_TIME: walking_time,

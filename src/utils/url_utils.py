@@ -25,7 +25,7 @@ def build_query_url(
     return full_url
 
 
-def build_query_urls_from_known_url(known_url):
+def build_query_urls_from_known_url(known_url, pages_to_search=PAGES_TO_SEARCH):
     # Parse the URL and its parameters
     url_parts = urlparse(known_url)
     query_params = parse_qs(url_parts.query)

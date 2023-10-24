@@ -57,10 +57,11 @@ def store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant_info):
         json.dump(restaurant_info_cache, f, ensure_ascii=False, indent=4)
 
 
-def get_code_from_japanese_name(code, mapping_file_path):
+def get_code_from_japanese_name(japanese_name, mapping_file_path):
+    japanese_name = japanese_name.strip()
     table = read_json_from_file(mapping_file_path)
     for item in table:
-        if item["japanese"] == code:
+        if item["japanese"] == japanese_name:
             return item["code"]
     return ""
 
