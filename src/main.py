@@ -96,7 +96,7 @@ def main():
     # Save the DataFrame to a CSV file
     output_dir = get_output_dir()
     df1.to_csv(os.path.join(output_dir, "lunch_restaurants.csv"), index=True)
-    df1.to_csv(os.path.join(output_dir, "dinner_restaurants.csv"), index=True)
+    df2.to_csv(os.path.join(output_dir, "dinner_restaurants.csv"), index=True)
 
     print_restaurant_list(all_restaurants, False, "all_restaurants.txt")
     print_restaurant_list(all_restaurants, True, "restaurants_with_spots.txt")
