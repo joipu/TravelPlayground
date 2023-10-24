@@ -2,10 +2,21 @@ import sys
 import os
 import pandas as pd
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
-from src.utils.cache_utils import lookup_location_code, lookup_restaurant_type_code, lookup_tokyo_subregion_code
-from src.utils.gpt_utils import get_suggested_location_codes, get_suggested_restaurant_type_codes, get_suggested_tokyo_subregion_codes
+from src.utils.cache_utils import (
+    lookup_location_code,
+    lookup_restaurant_type_code,
+    lookup_tokyo_subregion_code,
+)
+from src.utils.gpt_utils import (
+    get_suggested_location_codes,
+    get_suggested_restaurant_type_codes,
+    get_suggested_tokyo_subregion_codes,
+)
 
-from src.utils.human_readability_utils import get_human_readable_restaurant_info_blob
+from src.utils.human_readability_utils import (
+    get_human_readable_restaurant_info_blob,
+    print_search_scope,
+)
 from .ikyu_search_parser import run_ikyu_search
 from .utils.sorting_utils import sort_by_price
 from .utils.constants import (
@@ -66,22 +77,12 @@ def build_query_urls(
     return urls
 
 
-def print_search_scope(restaurant_types, area, subregions):
-    types_string = ", ".join(restaurant_types)
-    if len(subregions) == 0:
-        subregions_string = "all subregions"
-    else:
-        subregions_string = ", ".join(subregions)
-    print(f"🔍 Looking for {types_string} in {area} ({subregions_string}) 🔍")
-
-
 def get_output_dir():
     output_dir = "output"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     return os.path.abspath(output_dir)
-    
-    
+
 
 def print_output_in_human_readable_format(all_restaurants, filtered, output_file):
     all_results = ""
@@ -108,7 +109,8 @@ def main():
             restaurant_type_codes_japanese, "Tokyo", subregion_codes_japanese
         )
         restaurant_type_codes = [
-            lookup_restaurant_type_code(code_japanese) for code_japanese in restaurant_type_codes_japanese
+            lookup_restaurant_type_code(code_japanese)
+            for code_japanese in restaurant_type_codes_japanese
         ]
 
         subregion_codes = [
@@ -157,7 +159,9 @@ def main():
     df1.to_csv(os.path.join(output_dir, "dinner_restaurants.csv"), index=True)
 
     print_output_in_human_readable_format(all_restaurants, False, "all_restaurants.txt")
-    print_output_in_human_readable_format(all_restaurants, True, "restaurants_with_spots.txt")
+    print_output_in_human_readable_format(
+        all_restaurants, True, "restaurants_with_spots.txt"
+    )
 
     print("🆗 Finished!")
 
