@@ -8,14 +8,13 @@ from src.utils.cache_utils import (
     lookup_tokyo_subregion_code,
 )
 from src.utils.gpt_utils import (
-    get_suggested_location_codes,
+    get_suggested_location_names,
     get_suggested_restaurant_type_codes,
     get_suggested_tokyo_subregion_codes,
 )
 
 from src.utils.human_readability_utils import (
     get_human_readable_restaurant_info_blob,
-    print_search_scope,
 )
 from .ikyu_search_parser import run_ikyu_search
 from .utils.sorting_utils import sort_by_price
@@ -24,9 +23,9 @@ from .utils.constants import (
     DINNER_PRICE,
 )
 
-PAGES_TO_SEARCH = 2
-USE_KNOWN_URL = True
-SEARCH_IN_KYOTO = True
+PAGES_TO_SEARCH = 1
+USE_KNOWN_URL = False
+SEARCH_IN_KYOTO = False
 
 
 def build_query_urls_from_known_url(known_url):
@@ -49,32 +48,26 @@ def build_query_urls_from_known_url(known_url):
     return urls
 
 
-def build_query_urls(
+def build_query_url(
     restaurant_type_codes,
     location_code,
     sub_region_codes,
-    base_url="https://restaurant.ikyu.com/search",
 ):
-    urls = []
-    print(f"🚧 Searching the first {PAGES_TO_SEARCH} pages of results 🚧")
-    for xpge_value in range(1, PAGES_TO_SEARCH + 1):
-        codes_param = ",".join(restaurant_type_codes)
-        params = {
-            "pups": 2,
-            "rtpc": codes_param,
-            "rac1": location_code,
-            "rac3": ",".join(sub_region_codes),
-            "pndt": 1,
-            "ptaround": 0,
-            "xsrt": "gourmet",
-            "xpge": xpge_value,
-        }
+    codes_param = ",".join(restaurant_type_codes)
+    params = {
+        "pups": 2,
+        "rtpc": codes_param,
+        "rac1": location_code,
+        "rac3": ",".join(sub_region_codes),
+        "pndt": 1,
+        "ptaround": 0,
+        "xsrt": "gourmet",
+        "xpge": 1,
+    }
 
-        query_string = urlencode(params, doseq=True)
-        full_url = f"{base_url}?{query_string}"
-        urls.append(full_url)
-
-    return urls
+    query_string = urlencode(params, doseq=True)
+    full_url = f"https://restaurant.ikyu.com/search?{query_string}"
+    return full_url
 
 
 def get_output_dir():
@@ -96,47 +89,34 @@ def print_output_in_human_readable_format(all_restaurants, filtered, output_file
         f.write(all_results)
 
 
-def main():
-    if USE_KNOWN_URL:
-        known_url = sys.argv[1]
-        urls = build_query_urls_from_known_url(known_url)
-    elif SEARCH_IN_KYOTO:
-        query = sys.argv[1]
+def build_search_urls_from_query(query, search_in_tokyo):
+    restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
+    restaurant_type_codes = [
+        lookup_restaurant_type_code(code_japanese)
+        for code_japanese in restaurant_type_codes_japanese
+    ]
+    if search_in_tokyo:
         location_code = "03001"
         subregion_codes_japanese = get_suggested_tokyo_subregion_codes(query)
-        restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
-        print_search_scope(
-            restaurant_type_codes_japanese, "Tokyo", subregion_codes_japanese
-        )
-        restaurant_type_codes = [
-            lookup_restaurant_type_code(code_japanese)
-            for code_japanese in restaurant_type_codes_japanese
-        ]
 
-        subregion_codes = [
-            lookup_tokyo_subregion_code(code) for code in subregion_codes_japanese
-        ]
-        urls = build_query_urls(restaurant_type_codes, location_code, subregion_codes)
-        print("🔗 Example search url:")
-        print(urls[0])
     else:
-        query = sys.argv[1]
-        location_code_japanese = get_suggested_location_codes(query)[0]
-        restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
-        restaurant_type_codes_japanese_string = ", ".join(
-            restaurant_type_codes_japanese
-        )
-        print_search_scope(
-            restaurant_type_codes_japanese_string, location_code_japanese, []
-        )
+        location_code_japanese = get_suggested_location_names(query)[0]
+        location_code = lookup_location_code(location_code_japanese)
+        subregion_codes_japanese = []
+    subregion_codes = [
+        lookup_tokyo_subregion_code(code_japanese)
+        for code_japanese in subregion_codes_japanese
+    ]
+    url = build_query_url(restaurant_type_codes, location_code, subregion_codes)
+    urls = build_query_urls_from_known_url(url)
+    return urls
 
-        restaurant_type_codes = [
-            lookup_restaurant_type_code(rt) for rt in restaurant_type_codes_japanese
-        ]
-        location_code = lookup_location_code(location_code)
-        urls = build_query_urls(restaurant_type_codes, location_code, [])
-        print("🔗 Example search url:")
-        print(urls[0])
+
+def main():
+    if USE_KNOWN_URL:
+        urls = build_query_urls_from_known_url(sys.argv[1])
+    else:
+        urls = build_search_urls_from_query(sys.argv[1], SEARCH_IN_KYOTO)
 
     # Find restaurants for all URLs
     all_restaurants = []

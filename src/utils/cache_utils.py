@@ -64,6 +64,7 @@ def get_code_from_japanese_name(code, mapping_file_path):
             return item["code"]
     return ""
 
+
 def lookup_restaurant_type_code(restaurant_type):
     return get_code_from_japanese_name(restaurant_type, "category_code_mapping.json")
 
@@ -73,4 +74,6 @@ def lookup_location_code(location_name):
 
 
 def lookup_tokyo_subregion_code(subregion_name):
-    return get_code_from_japanese_name(subregion_name, "tokyo_subregion_code_mapping.json")
+    return get_code_from_japanese_name(
+        subregion_name, "tokyo_subregion_code_mapping.json"
+    )

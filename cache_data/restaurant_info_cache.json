@@ -202,7 +202,11 @@
         "Dinner Price (円)": 33880,
         "Rating": 4.22,
         "Reservation Link": "https://restaurant.ikyu.com/115342?num_guests=2",
-        "Walking Time": "六本木駅 2番出口より徒歩8分"
+        "Walking Time": "六本木駅 2番出口より徒歩8分",
+        "Ikyu ID": "115342",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
     },
     "109418": {
         "Restaurant Name": "津の守坂 小柴",
@@ -211,7 +215,19 @@
         "Dinner Price (円)": 27000,
         "Rating": 4.22,
         "Reservation Link": "https://restaurant.ikyu.com/109418?num_guests=2",
-        "Walking Time": "曙橋駅 徒歩5分"
+        "Walking Time": "曙橋駅 徒歩5分",
+        "Ikyu ID": "109418",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 27000,
+                "2023-12-05": 27000,
+                "2023-12-06": 27000,
+                "2023-12-07": 27000,
+                "2023-12-08": 27000,
+                "2023-12-09": 27000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
     },
     "112819": {
         "Restaurant Name": "Restaurant L’AFFINAGE",
@@ -288,7 +304,11 @@
         "Dinner Price (円)": 27500,
         "Rating": 4.18,
         "Reservation Link": "https://restaurant.ikyu.com/111310?num_guests=2",
-        "Walking Time": "六本木駅 徒歩2分"
+        "Walking Time": "六本木駅 徒歩2分",
+        "Ikyu ID": "111310",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
     },
     "119411": {
         "Restaurant Name": "Bon.nu（ボニュ）",
@@ -544,7 +564,11 @@
         "Dinner Price (円)": 15000,
         "Rating": 4.19,
         "Reservation Link": "https://restaurant.ikyu.com/109463?num_guests=2",
-        "Walking Time": "四ツ木駅 徒歩1分"
+        "Walking Time": "四ツ木駅 徒歩1分",
+        "Ikyu ID": "109463",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
     },
     "107809": {
         "Restaurant Name": "匠 進吾",

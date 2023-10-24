@@ -15,7 +15,7 @@ def parse_answer_from_chatgpt(answer, print_reasoning):
     answer = answer.replace(" ,", ",").replace(", ", ",")
     suggested_items_string = answer.split("\n")[0]
     if print_reasoning:
-        print(answer)
+        print(f"\n{answer}")
     return suggested_items_string.split(",")
 
 
@@ -33,7 +33,7 @@ User asked for bbq in their query, and both 焼肉 and 鉄板焼 are types of bb
     return parse_answer_from_chatgpt(answer, True)
 
 
-def get_suggested_location_codes(query):
+def get_suggested_location_names(query):
     options_array_japanese = available_options_in_japanese("location_code_mapping.json")
     system_message = f"""If user wants to find food according to {query}, which one of the following location fits the best for their search?\n{
       ", ".join(options_array_japanese)}.
@@ -43,7 +43,6 @@ Example answer:
 東京
 東京 is a direct match as user asked for Tokyo in their query.
     """
-    # print(system_message)
     answer = get_response_from_chatgpt(query, system_message, "gpt-4")
     return parse_answer_from_chatgpt(answer, True)
 
