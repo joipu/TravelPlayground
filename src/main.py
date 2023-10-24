@@ -17,54 +17,13 @@ from src.utils.gpt_utils import (
 from src.utils.human_readability_utils import (
     get_human_readable_restaurant_info_blob,
 )
+from src.utils.url_utils import build_query_url, build_query_urls_from_known_url
 from .ikyu_search_parser import run_ikyu_search
 from .utils.sorting_utils import sort_by_price
 from .utils.constants import (
     LUNCH_PRICE,
     DINNER_PRICE,
 )
-
-
-def build_query_urls_from_known_url(known_url):
-    # Parse the URL and its parameters
-    url_parts = urlparse(known_url)
-    query_params = parse_qs(url_parts.query)
-
-    urls = []
-    for xpge_value in range(1, PAGES_TO_SEARCH + 1):
-        # Update the 'xpge' parameter
-        query_params["xpge"] = xpge_value
-
-        # Construct the new URL
-        new_query_string = urlencode(query_params, doseq=True)
-        new_url_parts = url_parts._replace(query=new_query_string)
-        new_url = urlunparse(new_url_parts)
-
-        urls.append(new_url)
-
-    return urls
-
-
-def build_query_url(
-    restaurant_type_codes,
-    location_code,
-    sub_region_codes,
-):
-    codes_param = ",".join(restaurant_type_codes)
-    params = {
-        "pups": 2,
-        "rtpc": codes_param,
-        "rac1": location_code,
-        "rac3": ",".join(sub_region_codes),
-        "pndt": 1,
-        "ptaround": 0,
-        "xsrt": "gourmet",
-        "xpge": 1,
-    }
-
-    query_string = urlencode(params, doseq=True)
-    full_url = f"https://restaurant.ikyu.com/search?{query_string}"
-    return full_url
 
 
 def get_output_dir():
@@ -74,16 +33,20 @@ def get_output_dir():
     return os.path.abspath(output_dir)
 
 
-def print_output_in_human_readable_format(all_restaurants, filtered, output_file):
+def restaurant_list_in_human_readable_string(all_restaurants, filtered):
     all_results = ""
     for restaurant in all_restaurants:
         output = get_human_readable_restaurant_info_blob(restaurant, filtered)
         if output:
             all_results += output + "\n\n"
+    return all_results
 
+
+def print_restaurant_list(all_restaurants, filtered, output_file):
+    output = restaurant_list_in_human_readable_string(all_restaurants, filtered)
     output_file = os.path.join(get_output_dir(), output_file)
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write(all_results)
+        f.write(output)
 
 
 def build_search_urls_from_query(query, search_in_tokyo):
@@ -135,10 +98,8 @@ def main():
     df1.to_csv(os.path.join(output_dir, "lunch_restaurants.csv"), index=True)
     df1.to_csv(os.path.join(output_dir, "dinner_restaurants.csv"), index=True)
 
-    print_output_in_human_readable_format(all_restaurants, False, "all_restaurants.txt")
-    print_output_in_human_readable_format(
-        all_restaurants, True, "restaurants_with_spots.txt"
-    )
+    print_restaurant_list(all_restaurants, False, "all_restaurants.txt")
+    print_restaurant_list(all_restaurants, True, "restaurants_with_spots.txt")
 
     print("🆗 Finished!")
 
