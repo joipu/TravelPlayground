@@ -2,6 +2,7 @@ import sys
 import os
 import pandas as pd
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
+from src.config import PAGES_TO_SEARCH, SEARCH_IN_KYOTO, USE_KNOWN_URL
 from src.utils.cache_utils import (
     lookup_location_code,
     lookup_restaurant_type_code,
@@ -22,10 +23,6 @@ from .utils.constants import (
     LUNCH_PRICE,
     DINNER_PRICE,
 )
-
-PAGES_TO_SEARCH = 1
-USE_KNOWN_URL = False
-SEARCH_IN_KYOTO = False
 
 
 def build_query_urls_from_known_url(known_url):
