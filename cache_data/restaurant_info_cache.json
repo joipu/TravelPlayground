@@ -589,7 +589,11 @@
         "Dinner Price (円)": 0,
         "Rating": 3.86,
         "Reservation Link": "https://restaurant.ikyu.com/107810?num_guests=2",
-        "Walking Time": "銀座駅 徒歩5分"
+        "Walking Time": "銀座駅 徒歩5分",
+        "Ikyu ID": "107810",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
     },
     "102594": {
         "Restaurant Name": "ジョンティアッシュ",

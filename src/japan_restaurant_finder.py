@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 from src.utils.ikyu_availability_utils import get_availabilities_for_ikyu_restaurant
-from .cache import (
+from .utils.cache_utils import (
     get_cached_restaurant_info_by_url,
     get_ikyu_id_from_url,
     store_cached_restaurant_info_by_url,
@@ -46,12 +46,12 @@ def clean_string(input_string):
     return cleaned_string
 
 
-def get_restaurant_name(ikyu_html_soup):
+def get_restaurant_name_ikyu(ikyu_html_soup):
     content = ikyu_html_soup.find_all(class_="restaurantName_dvSu5")
     return clean_string(content[0].get_text().strip())
 
 
-def get_walking_time(ikyu_html_soup):
+def get_walking_time_ikyu(ikyu_html_soup):
     content = ikyu_html_soup.find_all(
         class_="contentHeaderItem_2RHAO contentHeaderAccessesButton_1Jl7k"
     )
@@ -59,13 +59,13 @@ def get_walking_time(ikyu_html_soup):
     return clean_string(text_content)
 
 
-def get_food_type(ikyu_html_soup):
+def get_food_type_ikyu(ikyu_html_soup):
     content = ikyu_html_soup.find_all(class_="contentHeaderItem_2RHAO")
     text_content = [item.get_text() for item in content][1]
     return clean_string(text_content)
 
 
-def get_lunch_price(ikyu_html_soup):
+def get_lunch_price_ikyu(ikyu_html_soup):
     content = ikyu_html_soup.find_all(class_="timeZoneListItem_3bRvf")
     lunch_content = None
     for element in content:
@@ -79,7 +79,7 @@ def get_lunch_price(ikyu_html_soup):
     return extract_numeric_value(cleaned_lunch_price)
 
 
-def get_dinner_price(ikyu_html_soup):
+def get_dinner_price_ikyu(ikyu_html_soup):
     content = ikyu_html_soup.find_all(class_="timeZoneListItem_3bRvf")
     dinner_content = None
     for element in content:
@@ -150,11 +150,11 @@ def get_restaurant_info_from_ikyu_restaurant_link(ikyu_restaurant_link):
 
     soup = BeautifulSoup(html, "html.parser")
 
-    restaurant_name = get_restaurant_name(soup)
-    food_type = get_food_type(soup)
-    walking_time = get_walking_time(soup)
-    lunch_price = get_lunch_price(soup)
-    dinner_price = get_dinner_price(soup)
+    restaurant_name = get_restaurant_name_ikyu(soup)
+    food_type = get_food_type_ikyu(soup)
+    walking_time = get_walking_time_ikyu(soup)
+    lunch_price = get_lunch_price_ikyu(soup)
+    dinner_price = get_dinner_price_ikyu(soup)
     tablog_link = get_tablog_link_from_restaurant_name(
         restaurant_name + " " + food_type + " " + walking_time
     )

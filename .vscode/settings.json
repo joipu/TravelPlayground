@@ -21,5 +21,8 @@
   "peacock.color": "#c291a3",
   "python.pythonPath": "/usr/local/bin/python",
   "python.formatting.autopep8Path": "/Users/linshu/Library/Python/3.9/bin/autopep8",
-  "python.formatting.provider": "autopep8"
+  "python.formatting.provider": "none",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  }
 }
