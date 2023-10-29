@@ -1,7 +1,6 @@
 import datetime
-import json
 import re
-import sys
+import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -13,6 +12,31 @@ from src.utils.constants import (
     LUNCH,
     RESERVATION_STATUS,
 )
+from src.utils.ikyu_parse_utils import get_restaurant_name_ikyu
+
+
+def has_lunch_button(html):
+    soup = BeautifulSoup(html, "html.parser")
+    lunch_button = soup.findAll("a", attrs={"aria-label": "lunch"})
+    if not lunch_button:
+        return False
+    return len(lunch_button) > 0
+
+
+def has_teatime_button(html):
+    soup = BeautifulSoup(html, "html.parser")
+    button = soup.findAll("a", attrs={"aria-label": "teatime"})
+    if not button:
+        return False
+    return len(button) > 0
+
+
+def has_dinner_button(html):
+    soup = BeautifulSoup(html, "html.parser")
+    dinner_buttons = soup.findAll("a", attrs={"aria-label": "dinner"})
+    if not dinner_buttons:
+        return False
+    return len(dinner_buttons) > 0
 
 
 def get_html_from_ikyu(url):
@@ -25,23 +49,31 @@ def get_html_from_ikyu(url):
     # Get source code
     driver.get(url)
 
-    html_dinner = driver.page_source
-    try:
-        button = driver.find_element(
+    html_dinner = None
+    html_lunch = None
+
+    has_lunch = has_lunch_button(driver.page_source) or has_teatime_button(
+        driver.page_source
+    )
+    has_dinner = has_dinner_button(driver.page_source)
+    has_both = has_lunch and has_dinner
+
+    # If there's only lunch or dinner button, get the html directly.
+    if not has_both and has_lunch:
+        html_lunch = driver.page_source
+
+    if not has_both and has_dinner:
+        html_dinner = driver.page_source
+
+    if has_both:
+        # Dinner is always the default.
+        html_dinner = driver.page_source
+        lunch_button = driver.find_element(
             "xpath",
             "//a[@class='timeZoneButton_2ebcA isDynamicPricingUi_3gS_6' and @aria-label='lunch']",
         )
-        button.click()
-    except Exception as e:
-        if "Message: Unable to locate element:" in str(e):
-            print(f"❗ No lunch button found: {url}")
-            driver.close()
-            return html_dinner, None
-        else:
-            print(f"❌ Error in getting lunch button: {url}, {e}")
-            raise e
-
-    html_lunch = driver.page_source
+        lunch_button.click()
+        html_lunch = driver.page_source
 
     # Close web browser
     driver.close()
@@ -79,7 +111,8 @@ def get_available_dates_and_price_from_html(html):
         "2023-11-02": 25200,
     }
     """
-
+    if html is None:
+        return {}
     soup = BeautifulSoup(html, "html.parser")
 
     # Find all "section" elements with class "restaurantCard_jpBMy"
@@ -108,6 +141,8 @@ def has_available_dates_after(availability_json, date_string):
         datetime.datetime.strptime(date, "%Y-%m-%d")
         for date in availability_json.keys()
     ]
+    if len(date_objects) == 0:
+        return False
     latest_date = max(date_objects)
     check_date = datetime.datetime.strptime(date_string, "%Y-%m-%d")
     return latest_date > check_date
@@ -139,39 +174,45 @@ def filter_availability(availability_json, begin_date_str, end_date_str):
 
 
 def get_availabilities_for_ikyu_restaurant(ikyu_id):
+    availability = {}
     url = f"https://restaurant.ikyu.com/{ikyu_id}?num_guests=2"
     dinner_html, lunch_html = get_html_from_ikyu(url)
+
+    html = dinner_html if dinner_html is not None else lunch_html
+    if html is None:
+        return availability
+    restaurant_name = get_restaurant_name_ikyu(BeautifulSoup(html, "html.parser"))
+    print("🗓️ Getting availability for: ", restaurant_name)
     dinner_json = get_available_dates_and_price_from_html(dinner_html)
-    is_reservation_open = has_available_dates_after(
-        dinner_json, EARLIEST_TARGET_RESERVATION_DATE
-    )
-    result = {}
+    lunch_json = get_available_dates_and_price_from_html(lunch_html)
+    is_reservation_open = False
+    if dinner_json.keys():
+        is_reservation_open = has_available_dates_after(
+            dinner_json, EARLIEST_TARGET_RESERVATION_DATE
+        )
+    if not is_reservation_open:
+        is_reservation_open = has_available_dates_after(
+            lunch_json, EARLIEST_TARGET_RESERVATION_DATE
+        )
+    availability[
+        RESERVATION_STATUS
+    ] = f"Likely open for reservation after {EARLIEST_TARGET_RESERVATION_DATE}: {is_reservation_open}"
+
     filtered_dinner_json = filter_availability(
         dinner_json,
         EARLIEST_TARGET_RESERVATION_DATE,
         LATEST_TARGET_RESERVATION_DATE,
     )
+    filtered_lunch_json = filter_availability(
+        lunch_json,
+        EARLIEST_TARGET_RESERVATION_DATE,
+        LATEST_TARGET_RESERVATION_DATE,
+    )
 
     if filtered_dinner_json.keys():
-        result[DINNER] = filtered_dinner_json
+        availability[DINNER] = filtered_dinner_json
 
-    if lunch_html is not None:
-        lunch_json = get_available_dates_and_price_from_html(lunch_html)
-        if not is_reservation_open:
-            is_reservation_open = has_available_dates_after(
-                lunch_json, EARLIEST_TARGET_RESERVATION_DATE
-            )
-        filtered_lunch_json = filter_availability(
-            lunch_json,
-            EARLIEST_TARGET_RESERVATION_DATE,
-            LATEST_TARGET_RESERVATION_DATE,
-        )
+    if filtered_lunch_json.keys():
+        availability[LUNCH] = filtered_lunch_json
 
-        if filtered_lunch_json.keys():
-            result[LUNCH] = filtered_lunch_json
-
-    result[
-        RESERVATION_STATUS
-    ] = f"Likely open for reservation after {EARLIEST_TARGET_RESERVATION_DATE}: {is_reservation_open}"
-
-    return result
+    return availability

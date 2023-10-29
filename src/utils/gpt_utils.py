@@ -1,17 +1,17 @@
-from src.utils.cache_utils import (
-    lookup_restaurant_type_code,
-    lookup_tokyo_subregion_code,
+import os
+from src.utils.constants import LOCATIONS, REASON
+from src.utils.file_utils import (
+    get_resources_dir_path,
+    read_content_from_file,
+    read_json_from_file_in_resources,
 )
-from src.utils.constants import LOCATIONS, REASON, TOKYO_LOCATION_CODE
-from src.utils.file_utils import read_json_from_file
 from src.utils.human_readability_utils import get_human_readable_restaurant_info_blob
 from src.utils.open_ai_utils import get_response_from_chatgpt
-from src.utils.url_utils import build_query_url
 
 
 def available_options_in_japanese(mapping_file_path):
     options_japanese = []
-    code_json = read_json_from_file(mapping_file_path)
+    code_json = read_json_from_file_in_resources(mapping_file_path)
     for each in code_json:
         options_japanese.append(each["japanese"])
     return options_japanese
@@ -102,7 +102,17 @@ def group_locations_and_reasons(input_string):
 
 
 # Query would be "I want to visit 浅草寺，明治神宫"
-# Output would be a list of URLs, each for a destination, bundling when appropriate
+# Output will be:
+# [
+#   {
+#     "locations": ["浅草", "上野", "押上"],
+#     "reason": "你说你会去浅草寺和上野公园，这对应到浅草和上野地区。押上是附近的地区。"
+#   },
+#   {
+#     "locations": ["渋谷", "神泉", "代々木公园"],
+#     "reason": "你说你会去Shibuya sky和吉卜力美术馆，这对应到渋谷和神泉地区。代々木公园是附近的地区。"
+#   }
+# ]
 def build_location_groups_for_tokyo(query):
     options_array_japanese = available_options_in_japanese(
         "tokyo_subregion_code_mapping.json"
@@ -118,9 +128,11 @@ Example answer:
 [locations] 浅草, 上野, 押上
 [reason] You said you will be visiting 浅草寺 and 上野公园, which translates to 浅草 and 上野 subregion. 押上 is a nearby subregion.
     """
-
-    answer = get_response_from_chatgpt(query, system_message, "gpt-4")
-    return group_locations_and_reasons(answer)
+    try:
+        answer = get_response_from_chatgpt(query, system_message, "gpt-4")
+        return group_locations_and_reasons(answer)
+    except:
+        raise Exception("Failed to get response from GPT-4")
 
 
 def restaurant_list_in_human_readable_string(all_restaurants, filtered):
@@ -132,12 +144,17 @@ def restaurant_list_in_human_readable_string(all_restaurants, filtered):
     return all_results
 
 
-def get_gpt_recommendations(query, search_group, all_restaurants):
+def get_gpt_recommendations(query, search_group, all_restaurants, start_date, end_date):
     all_restaurants_info = restaurant_list_in_human_readable_string(
         all_restaurants, True
     )
     locations_string = ", ".join(search_group[LOCATIONS])
-    system_message = f"You are helping the user pick good dates to visit one region according to restaurant availabilities in that region. User's query is {query}, and we broke it into several restaurant searches, with each search catering one part of their query. For example, if they are visiting many attractions in Tokyo, one search will be for one group of geographically nearby attractions. And there may have a few searches depending on how many regions the query covers.\n Now, you are looking at one search. Locations in this search are {locations_string}. This is because {search_group[REASON]}. Next we will give you the restaurants info from this search, and you should give 3 tentative itineraries for the user to consider.\n Each should have 1. The date and activities for the region, according to their query and potentially expanding on it. Also include which restaurants to book for lunch & dinner. 2. Ignore restaurants with rating below 3.5. 3. Prioritize restaurants with highest rating, but make each restaurant appear in only one itinerary 4. Skip the restaurants with no availability or are far from the activities, or are significantly more expensive than similarly rated restaurants, and list those restaurants out with the reasons. 5. For each restaurant, list their rating, price, and explicitly CONFIRM they have AVAILABILITY that day. If they have NO AVAILABILITY listed but says they are likely open for reservation after 2023-12-3, explicitly mention that in your answer. 6. Provide response in the same language as user's query. \n Here are all the restaurants and their info:\n{all_restaurants_info}\n"
+    main_prompt_file_path = os.path.join(
+        get_resources_dir_path(), "divide_and_conquer_gpt_prompt_criteria.txt"
+    )
+    main_prompt = read_content_from_file(main_prompt_file_path)
+
+    system_message = f"You are helping the user pick good dates to visit one region according to restaurant availabilities in that region. User's query is {query}, and we broke it into several restaurant searches, with each search catering one part of their query. For example, if they are visiting many attractions in Tokyo, one search will be for one group of geographically nearby attractions. And there may have a few searches depending on how many regions the query covers.\n Now, you are looking at one search. Locations in this search are {locations_string}. This is because {search_group[REASON]}\n User's trip is from {start_date} to {end_date}. {main_prompt}\n Here are all the restaurants and their info:\n{all_restaurants_info}\n"
     print("🤖 Asking GPT: ", system_message)
     answer = get_response_from_chatgpt(query, system_message, "gpt-4")
     return answer

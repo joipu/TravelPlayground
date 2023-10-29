@@ -1,5 +1,5 @@
 # How many pages of ikyu results to check. About 18 results per page.
-PAGES_TO_SEARCH = 1
+PAGES_TO_SEARCH = 2
 
 # If you already have an ikyu URL and want to skip the GPT url building part, set this to True and pass the URL as your argument instead of the query. This is useful for debugging or for building restaurant cache.
 USE_KNOWN_URL = "use_known_url"
@@ -13,4 +13,8 @@ DIVIDE_AND_CONQUER = "divide_and_conquer"
 # This is default. This will search on city level, e.g. Tokyo, Kyoto, etc.
 SEARCH_BY_CITY = "search_by_city"
 
-WORK_MODE = SEARCH_BY_CITY
+WORK_MODE = USE_KNOWN_URL
+
+USE_EXISTING_RESERVATION_DATA = False
+
+DO_NOT_FETCH_NEW_RESTAURANT_DATA = False

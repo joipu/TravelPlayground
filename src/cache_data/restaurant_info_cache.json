@@ -2396,5 +2396,1066 @@
         "Availability": {
             "Reservation Status": "Likely open for reservation after 2023-12-3: False"
         }
+    },
+    "100345": {
+        "Restaurant Name": "サンス・エ・サヴール",
+        "Ikyu ID": "100345",
+        "Food Type": "フレンチ／モダン・キュイジーヌ",
+        "Lunch Price (円)": 8470,
+        "Dinner Price (円)": 14157,
+        "Tablog Link": "https://tabelog.com/tokyo/A1302/A130201/13004053",
+        "Rating": 3.71,
+        "Reservation Link": "https://restaurant.ikyu.com/100345?num_guests=2",
+        "Walking Time": "東京駅 丸の内口より 徒歩2分（地下道より直結）",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 14157,
+                "2023-12-04": 14157,
+                "2023-12-05": 14157,
+                "2023-12-06": 14157,
+                "2023-12-07": 14157,
+                "2023-12-08": 14157,
+                "2023-12-09": 14157
+            },
+            "lunch": {
+                "2023-12-04": 8470,
+                "2023-12-05": 8470,
+                "2023-12-06": 8470,
+                "2023-12-07": 8470,
+                "2023-12-08": 8470,
+                "2023-12-09": 8470
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "109540": {
+        "Restaurant Name": "銀座 上瀧",
+        "Ikyu ID": "109540",
+        "Food Type": "中華料理",
+        "Lunch Price (円)": 42350,
+        "Dinner Price (円)": 42350,
+        "Tablog Link": "https://tabelog.com/tokyo/A1301/A130101/13267801",
+        "Rating": 3.92,
+        "Reservation Link": "https://restaurant.ikyu.com/109540?num_guests=2",
+        "Walking Time": "銀座駅 C3出口 徒歩4分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "121980": {
+        "Restaurant Name": "遠藤利三郎商店",
+        "Ikyu ID": "121980",
+        "Food Type": "ビストロ",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 18000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1312/A131203/13093602",
+        "Rating": 3.57,
+        "Reservation Link": "https://restaurant.ikyu.com/121980?num_guests=2",
+        "Walking Time": "押上駅 徒歩5分",
+        "Availability": {
+            "dinner": {
+                "2023-12-06": 18000,
+                "2023-12-07": 18000,
+                "2023-12-08": 18000,
+                "2023-12-09": 18000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "119444": {
+        "Restaurant Name": "ちんや 浅草本店",
+        "Ikyu ID": "119444",
+        "Food Type": "すき焼き",
+        "Lunch Price (円)": 2970,
+        "Dinner Price (円)": 7480,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131102/13268750",
+        "Rating": 3.51,
+        "Reservation Link": "https://restaurant.ikyu.com/119444?num_guests=2",
+        "Walking Time": "浅草駅 608m",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "109159": {
+        "Restaurant Name": "上野洋食 遠山",
+        "Ikyu ID": "109159",
+        "Food Type": "洋食 上野公園",
+        "Lunch Price (円)": 2500,
+        "Dinner Price (円)": 4200,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13173265",
+        "Rating": 3.5,
+        "Reservation Link": "https://restaurant.ikyu.com/109159?num_guests=2",
+        "Walking Time": "上野駅 不忍口を出て上野公園側へ横断歩道を渡り右折、「上野の森さくらテラス」の2階です。",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 4200,
+                "2023-12-05": 4200,
+                "2023-12-06": 4200,
+                "2023-12-07": 4200,
+                "2023-12-08": 4200,
+                "2023-12-09": 4200
+            },
+            "lunch": {
+                "2023-12-03": 0,
+                "2023-12-05": 2500,
+                "2023-12-06": 2500,
+                "2023-12-07": 2500,
+                "2023-12-08": 2500,
+                "2023-12-09": 0
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "101794": {
+        "Restaurant Name": "スカイグリルブッフェ武藏／浅草ビューホテル",
+        "Ikyu ID": "101794",
+        "Food Type": "ブッフェ",
+        "Lunch Price (円)": 4950,
+        "Dinner Price (円)": 6500,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131102/13141483",
+        "Rating": 3.49,
+        "Reservation Link": "https://restaurant.ikyu.com/101794?num_guests=2",
+        "Walking Time": "浅草駅 （台東区自転車駐車場経由）出口B2直結",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 7900,
+                "2023-12-04": 6500,
+                "2023-12-05": 6500,
+                "2023-12-06": 6500,
+                "2023-12-07": 6500,
+                "2023-12-08": 6500,
+                "2023-12-09": 7900
+            },
+            "lunch": {
+                "2023-12-03": 6900,
+                "2023-12-04": 5500,
+                "2023-12-05": 5500,
+                "2023-12-06": 5500,
+                "2023-12-07": 5500,
+                "2023-12-08": 5500,
+                "2023-12-09": 6900
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "108872": {
+        "Restaurant Name": "つち田",
+        "Ikyu ID": "108872",
+        "Food Type": "ふぐ・すっぽん・はも料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 8800,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131102/13033986",
+        "Rating": 3.53,
+        "Reservation Link": "https://restaurant.ikyu.com/108872?num_guests=2",
+        "Walking Time": "浅草駅 徒歩6分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 8800,
+                "2023-12-04": 8800,
+                "2023-12-05": 8800,
+                "2023-12-06": 8800,
+                "2023-12-07": 8800,
+                "2023-12-08": 8800,
+                "2023-12-09": 8800
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "119319": {
+        "Restaurant Name": "稲荷町 高はし",
+        "Ikyu ID": "119319",
+        "Food Type": "会席料理",
+        "Lunch Price (円)": 5500,
+        "Dinner Price (円)": 11000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13138604",
+        "Rating": 3.52,
+        "Reservation Link": "https://restaurant.ikyu.com/119319?num_guests=2",
+        "Walking Time": "稲荷町駅 徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 11000,
+                "2023-12-05": 11000,
+                "2023-12-06": 11000,
+                "2023-12-07": 11000,
+                "2023-12-08": 11000,
+                "2023-12-09": 11000
+            },
+            "lunch": {
+                "2023-12-04": 5500,
+                "2023-12-05": 5500,
+                "2023-12-06": 5500,
+                "2023-12-07": 5500,
+                "2023-12-08": 5500,
+                "2023-12-09": 5500
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "108291": {
+        "Restaurant Name": "魚イタリアンと薪きピザ チロンボ・マリーナ 上野店",
+        "Ikyu ID": "108291",
+        "Food Type": "イタリア料理・魚介・薪ピザ",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 2200,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13211099",
+        "Rating": 3.47,
+        "Reservation Link": "https://restaurant.ikyu.com/108291?num_guests=2",
+        "Walking Time": "上野駅 浅草口を出て左へ進む。右手側「FUNDES上野」の3階です。",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 0,
+                "2023-12-04": 2200,
+                "2023-12-05": 2200,
+                "2023-12-06": 2200,
+                "2023-12-07": 2200,
+                "2023-12-08": 0,
+                "2023-12-09": 0
+            },
+            "lunch": {
+                "2023-12-03": 0,
+                "2023-12-04": 0,
+                "2023-12-05": 0,
+                "2023-12-06": 0,
+                "2023-12-07": 0,
+                "2023-12-08": 0,
+                "2023-12-09": 0
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "110758": {
+        "Restaurant Name": "Bistro NOHGA／NOHGA HOTEL UENO TOKYO",
+        "Ikyu ID": "110758",
+        "Food Type": "ビストロ、フレンチ",
+        "Lunch Price (円)": 3000,
+        "Dinner Price (円)": 5800,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13226390",
+        "Rating": 3.46,
+        "Reservation Link": "https://restaurant.ikyu.com/110758?num_guests=2",
+        "Walking Time": "上野駅 広小路口を出て常陽銀行の右手側の道を進む。約150ｍ先右手側「NOHGA HOTEL UENO」の1階です。",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 6800,
+                "2023-12-04": 6800,
+                "2023-12-05": 6800,
+                "2023-12-06": 6800,
+                "2023-12-07": 6800,
+                "2023-12-08": 6800,
+                "2023-12-09": 6800
+            },
+            "lunch": {
+                "2023-12-03": 4550,
+                "2023-12-04": 3000,
+                "2023-12-05": 3000,
+                "2023-12-06": 3000,
+                "2023-12-07": 3000,
+                "2023-12-08": 3000,
+                "2023-12-09": 4550
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "122117": {
+        "Restaurant Name": "寿し処 川",
+        "Ikyu ID": "122117",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 13000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13247353",
+        "Rating": 3.51,
+        "Reservation Link": "https://restaurant.ikyu.com/122117?num_guests=2",
+        "Walking Time": "湯島駅 A2出口より徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 13000,
+                "2023-12-05": 13000,
+                "2023-12-07": 13000,
+                "2023-12-08": 13000,
+                "2023-12-09": 13000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "103055": {
+        "Restaurant Name": "カメレオン",
+        "Ikyu ID": "103055",
+        "Food Type": "ワイン・フレンチ・イタリアン",
+        "Lunch Price (円)": 3800,
+        "Dinner Price (円)": 4180,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131103/13059031",
+        "Rating": 3.46,
+        "Reservation Link": "https://restaurant.ikyu.com/103055?num_guests=2",
+        "Walking Time": "浅草橋駅 徒歩1分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "104801": {
+        "Restaurant Name": "國見／東京ソラマチ31F",
+        "Ikyu ID": "104801",
+        "Food Type": "懐石・会席/魚介・海鮮蟹料理",
+        "Lunch Price (円)": 2700,
+        "Dinner Price (円)": 7000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1312/A131203/13141207",
+        "Rating": 3.45,
+        "Reservation Link": "https://restaurant.ikyu.com/104801?num_guests=2",
+        "Walking Time": "押上駅 直結",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 7000,
+                "2023-12-04": 7000,
+                "2023-12-05": 7000,
+                "2023-12-06": 7000,
+                "2023-12-07": 7000,
+                "2023-12-08": 7000,
+                "2023-12-09": 7000
+            },
+            "lunch": {
+                "2023-12-03": 2900,
+                "2023-12-04": 2700,
+                "2023-12-05": 2700,
+                "2023-12-07": 2700,
+                "2023-12-08": 2700,
+                "2023-12-09": 2900
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "112645": {
+        "Restaurant Name": "すし尽誠",
+        "Ikyu ID": "112645",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 4180,
+        "Dinner Price (円)": 9680,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13233806",
+        "Rating": 3.44,
+        "Reservation Link": "https://restaurant.ikyu.com/112645?num_guests=2",
+        "Walking Time": "上野駅 広小路口徒歩1分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 19580,
+                "2023-12-04": 19580,
+                "2023-12-05": 19580,
+                "2023-12-06": 19580,
+                "2023-12-07": 19580,
+                "2023-12-08": 19580,
+                "2023-12-09": 19580
+            },
+            "lunch": {
+                "2023-12-03": 4180,
+                "2023-12-04": 4180,
+                "2023-12-05": 4180,
+                "2023-12-06": 4180,
+                "2023-12-07": 4180,
+                "2023-12-08": 4180,
+                "2023-12-09": 4180
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "116450": {
+        "Restaurant Name": "一頭買焼肉 玄 浅草本店",
+        "Ikyu ID": "116450",
+        "Food Type": "焼肉／一頭買い焼肉",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 4950,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131102/13113582",
+        "Rating": 3.44,
+        "Reservation Link": "https://restaurant.ikyu.com/116450?num_guests=2",
+        "Walking Time": "浅草駅 徒歩1分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 4950,
+                "2023-12-04": 4950,
+                "2023-12-05": 4950,
+                "2023-12-06": 4950,
+                "2023-12-07": 4950,
+                "2023-12-08": 4950,
+                "2023-12-09": 4950
+            },
+            "lunch": {
+                "2023-12-03": 0,
+                "2023-12-04": 0,
+                "2023-12-05": 0,
+                "2023-12-06": 0,
+                "2023-12-07": 0,
+                "2023-12-08": 0,
+                "2023-12-09": 0
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "119298": {
+        "Restaurant Name": "焼肉もとやま本店",
+        "Ikyu ID": "119298",
+        "Food Type": "焼肉",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 8000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13231189",
+        "Rating": 3.41,
+        "Reservation Link": "https://restaurant.ikyu.com/119298?num_guests=2",
+        "Walking Time": "御徒町駅 徒歩1分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 8000,
+                "2023-12-04": 8000,
+                "2023-12-05": 8000,
+                "2023-12-06": 8000,
+                "2023-12-07": 8000,
+                "2023-12-08": 8000,
+                "2023-12-09": 8000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "102533": {
+        "Restaurant Name": "鉄板焼 grow 上野店",
+        "Ikyu ID": "102533",
+        "Food Type": "鉄板焼き",
+        "Lunch Price (円)": 6600,
+        "Dinner Price (円)": 7600,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13156455",
+        "Rating": 3.27,
+        "Reservation Link": "https://restaurant.ikyu.com/102533?num_guests=2",
+        "Walking Time": "湯島駅 4番出口を出て右へ進み、天神下の交差点を右折。約50ｍ先右手側「ソシアル広小路ビル」の2階です。",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 7600,
+                "2023-12-04": 7600,
+                "2023-12-05": 7600,
+                "2023-12-06": 7600,
+                "2023-12-07": 7600,
+                "2023-12-08": 7600,
+                "2023-12-09": 7600
+            },
+            "lunch": {
+                "2023-12-03": 6600,
+                "2023-12-09": 6600
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "110983": {
+        "Restaurant Name": "ブラカリ",
+        "Ikyu ID": "110983",
+        "Food Type": "イタリア料理",
+        "Lunch Price (円)": 2200,
+        "Dinner Price (円)": 5500,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131102/13250267",
+        "Rating": 3.38,
+        "Reservation Link": "https://restaurant.ikyu.com/110983?num_guests=2",
+        "Walking Time": "浅草駅 徒歩7分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 5500,
+                "2023-12-05": 5500,
+                "2023-12-06": 5500,
+                "2023-12-07": 5500,
+                "2023-12-08": 5500,
+                "2023-12-09": 5500
+            },
+            "lunch": {
+                "2023-12-03": 2200,
+                "2023-12-05": 2200,
+                "2023-12-06": 2200,
+                "2023-12-07": 2200,
+                "2023-12-08": 2200,
+                "2023-12-09": 2200
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "120673": {
+        "Restaurant Name": "駒形 前川 東京スカイツリーソラマチ店",
+        "Ikyu ID": "120673",
+        "Food Type": "うなぎ",
+        "Lunch Price (円)": 11000,
+        "Dinner Price (円)": 11000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1312/A131203/13141248",
+        "Rating": 3.43,
+        "Reservation Link": "https://restaurant.ikyu.com/120673?num_guests=2",
+        "Walking Time": "押上駅 徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 11000,
+                "2023-12-05": 11000,
+                "2023-12-06": 11000,
+                "2023-12-07": 11000,
+                "2023-12-08": 11000
+            },
+            "lunch": {
+                "2023-12-04": 11000,
+                "2023-12-05": 11000,
+                "2023-12-06": 11000,
+                "2023-12-07": 11000,
+                "2023-12-08": 11000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "113891": {
+        "Restaurant Name": "百万石",
+        "Ikyu ID": "113891",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 13200,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131101/13016767",
+        "Rating": 3.43,
+        "Reservation Link": "https://restaurant.ikyu.com/113891?num_guests=2",
+        "Walking Time": "上野駅 広小路出口から徒歩5分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "106608": {
+        "Restaurant Name": "鉄板焼 摩天楼 東京スカイツリー・ソラマチ店",
+        "Ikyu ID": "106608",
+        "Food Type": "鉄板焼",
+        "Lunch Price (円)": 5000,
+        "Dinner Price (円)": 8000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1312/A131203/13141244",
+        "Rating": 3.49,
+        "Reservation Link": "https://restaurant.ikyu.com/106608?num_guests=2",
+        "Walking Time": "押上駅 直結",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 9000,
+                "2023-12-04": 9000,
+                "2023-12-05": 9000,
+                "2023-12-06": 9000,
+                "2023-12-07": 9000,
+                "2023-12-08": 9000,
+                "2023-12-09": 9000
+            },
+            "lunch": {
+                "2023-12-03": 6000,
+                "2023-12-04": 6000,
+                "2023-12-05": 6000,
+                "2023-12-06": 6000,
+                "2023-12-07": 6000,
+                "2023-12-08": 6000,
+                "2023-12-09": 6000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "120672": {
+        "Restaurant Name": "駒形前川 浅草本店",
+        "Ikyu ID": "120672",
+        "Food Type": "うなぎ",
+        "Lunch Price (円)": 11000,
+        "Dinner Price (円)": 14300,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131102/13003666",
+        "Rating": 3.43,
+        "Reservation Link": "https://restaurant.ikyu.com/120672?num_guests=2",
+        "Walking Time": "浅草駅 徒歩1分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 14300,
+                "2023-12-04": 14300,
+                "2023-12-05": 14300,
+                "2023-12-06": 14300,
+                "2023-12-07": 14300,
+                "2023-12-08": 14300,
+                "2023-12-09": 14300
+            },
+            "lunch": {
+                "2023-12-03": 11000,
+                "2023-12-04": 11000,
+                "2023-12-05": 11000,
+                "2023-12-06": 11000,
+                "2023-12-07": 11000,
+                "2023-12-08": 11000,
+                "2023-12-09": 11000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "111812": {
+        "Restaurant Name": "割烹 とんぼ",
+        "Ikyu ID": "111812",
+        "Food Type": "懐石・会席料理・肉会席",
+        "Lunch Price (円)": 2910,
+        "Dinner Price (円)": 8800,
+        "Tablog Link": "https://tabelog.com/tokyo/A1312/A131203/13035055",
+        "Rating": 3.37,
+        "Reservation Link": "https://restaurant.ikyu.com/111812?num_guests=2",
+        "Walking Time": "本所吾妻橋駅 徒歩1分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 8800,
+                "2023-12-05": 8800,
+                "2023-12-06": 8800,
+                "2023-12-07": 8800,
+                "2023-12-08": 8800,
+                "2023-12-09": 8800
+            },
+            "lunch": {
+                "2023-12-03": 6072,
+                "2023-12-04": 2910,
+                "2023-12-05": 2910,
+                "2023-12-06": 2910,
+                "2023-12-07": 2910,
+                "2023-12-08": 2910,
+                "2023-12-09": 6072
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "115146": {
+        "Restaurant Name": "Inf～隅田川イタリアン～",
+        "Ikyu ID": "115146",
+        "Food Type": "イタリア料理、ビアガーデン",
+        "Lunch Price (円)": 3500,
+        "Dinner Price (円)": 6050,
+        "Tablog Link": "https://tabelog.com/tokyo/A1311/A131103/13243567",
+        "Rating": 3.39,
+        "Reservation Link": "https://restaurant.ikyu.com/115146?num_guests=2",
+        "Walking Time": "浅草駅 徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 6050,
+                "2023-12-04": 6050,
+                "2023-12-05": 6050,
+                "2023-12-06": 6050,
+                "2023-12-07": 6050,
+                "2023-12-08": 6050,
+                "2023-12-09": 6050
+            },
+            "lunch": {
+                "2023-12-03": 3500,
+                "2023-12-04": 3500,
+                "2023-12-05": 3500,
+                "2023-12-06": 3500,
+                "2023-12-07": 3500,
+                "2023-12-08": 3500,
+                "2023-12-09": 3500
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "116849": {
+        "Restaurant Name": "初音鮨",
+        "Ikyu ID": "116849",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 22000,
+        "Dinner Price (円)": 22000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1315/A131503/13017742",
+        "Rating": 4.13,
+        "Reservation Link": "https://restaurant.ikyu.com/116849?num_guests=2",
+        "Walking Time": "蒲田駅 西口徒歩5分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 22000,
+                "2023-12-05": 22000,
+                "2023-12-07": 22000,
+                "2023-12-08": 22000,
+                "2023-12-09": 22000
+            },
+            "lunch": {
+                "2023-12-04": 22000,
+                "2023-12-05": 22000,
+                "2023-12-07": 22000,
+                "2023-12-08": 22000,
+                "2023-12-09": 22000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "112477": {
+        "Restaurant Name": "東京肉しゃぶ家",
+        "Ikyu ID": "112477",
+        "Food Type": "しゃぶしゃぶ・すき焼き",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 30250,
+        "Tablog Link": "https://tabelog.com/tokyo/A1304/A130401/13196268",
+        "Rating": 4.19,
+        "Reservation Link": "https://restaurant.ikyu.com/112477?num_guests=2",
+        "Walking Time": "東新宿駅 徒歩5分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 30250,
+                "2023-12-04": 30250,
+                "2023-12-05": 30250,
+                "2023-12-06": 30250,
+                "2023-12-07": 30250,
+                "2023-12-08": 30250,
+                "2023-12-09": 30250
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "117192": {
+        "Restaurant Name": "炭火焼肉なかはら",
+        "Ikyu ID": "117192",
+        "Food Type": "焼肉",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 26015,
+        "Tablog Link": "https://tabelog.com/tokyo/A1309/A130904/13175110",
+        "Rating": 4.04,
+        "Reservation Link": "https://restaurant.ikyu.com/117192?num_guests=2",
+        "Walking Time": "市ヶ谷駅 徒歩2分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "108230": {
+        "Restaurant Name": "USHIGORO S. 西麻布",
+        "Ikyu ID": "108230",
+        "Food Type": "焼肉",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 34100,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130701/13209611",
+        "Rating": 3.87,
+        "Reservation Link": "https://restaurant.ikyu.com/108230?num_guests=2",
+        "Walking Time": "六本木駅 徒歩10分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 34100,
+                "2023-12-04": 34100,
+                "2023-12-05": 34100,
+                "2023-12-06": 34100,
+                "2023-12-07": 34100,
+                "2023-12-08": 34100,
+                "2023-12-09": 34100
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "109751": {
+        "Restaurant Name": "乃木坂 しん",
+        "Ikyu ID": "109751",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 38720,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130701/13196404",
+        "Rating": 3.75,
+        "Reservation Link": "https://restaurant.ikyu.com/109751?num_guests=2",
+        "Walking Time": "乃木坂駅 1番出口徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 38720,
+                "2023-12-05": 38720,
+                "2023-12-06": 38720,
+                "2023-12-07": 38720,
+                "2023-12-08": 38720,
+                "2023-12-09": 38720
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "110790": {
+        "Restaurant Name": "よし澤",
+        "Ikyu ID": "110790",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 10395,
+        "Dinner Price (円)": 20328,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130701/13226102",
+        "Rating": 3.85,
+        "Reservation Link": "https://restaurant.ikyu.com/110790?num_guests=2",
+        "Walking Time": "六本木駅 徒歩2分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 20328,
+                "2023-12-05": 20328,
+                "2023-12-06": 20328,
+                "2023-12-07": 20328,
+                "2023-12-08": 20328,
+                "2023-12-09": 20328
+            },
+            "lunch": {
+                "2023-12-03": 10395,
+                "2023-12-09": 10395
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "113859": {
+        "Restaurant Name": "冨所",
+        "Ikyu ID": "113859",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 25000,
+        "Dinner Price (円)": 25000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1314/A131401/13223846",
+        "Rating": 3.97,
+        "Reservation Link": "https://restaurant.ikyu.com/113859?num_guests=2",
+        "Walking Time": "御成門駅 徒歩8分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "119403": {
+        "Restaurant Name": "美会",
+        "Ikyu ID": "119403",
+        "Food Type": "和食（その他）",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 29000,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130701/13270211",
+        "Rating": 4.09,
+        "Reservation Link": "https://restaurant.ikyu.com/119403?num_guests=2",
+        "Walking Time": "乃木坂駅 徒歩4分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 29000,
+                "2023-12-05": 29000,
+                "2023-12-06": 29000,
+                "2023-12-08": 29000,
+                "2023-12-09": 29000
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "109057": {
+        "Restaurant Name": "天雅",
+        "Ikyu ID": "109057",
+        "Food Type": "天ぷら 会席料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 21780,
+        "Tablog Link": "https://tabelog.com/tokyo/A1317/A131701/13147445",
+        "Rating": 3.71,
+        "Reservation Link": "https://restaurant.ikyu.com/109057?num_guests=2",
+        "Walking Time": "中目黒駅 徒歩4分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "110722": {
+        "Restaurant Name": "霞町 やまがみ",
+        "Ikyu ID": "110722",
+        "Food Type": "割烹・小料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 42350,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130703/13220317",
+        "Rating": 3.86,
+        "Reservation Link": "https://restaurant.ikyu.com/110722?num_guests=2",
+        "Walking Time": "広尾駅 出入口3より徒歩8分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "114901": {
+        "Restaurant Name": "茜坂大沼",
+        "Ikyu ID": "114901",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 9680,
+        "Dinner Price (円)": 21780,
+        "Tablog Link": "https://tabelog.com/tokyo/A1308/A130801/13244397",
+        "Rating": 3.81,
+        "Reservation Link": "https://restaurant.ikyu.com/114901?num_guests=2",
+        "Walking Time": "赤坂駅 徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-07": 21780,
+                "2023-12-08": 21780,
+                "2023-12-09": 21780
+            },
+            "lunch": {
+                "2023-12-05": 9680,
+                "2023-12-06": 9680,
+                "2023-12-07": 9680,
+                "2023-12-08": 9680,
+                "2023-12-09": 9680
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "119215": {
+        "Restaurant Name": "USHIGORO S. SHINJUKU",
+        "Ikyu ID": "119215",
+        "Food Type": "焼肉",
+        "Lunch Price (円)": 12100,
+        "Dinner Price (円)": 34100,
+        "Tablog Link": "https://tabelog.com/tokyo/A1304/A130401/13268688",
+        "Rating": 3.8,
+        "Reservation Link": "https://restaurant.ikyu.com/119215?num_guests=2",
+        "Walking Time": "新宿三丁目駅 徒歩2分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 34100,
+                "2023-12-04": 34100,
+                "2023-12-05": 34100,
+                "2023-12-06": 34100,
+                "2023-12-07": 34100,
+                "2023-12-08": 34100,
+                "2023-12-09": 34100
+            },
+            "lunch": {
+                "2023-12-03": 34100,
+                "2023-12-06": 34100,
+                "2023-12-07": 34100,
+                "2023-12-08": 34100,
+                "2023-12-09": 34100
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "111949": {
+        "Restaurant Name": "白金台こばやし",
+        "Ikyu ID": "111949",
+        "Food Type": "割烹・小料理・懐石料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 27500,
+        "Tablog Link": "https://tabelog.com/tokyo/A1316/A131602/13162454",
+        "Rating": 3.95,
+        "Reservation Link": "https://restaurant.ikyu.com/111949?num_guests=2",
+        "Walking Time": "白金台駅 徒歩10分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "112445": {
+        "Restaurant Name": "鮨 在",
+        "Ikyu ID": "112445",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 27500,
+        "Dinner Price (円)": 27500,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130703/13233764",
+        "Rating": 3.89,
+        "Reservation Link": "https://restaurant.ikyu.com/112445?num_guests=2",
+        "Walking Time": "広尾駅 徒歩4分",
+        "Availability": {
+            "dinner": {
+                "2023-12-05": 27500,
+                "2023-12-06": 27500,
+                "2023-12-07": 27500,
+                "2023-12-08": 27500,
+                "2023-12-09": 27500
+            },
+            "lunch": {
+                "2023-12-09": 27500
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "119367": {
+        "Restaurant Name": "西麻布 焼肉X ~TEN~",
+        "Ikyu ID": "119367",
+        "Food Type": "焼肉",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 24200,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130701/13233427",
+        "Rating": 3.98,
+        "Reservation Link": "https://restaurant.ikyu.com/119367?num_guests=2",
+        "Walking Time": "六本木駅 徒歩8分",
+        "Availability": {
+            "Reservation Status": "Likely open for reservation after 2023-12-3: False"
+        }
+    },
+    "112538": {
+        "Restaurant Name": "常",
+        "Ikyu ID": "112538",
+        "Food Type": "割烹・小料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 32670,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130703/13220791",
+        "Rating": 3.81,
+        "Reservation Link": "https://restaurant.ikyu.com/112538?num_guests=2",
+        "Walking Time": "広尾駅 駅から徒歩約12分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 32670,
+                "2023-12-05": 32670,
+                "2023-12-06": 32670,
+                "2023-12-07": 32670,
+                "2023-12-08": 32670,
+                "2023-12-09": 32670
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "116920": {
+        "Restaurant Name": "天冨良 よこ田",
+        "Ikyu ID": "116920",
+        "Food Type": "天ぷら",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 14300,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130702/13001340",
+        "Rating": 3.76,
+        "Reservation Link": "https://restaurant.ikyu.com/116920?num_guests=2",
+        "Walking Time": "麻布十番駅 徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-03": 14300,
+                "2023-12-04": 14300,
+                "2023-12-05": 14300,
+                "2023-12-06": 14300,
+                "2023-12-07": 14300,
+                "2023-12-08": 14300,
+                "2023-12-09": 21780
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "113341": {
+        "Restaurant Name": "てんぷら前平",
+        "Ikyu ID": "113341",
+        "Food Type": "天ぷら",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 25300,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130702/13212060",
+        "Rating": 3.76,
+        "Reservation Link": "https://restaurant.ikyu.com/113341?num_guests=2",
+        "Walking Time": "麻布十番駅 徒歩3分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 25300,
+                "2023-12-05": 25300,
+                "2023-12-06": 25300,
+                "2023-12-07": 25300,
+                "2023-12-08": 25300
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "104649": {
+        "Restaurant Name": "小熊",
+        "Ikyu ID": "104649",
+        "Food Type": "懐石・会席料理",
+        "Lunch Price (円)": 0,
+        "Dinner Price (円)": 43560,
+        "Tablog Link": "https://tabelog.com/tokyo/A1301/A130101/13169901",
+        "Rating": 3.76,
+        "Reservation Link": "https://restaurant.ikyu.com/104649?num_guests=2",
+        "Walking Time": "銀座駅 B5出口より徒歩1分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 43560,
+                "2023-12-05": 43560,
+                "2023-12-06": 43560,
+                "2023-12-07": 43560,
+                "2023-12-08": 43560,
+                "2023-12-09": 43560
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
+    },
+    "113082": {
+        "Restaurant Name": "江戸前鮓 すし通",
+        "Ikyu ID": "113082",
+        "Food Type": "寿司",
+        "Lunch Price (円)": 16500,
+        "Dinner Price (円)": 30800,
+        "Tablog Link": "https://tabelog.com/tokyo/A1307/A130701/13061640",
+        "Rating": 3.75,
+        "Reservation Link": "https://restaurant.ikyu.com/113082?num_guests=2",
+        "Walking Time": "六本木駅 1c出口から徒歩8分",
+        "Availability": {
+            "dinner": {
+                "2023-12-04": 30800,
+                "2023-12-05": 30800,
+                "2023-12-06": 30800,
+                "2023-12-07": 30800,
+                "2023-12-08": 30800,
+                "2023-12-09": 30800
+            },
+            "lunch": {
+                "2023-12-04": 16500,
+                "2023-12-05": 16500,
+                "2023-12-07": 16500,
+                "2023-12-08": 16500,
+                "2023-12-09": 16500
+            },
+            "Reservation Status": "Likely open for reservation after 2023-12-3: True"
+        }
     }
 }

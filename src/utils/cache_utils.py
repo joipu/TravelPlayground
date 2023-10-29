@@ -3,12 +3,31 @@ import json
 import re
 
 from src.utils.constants import IKYU_ID
-from src.utils.file_utils import read_json_from_file
+from src.utils.file_utils import (
+    read_json_from_file,
+    read_json_from_file_in_resources,
+    write_json_to_file_full_path,
+)
 
 CACHE_DIR = "cache_data"
 RESTAURANT_INFO_CACHE_FILE_NAME = "restaurant_info_cache.json"
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
+
+
+def get_full_output_path(file_name):
+    full_path = os.path.join(get_output_dir(), file_name)
+    return full_path
+
+
+def get_output_dir():
+    root_dir = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    )
+    output_dir = os.path.join(root_dir, "output")
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    return os.path.abspath(output_dir)
 
 
 def get_ikyu_id_from_url(ikyu_url):
@@ -34,13 +53,20 @@ def store_cached_restaurant_info_by_url(ikyu_url, restaurant_info):
     return store_cached_restaurant_info_by_ikyu_id(ikuy_id, restaurant_info)
 
 
+def get_all_cached_restaurant_info():
+    cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
+    if os.path.exists(cache_file_path):
+        restaurant_info_cache = read_json_from_file(cache_file_path)
+        return restaurant_info_cache
+    return {}
+
+
 def get_cached_restaurant_info_by_ikyu_id(ikyu_id):
     cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
     if os.path.exists(cache_file_path):
-        with open(cache_file_path, "r", encoding="utf-8") as f:
-            restaurant_info_cache = json.load(f)
-            if ikyu_id in restaurant_info_cache:
-                return restaurant_info_cache[ikyu_id]
+        restaurant_info_cache = read_json_from_file(cache_file_path)
+        if ikyu_id in restaurant_info_cache:
+            return restaurant_info_cache[ikyu_id]
     else:
         return {}
 
@@ -48,33 +74,76 @@ def get_cached_restaurant_info_by_ikyu_id(ikyu_id):
 def store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant_info):
     cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
     if os.path.exists(cache_file_path):
-        with open(cache_file_path, "r", encoding="utf-8") as f:
-            restaurant_info_cache = json.load(f)
+        restaurant_info_cache = read_json_from_file(cache_file_path)
     else:
         restaurant_info_cache = {}
     restaurant_info_cache[ikyu_id] = restaurant_info
-    with open(cache_file_path, "w", encoding="utf-8") as f:
-        json.dump(restaurant_info_cache, f, ensure_ascii=False, indent=4)
+    write_json_to_file_full_path(cache_file_path, restaurant_info_cache)
 
 
-def get_code_from_japanese_name(japanese_name, mapping_file_path):
+def translate_from_japanese_name(japanese_name, mapping_file_path, output_language):
     japanese_name = japanese_name.strip()
-    table = read_json_from_file(mapping_file_path)
+    table = read_json_from_file_in_resources(mapping_file_path)
     for item in table:
         if item["japanese"] == japanese_name:
-            return item["code"]
+            return item[output_language]
     return ""
 
 
+def get_all_restaurant_type_codes():
+    type_mapping = read_json_from_file_in_resources("category_code_mapping.json")
+    return [item["code"] for item in type_mapping]
+
+
+def get_all_restaurant_type_japanese():
+    type_mapping = read_json_from_file_in_resources("category_code_mapping.json")
+    return [item["japanese"] for item in type_mapping]
+
+
+def convert_tokyo_sub_regions_in_japanese_to_location_code(tokyo_sub_regions):
+    return [lookup_tokyo_subregion_code(region) for region in tokyo_sub_regions]
+
+
+def convert_japanese_types_in_japanese_to_code(restaurant_types):
+    return [
+        lookup_restaurant_type_code(restaurant_type)
+        for restaurant_type in restaurant_types
+    ]
+
+
 def lookup_restaurant_type_code(restaurant_type):
-    return get_code_from_japanese_name(restaurant_type, "category_code_mapping.json")
+    return translate_from_japanese_name(
+        restaurant_type, "category_code_mapping.json", "code"
+    )
 
 
 def lookup_location_code(location_name):
-    return get_code_from_japanese_name(location_name, "location_code_mapping.json")
+    return translate_from_japanese_name(
+        location_name, "location_code_mapping.json", "code"
+    )
+
+
+def type_japanese_to_chinese(type_japanese):
+    return translate_from_japanese_name(
+        type_japanese, "category_code_mapping.json", "chinese"
+    )
 
 
 def lookup_tokyo_subregion_code(subregion_name):
-    return get_code_from_japanese_name(
-        subregion_name, "tokyo_subregion_code_mapping.json"
+    return translate_from_japanese_name(
+        subregion_name, "tokyo_subregion_code_mapping.json", "code"
     )
+
+
+def get_cache_location_groups_from_query():
+    full_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "search_groups.json",
+    )
+    return read_json_from_file(full_path)
+
+
+def get_cache_file_for_location_group(location_group):
+    cache_file_name = "_".join(location_group["locations"]) + ".json"
+    cache_file_path = os.path.join(get_output_dir(), cache_file_name)
+    return cache_file_path

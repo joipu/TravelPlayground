@@ -1,0 +1,16 @@
+{
+    "query": "涩谷",
+    "sessionId": "bae42f28-1df9-4ef4-9622-93ae2f6f9d43",
+    "locationGroups": [
+        {
+            "locations": [
+                "渋谷",
+                "神泉",
+                "代々木公園",
+                "池尻大橋"
+            ],
+            "reason": "You mentioned 涩谷, which translates to 渋谷 in Japanese. Nearby subregions include 神泉, 代々木公園, and 池尻大橋.",
+            "searchUrl": "https://restaurant.ikyu.com/search?pups=2&rtpc=10000%2C10001%2C10002%2C10004%2C10008%2C10999%2C30000%2C30001%2C30002%2C30003%2C30009%2C30005%2C30004%2C30006%2C30010%2C30011%2C30012%2C30013%2C30999%2C20000%2C20007%2C20008%2C20999%2C80000%2C80001%2C80002%2C80003%2C80004%2C80005%2C80999%2C90000%2C90001%2C90002%2C90003%2C90004%2C90005&rac1=03001&rac3=0007%2C0123%2C0008%2C0248&pndt=1&ptaround=0&xsrt=gourmet&xpge=1"
+        }
+    ]
+}

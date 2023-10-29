@@ -2,181 +2,217 @@
   {
     "japanese": "洋食",
     "english": "Western Cuisine",
+    "chinese": "西餐",
     "code": "10000"
   },
   {
     "japanese": "フランス料理",
     "english": "French Cuisine",
+    "chinese": "法国菜",
     "code": "10001"
   },
   {
     "japanese": "イタリア料理",
     "english": "Italian Cuisine",
+    "chinese": "意大利菜",
     "code": "10002"
   },
   {
     "japanese": "スペイン料理",
     "english": "Spanish Cuisine",
+    "chinese": "西班牙菜",
     "code": "10004"
   },
   {
     "japanese": "ステーキ／グリル料理",
     "english": "Steak/Grill Cuisine",
+    "chinese": "牛排/烧烤",
     "code": "10008"
   },
   {
     "japanese": "洋食その他",
     "english": "Other Western Cuisine",
+    "chinese": "其他西餐",
     "code": "10999"
   },
   {
     "japanese": "和食",
     "english": "Japanese Cuisine",
+    "chinese": "日本菜",
     "code": "30000"
   },
   {
     "japanese": "懐石・会席料理",
     "english": "Kaiseki Cuisine",
+    "chinese": "懐石料理",
     "code": "30001"
   },
   {
     "japanese": "割烹・小料理",
     "english": "Kappo Cuisine",
+    "chinese": "割烹料理",
     "code": "30002"
   },
   {
     "japanese": "京料理",
     "english": "Kyoto Cuisine",
+    "chinese": "京都料理",
     "code": "30003"
   },
   {
     "japanese": "魚介・海鮮料理",
     "english": "Seafood Cuisine",
+    "chinese": "海鲜",
     "code": "30009"
   },
   {
     "japanese": "鉄板焼",
     "english": "Teppanyaki",
+    "chinese": "铁板烧",
     "code": "30005"
   },
   {
     "japanese": "寿司",
     "english": "Sushi",
+    "chinese": "寿司",
     "code": "30004"
   },
   {
     "japanese": "天ぷら",
     "english": "Tempura",
+    "chinese": "天妇罗",
     "code": "30006"
   },
   {
     "japanese": "すき焼き／しゃぶしゃぶ",
     "english": "Sukiyaki/Shabu-shabu",
+    "chinese": "涮涮锅/寿喜锅",
     "code": "30010"
   },
   {
     "japanese": "焼鳥",
     "english": "Yakitori",
+    "chinese": "烤鸟",
     "code": "30011"
   },
   {
     "japanese": "鍋",
     "english": "Hot Pot",
+    "chinese": "火锅",
     "code": "30012"
   },
   {
     "japanese": "うなぎ料理",
     "english": "Eel Cuisine",
+    "chinese": "鳗鱼料理",
     "code": "30013"
   },
   {
     "japanese": "和食その他",
     "english": "Other Japanese Cuisine",
+    "chinese": "其他日本菜",
     "code": "30999"
   },
   {
     "japanese": "中華",
     "english": "Chinese 20000",
+    "chinese": "中餐",
     "code": "20000"
   },
   {
     "japanese": "中国料理",
     "english": "Chinese Cuisine",
+    "chinese": "中国菜",
     "code": "20007"
   },
   {
     "japanese": "飲茶・点心",
     "english": "Dim Sum",
+    "chinese": "点心",
     "code": "20008"
   },
   {
     "japanese": "中華その他",
     "english": "Other Chinese Cuisine",
+    "chinese": "其他中餐",
     "code": "20999"
   },
   {
     "japanese": "アジア・エスニック",
     "english": "Asian/Ethnic",
+    "chinese": "亚洲/民族",
     "code": "80000"
   },
   {
     "japanese": "焼肉",
     "english": "Yakiniku (Grilled Meat)",
+    "chinese": "烤肉",
     "code": "80001"
   },
   {
     "japanese": "韓国料理",
     "english": "Korean Cuisine",
+    "chinese": "韩国菜",
     "code": "80002"
   },
   {
     "japanese": "タイ料理",
     "english": "Thai Cuisine",
+    "chinese": "泰国菜",
     "code": "80003"
   },
   {
     "japanese": "ベトナム料理",
     "english": "Vietnamese Cuisine",
+    "chinese": "越南菜",
     "code": "80004"
   },
   {
     "japanese": "インド料理",
     "english": "Indian Cuisine",
+    "chinese": "印度菜",
     "code": "80005"
   },
   {
     "japanese": "アジア・エスニックその他",
     "english": "Other Asian/Ethnic",
+    "chinese": "其他亚洲/民族菜",
     "code": "80999"
   },
   {
     "japanese": "その他",
     "english": "Others",
+    "chinese": "其他",
     "code": "90000"
   },
   {
     "japanese": "ブッフェ",
     "english": "Buffet",
+    "chinese": "自助餐",
     "code": "90001"
   },
   {
     "japanese": "ラウンジ",
     "english": "Lounge",
+    "chinese": "休息室",
     "code": "90002"
   },
   {
     "japanese": "バー",
     "english": "Bar",
+    "chinese": "酒吧",
     "code": "90003"
   },
   {
     "japanese": "ワインバー",
     "english": "Wine Bar",
+    "chinese": "葡萄酒吧",
     "code": "90004"
   },
   {
     "japanese": "ビアガーデン・BBQ",
     "english": "Beer Garden/BBQ",
+    "chinese": "啤酒花园/烧烤",
     "code": "90005"
   }
 ]
