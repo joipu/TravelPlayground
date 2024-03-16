@@ -1,18 +1,15 @@
 import os
-from src.utils.cache_utils import (
+from utils.plan_reservation import get_all_dates_in_range
+from utils.cache_utils import (
     get_all_cached_restaurant_info,
-    get_cache_file_for_location_group,
-    get_cache_location_groups_from_query,
     get_full_output_path,
     get_output_dir,
     store_cached_restaurant_info_by_ikyu_id,
-    type_japanese_to_chinese,
 )
-from src.utils.constants import *
-from src.utils.file_utils import write_json_to_file_full_path
-from src.utils.human_readability_utils import restaurant_one_line
-from src.utils.ikyu_search_utils import search_restaurants_in_tokyo
-from src.utils.sorting_utils import sort_by_rating
+from utils.constants import *
+from utils.file_utils import write_json_to_file_full_path
+from utils.human_readability_utils import restaurant_one_line
+from utils.sorting_utils import sort_by_rating
 
 
 def load_all_restaurants_in_array():
@@ -89,10 +86,8 @@ def restaurant_availability_by_date():
     all_restaurants.extend(all_restaurant_with_lunch_half_dinner_price())
     all_restaurants = remove_duplicate_restaurants(all_restaurants)
 
-    month = "2023-12"
     all_days = []
-    for i in range(4, 10):
-        day = f"{month}-{i:02}"
+    for day in get_all_dates_in_range():
         available_restaurant_for_lunch = []
         available_restaurant_for_dinner = []
         for restaurant_info in all_restaurants:
@@ -122,20 +117,3 @@ def restaurant_availability_by_date():
     write_json_to_file_full_path(
         get_full_output_path("restaurant_availability_by_date.json"), all_days
     )
-
-
-def build_location_to_restaurant_mapping():
-    loc_groups_json = get_cache_location_groups_from_query()
-    restaurant_types_japanese = "ステーキ／グリル料理,和食,懐石・会席料理,割烹・小料理,京料理,魚介・海鮮料理,鉄板焼,寿司,天ぷら,すき焼き／しゃぶしゃぶ,焼鳥,鍋,うなぎ料理,和食その他,焼肉,ブッフェ,ラウンジ,バー,ワインバー,ビアガーデン・BBQ".split(
-        ","
-    )
-    for loc_group in loc_groups_json:
-        # get all the restaurants
-        all_restaurants = search_restaurants_in_tokyo(
-            loc_group["locations"], restaurant_types_japanese, use_cache=True
-        )
-
-        # cache_file_name = "_".join(loc_group["locations"]) + ".json"
-        cache_file_path = get_cache_file_for_location_group(loc_group)
-        all_restaurant_ids = [restaurant[IKYU_ID] for restaurant in all_restaurants]
-        write_json_to_file_full_path(cache_file_path, all_restaurant_ids)

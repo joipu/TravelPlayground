@@ -18,6 +18,7 @@ def read_json_from_file(full_path):
     except Exception as e:
         print("Error when parsing json content from file: ", full_path)
         print("Error: ", e)
+        exit(1)
         return {}
 
 

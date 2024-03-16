@@ -1,4 +1,18 @@
-# Set up project.
+# Set up the website backend service
+
+1. Assuming fish shell, enable the python virtual environment:
+
+```
+source .venv/bin/activate.fish
+```
+
+2. Start the backend service
+
+```
+python src/app.py
+```
+
+# Set up the CLI service
 
 1. In VS Code, open this project. Create `.env` file with and add
 

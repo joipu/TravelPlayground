@@ -1,7 +1,7 @@
 import datetime
-from src.utils.cache_utils import type_japanese_to_chinese
+from utils.cache_utils import type_japanese_to_chinese
 
-from src.utils.constants import (
+from utils.constants import (
     AVAILABILITY,
     DINNER,
     DINNER_PRICE,

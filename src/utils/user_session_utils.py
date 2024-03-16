@@ -1,6 +1,6 @@
 import os
 
-from src.utils.file_utils import read_json_from_file, write_json_to_file_full_path
+from utils.file_utils import read_json_from_file, write_json_to_file_full_path
 
 USER_CACHE_DIR = "user_session_cache"
 if not os.path.exists(USER_CACHE_DIR):

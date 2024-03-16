@@ -1,14 +1,14 @@
 import os
-from src.utils.cache_utils import (
+from utils.cache_utils import (
     get_cache_file_for_location_group,
     get_cached_restaurant_info_by_ikyu_id,
     get_output_dir,
 )
-from src.utils.constants import *
-from src.utils.file_utils import read_json_from_file, write_json_to_file_full_path
+from utils.constants import *
+from utils.file_utils import read_json_from_file, write_json_to_file_full_path
 from itertools import product, combinations
 
-from src.utils.human_readability_utils import restaurant_one_line
+from utils.human_readability_utils import restaurant_one_line
 
 # [
 #   {
@@ -47,12 +47,7 @@ def weight_for_plan(plan):
 
 # Return a list of date in format of "2020-01-01"
 def get_all_dates_in_range():
-    month = "2023-12"
-    plansForDay = []
-    for i in range(4, 10):
-        day = f"{month}-{i:02}"
-        plansForDay.append(day)
-    return plansForDay
+    return ALL_DAYS_IN_RANGE
 
 
 def get_all_restaurants_for_location_group(locationGroup):

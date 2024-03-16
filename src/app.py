@@ -1,30 +1,28 @@
-import os
+import json
 import uuid
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
-from src.utils.cache_utils import (
-    convert_japanese_types_in_japanese_to_code,
+from utils.plan_reservation import get_all_dates_in_range
+from utils.cache_utils import (
+    convert_food_types_in_japanese_to_chinese,
+    convert_food_types_in_japanese_to_code,
     convert_tokyo_sub_regions_in_japanese_to_location_code,
-    get_all_restaurant_type_japanese,
-    get_cache_location_groups_from_query,
-    get_cached_restaurant_info_by_ikyu_id,
     type_japanese_to_chinese,
 )
-from src.utils.constants import IKYU_ID
-from src.utils.file_utils import read_json_from_file
-from src.utils.gpt_utils import build_location_groups_for_tokyo, get_gpt_recommendations
-
-from src.utils.ikyu_search_utils import (
-    restaurants_from_search_urls,
-    search_restaurants_in_tokyo,
+from utils.constants import IKYU_ID
+from utils.gpt_utils import (
+    build_location_groups_for_tokyo,
+    get_suggested_restaurant_type_codes,
 )
-from src.utils.constants import *
-from src.utils.ikyu_url_builders import (
-    build_ikyu_query_url,
-    build_ikyu_query_urls_from_known_url,
+
+from utils.ikyu_search_utils import (
+    search_restaurants_in_tokyo_yield,
+)
+from utils.constants import *
+from utils.ikyu_url_builders import (
     build_search_url_from_location_group_tokyo,
 )
-from src.utils.user_session_utils import get_user_session, save_user_session
+from utils.user_session_utils import get_user_session, save_user_session
 
 app = Flask(__name__)
 CORS(
@@ -38,7 +36,6 @@ CORS(
 def say_hello():
     return jsonify({"message": "Hello World!"})
 
-
 def convert_restaurant_info_for_web(restaurant_info):
     newAvailability = {}
     if AVAILABILITY in restaurant_info.keys():
@@ -47,9 +44,9 @@ def convert_restaurant_info_for_web(restaurant_info):
                 RESERVATION_STATUS
             ]
         if LUNCH in restaurant_info[AVAILABILITY].keys():
-            newAvailability["lunch"] = restaurant_info[AVAILABILITY][LUNCH]
+            newAvailability[LUNCH] = restaurant_info[AVAILABILITY][LUNCH]
         if DINNER in restaurant_info[AVAILABILITY].keys():
-            newAvailability["dinner"] = restaurant_info[AVAILABILITY][DINNER]
+            newAvailability[DINNER] = restaurant_info[AVAILABILITY][DINNER]
 
     return {
         "name": restaurant_info[RESTAURANT_NAME],
@@ -67,7 +64,6 @@ def convert_restaurant_info_for_web(restaurant_info):
 @app.route("/api/get_locations_from_query", methods=["POST"])
 def get_locations_from_query():
     data = request.get_json()
-    isSessionValid = False
 
     # If doesn't have session id, error out.
     if "sessionId" not in data.keys() or data["sessionId"] == "":
@@ -97,23 +93,42 @@ def get_locations_from_query():
     else:
         loc_groups_json = build_location_groups_for_tokyo(query)
 
-    for loc_group_json in loc_groups_json:
-        subregion_codes = convert_tokyo_sub_regions_in_japanese_to_location_code(
-            loc_group_json["locations"]
-        )
-        loc_group_json["searchUrl"] = build_search_url_from_location_group_tokyo(
-            subregion_codes
-        )
+    # Get food types from query
+    if (
+        "foodTypes" in session.keys()
+        and session["query"] == query
+        and session["foodTypes"] != []
+    ):  # if session is valid
+        food_types = session["foodTypes"]
+    else:
+        food_types = get_suggested_restaurant_type_codes(query)
 
     # Update session
     session["locationGroups"] = loc_groups_json
     session["query"] = query
+    session["foodTypes"] = food_types
     save_user_session(
         session_id,
         session,
     )
 
-    return jsonify({"sessionId": session_id, "locationGroups": loc_groups_json})
+    # Build search url
+    food_types_codes = convert_food_types_in_japanese_to_code(food_types)
+    for loc_group_json in loc_groups_json:
+        subregion_codes = convert_tokyo_sub_regions_in_japanese_to_location_code(
+            loc_group_json["locations"],
+        )
+        loc_group_json["searchUrl"] = build_search_url_from_location_group_tokyo(
+            subregion_codes, food_types_codes
+        )
+
+    return jsonify(
+        {
+            "sessionId": session_id,
+            "locationGroups": loc_groups_json,
+            "foodTypes": convert_food_types_in_japanese_to_chinese(food_types),
+        }
+    )
 
 
 @app.route("/api/get_query_for_session", methods=["POST"])
@@ -142,10 +157,8 @@ def get_schedule_from_locations():
     except Exception as error:
         raise Exception("Invalid session Id")
 
-    month = "2023-12"
     plansForDay = []
-    for i in range(3, 10):
-        day = f"{month}-{i:02}"
+    for day in get_all_dates_in_range():
         for locationGroup in locationGroups:
             plansForDay.append(
                 {
@@ -156,29 +169,36 @@ def get_schedule_from_locations():
     return jsonify(plansForDay)
 
 
-@app.route("/api/get_other_restaurants", methods=["POST"])
-def get_other_restaurants():
-    data = request.get_json()
-    locationGroup = data["locationGroup"]
-    # existing_restaurant_ids = data["existingRestaurantIds"]
-    existing_restaurant_ids = []
-    # all_types = get_all_restaurant_type_japanese()
-    restaurant_types_japanese = "ステーキ／グリル料理,和食,懐石・会席料理,割烹・小料理,京料理,魚介・海鮮料理,鉄板焼,寿司,天ぷら,すき焼き／しゃぶしゃぶ,焼鳥,鍋,うなぎ料理,和食その他,焼肉,ブッフェ,ラウンジ,バー,ワインバー,ビアガーデン・BBQ".split(
-        ","
+def stream_restaurant_for_food_types_and_locations(foodTypes, locationGroup):
+    all_restaurants = search_restaurants_in_tokyo_yield(
+        locationGroup["locations"], foodTypes
     )
-    all_restaurants = search_restaurants_in_tokyo(
-        locationGroup["locations"], restaurant_types_japanese, True
+    for restaurant in all_restaurants:
+        converted_restaurant = convert_restaurant_info_for_web(restaurant)
+        yield f"data: {json.dumps(converted_restaurant)}\n\n"
+    yield f"event: close\ndata: \n\n"
+
+
+@app.route("/api/details_stream")
+def sse():
+    print("🔍 Getting details stream...")
+    sessionId = request.args.get("sessionId", None)
+    session = get_user_session(sessionId)
+    if session == {}:
+        raise Exception("Invalid session Id")
+    if "foodTypes" not in session.keys():
+        raise Exception("No food types found in session")
+    foodTypes = session["foodTypes"]
+    if foodTypes == []:
+        raise Exception("No food types found in session")
+
+    locationGroupString = request.args.get("locationGroup", None)
+    print("locationGroupString: ", locationGroupString)
+    locationGroup = json.loads(locationGroupString)
+    return Response(
+        stream_restaurant_for_food_types_and_locations(foodTypes, locationGroup),
+        content_type="text/event-stream",
     )
-    filtered_restaurants = [
-        restaurant
-        for restaurant in all_restaurants
-        if restaurant[IKYU_ID] not in existing_restaurant_ids
-    ]
-    restaurant_for_web = [
-        convert_restaurant_info_for_web(restaurant)
-        for restaurant in filtered_restaurants
-    ]
-    return jsonify(restaurant_for_web)
 
 
 if __name__ == "__main__":

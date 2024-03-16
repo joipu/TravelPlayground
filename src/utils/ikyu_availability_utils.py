@@ -1,18 +1,17 @@
 import datetime
 import re
-import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-from src.utils.constants import (
+from utils.constants import (
     DINNER,
     EARLIEST_TARGET_RESERVATION_DATE,
     LATEST_TARGET_RESERVATION_DATE,
     LUNCH,
     RESERVATION_STATUS,
 )
-from src.utils.ikyu_parse_utils import get_restaurant_name_ikyu
+from utils.ikyu_parse_utils import get_restaurant_name_ikyu
 
 
 def has_lunch_button(html):
@@ -130,7 +129,10 @@ def get_available_dates_and_price_from_html(html):
         subchildren = date_element.findChildren("div", recursive=False)[0]
         price = get_price_from_string(strip_spaces(subchildren.text))
 
-        year = "2023"
+        if month == 12:
+            year = "2023"
+        else:
+            year = "2024"
         # print(f"{year}-{month}-{day}: {price}")
         availability_json.update({f"{year}-{month}-{day}": price})
     return availability_json
@@ -173,7 +175,7 @@ def filter_availability(availability_json, begin_date_str, end_date_str):
     return response
 
 
-def get_availabilities_for_ikyu_restaurant(ikyu_id):
+def fetch_restaurant_opening_from_ikyu(ikyu_id):
     availability = {}
     url = f"https://restaurant.ikyu.com/{ikyu_id}?num_guests=2"
     dinner_html, lunch_html = get_html_from_ikyu(url)
@@ -181,10 +183,15 @@ def get_availabilities_for_ikyu_restaurant(ikyu_id):
     html = dinner_html if dinner_html is not None else lunch_html
     if html is None:
         return availability
+
+    # Get restaurant name so we can print it out
     restaurant_name = get_restaurant_name_ikyu(BeautifulSoup(html, "html.parser"))
     print("🗓️ Getting availability for: ", restaurant_name)
+
     dinner_json = get_available_dates_and_price_from_html(dinner_html)
     lunch_json = get_available_dates_and_price_from_html(lunch_html)
+
+    # Check if reservation is open
     is_reservation_open = False
     if dinner_json.keys():
         is_reservation_open = has_available_dates_after(

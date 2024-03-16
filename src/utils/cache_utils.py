@@ -1,9 +1,9 @@
 import os
-import json
 import re
+from googletrans import Translator
 
-from src.utils.constants import IKYU_ID
-from src.utils.file_utils import (
+from utils.constants import IKYU_ID
+from utils.file_utils import (
     read_json_from_file,
     read_json_from_file_in_resources,
     write_json_to_file_full_path,
@@ -61,6 +61,11 @@ def get_all_cached_restaurant_info():
     return {}
 
 
+def store_all_cached_restaurant_info(restaurant_info_cache):
+    cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
+    write_json_to_file_full_path(cache_file_path, restaurant_info_cache)
+
+
 def get_cached_restaurant_info_by_ikyu_id(ikyu_id):
     cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
     if os.path.exists(cache_file_path):
@@ -87,7 +92,13 @@ def translate_from_japanese_name(japanese_name, mapping_file_path, output_langua
     for item in table:
         if item["japanese"] == japanese_name:
             return item[output_language]
-    return ""
+    print(
+        f"🚨 Couldn't find {japanese_name} in {mapping_file_path}. Check if mapping has been updated on Ikyu.com"
+    )
+    # translator = Translator()
+    # result = translator.translate(japanese_name, src='ja', dest='zh-cn')
+    # print("⚠️ Using Google translation result: ", result.text)
+    return japanese_name
 
 
 def get_all_restaurant_type_codes():
@@ -104,9 +115,16 @@ def convert_tokyo_sub_regions_in_japanese_to_location_code(tokyo_sub_regions):
     return [lookup_tokyo_subregion_code(region) for region in tokyo_sub_regions]
 
 
-def convert_japanese_types_in_japanese_to_code(restaurant_types):
+def convert_food_types_in_japanese_to_code(restaurant_types):
     return [
         lookup_restaurant_type_code(restaurant_type)
+        for restaurant_type in restaurant_types
+    ]
+
+
+def convert_food_types_in_japanese_to_chinese(restaurant_types):
+    return [
+        type_japanese_to_chinese(restaurant_type)
         for restaurant_type in restaurant_types
     ]
 

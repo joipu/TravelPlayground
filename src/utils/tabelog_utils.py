@@ -1,8 +1,8 @@
 import urllib.parse
 from bs4 import BeautifulSoup
-from src.utils.html_utils import get_html_from_browser
+from utils.html_utils import get_html_from_browser
 
-from src.utils.ikyu_search_utils import get_html_from_url
+from utils.ikyu_search_utils import get_html_from_url
 from .constants import *
 
 

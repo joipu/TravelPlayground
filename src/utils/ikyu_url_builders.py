@@ -1,18 +1,7 @@
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
-from src.config import PAGES_TO_SEARCH
-from src.utils.cache_utils import (
-    get_all_restaurant_type_codes,
-    lookup_location_code,
-    lookup_restaurant_type_code,
-    lookup_tokyo_subregion_code,
-)
-from src.utils.constants import LOCATIONS, TOKYO_LOCATION_CODE
-from src.utils.gpt_utils import (
-    get_suggested_location_names,
-    get_suggested_restaurant_type_codes,
-    get_suggested_tokyo_subregion_codes,
-)
+from config import PAGES_TO_SEARCH
+from utils.constants import LOCATIONS, TOKYO_LOCATION_CODE
 
 
 def build_ikyu_query_url_for_tokyo(
@@ -36,7 +25,7 @@ def build_ikyu_query_url(
     print("🔍 Location code: ", location_code)
     codes_param = ",".join(restaurant_type_codes)
     params = {
-        "pups": 2,
+        "pups": 4,
         "rtpc": codes_param,
         "rac1": location_code,
         "rac3": ",".join(sub_region_codes),
@@ -72,32 +61,8 @@ def build_ikyu_query_urls_from_known_url(known_url, pages_to_search=PAGES_TO_SEA
     return urls
 
 
-def build_search_url_from_location_group_tokyo(subregion_codes):
-    restaurant_type_codes = get_all_restaurant_type_codes()
+def build_search_url_from_location_group_tokyo(subregion_codes, restaurant_type_codes):
     url = build_ikyu_query_url(
         restaurant_type_codes, TOKYO_LOCATION_CODE, subregion_codes
     )
     return url
-
-
-def build_search_urls_from_query(query, search_in_tokyo):
-    restaurant_type_codes_japanese = get_suggested_restaurant_type_codes(query)
-    restaurant_type_codes = [
-        lookup_restaurant_type_code(code_japanese)
-        for code_japanese in restaurant_type_codes_japanese
-    ]
-    if search_in_tokyo:
-        location_code = TOKYO_LOCATION_CODE
-        subregion_codes_japanese = get_suggested_tokyo_subregion_codes(query)
-
-    else:
-        location_code_japanese = get_suggested_location_names(query)[0]
-        location_code = lookup_location_code(location_code_japanese)
-        subregion_codes_japanese = []
-    subregion_codes = [
-        lookup_tokyo_subregion_code(code_japanese)
-        for code_japanese in subregion_codes_japanese
-    ]
-    url = build_ikyu_query_url(restaurant_type_codes, location_code, subregion_codes)
-    urls = build_ikyu_query_urls_from_known_url(url)
-    return urls
