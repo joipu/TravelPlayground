@@ -5,6 +5,7 @@ from selenium.webdriver.firefox.options import Options
 
 
 def get_html_from_browser(url):
+    return ""
     # Configure Firefox options for headless mode
     options = Options()
     options.headless = True

@@ -21,7 +21,7 @@
   "peacock.color": "#c291a3",
   "python.pythonPath": "/usr/local/bin/python",
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.python"
   },
   "python.formatting.provider": "none"
 }
