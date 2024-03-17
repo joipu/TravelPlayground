@@ -2,7 +2,7 @@ import json
 import uuid
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
-from utils.plan_reservation import get_all_dates_in_range
+from utils.constants import get_all_dates_in_range
 from utils.cache_utils import (
     convert_food_types_in_japanese_to_chinese,
     convert_food_types_in_japanese_to_code,

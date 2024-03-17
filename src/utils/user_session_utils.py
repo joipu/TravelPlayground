@@ -23,17 +23,3 @@ def get_user_session(session_id):
         session = read_json_from_file(user_cache_file_path)
         return session
     return {}
-
-
-def build_session_json(
-    session_id, query, locationGroups, restaurantTypes, startDate, endDate, plansForDay
-):
-    return {
-        "sessionId": session_id,
-        "query": query,
-        "locationGroups": locationGroups,
-        "restaurantTypes": restaurantTypes,
-        "startDate": startDate,
-        "endDate": endDate,
-        "plansForDay": plansForDay,
-    }

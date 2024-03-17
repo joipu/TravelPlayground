@@ -1,11 +1,7 @@
-import os
 from utils.constants import LOCATIONS, REASON
 from utils.file_utils import (
-    get_resources_dir_path,
-    read_content_from_file,
     read_json_from_file_in_resources,
 )
-from utils.human_readability_utils import get_human_readable_restaurant_info_blob
 from utils.open_ai_utils import get_response_from_chatgpt
 
 
@@ -52,22 +48,6 @@ Example answer:
 東京 is a direct match as user asked for Tokyo in their query.
     """
     answer = get_response_from_chatgpt(query, system_message, "gpt-4-1106-preview")
-    return parse_answer_from_chatgpt(answer, True)
-
-
-def get_suggested_tokyo_subregion_codes(query):
-    options_array_japanese = available_options_in_japanese(
-        "tokyo_subregion_code_mapping.json"
-    )
-    system_message = f"""If user wants to find restaurants on a trip to Tokyo, and asked this: `{query}`,  which ones of the following region names should they consider? Choose the areas that fit their query the best. Do no include surrounding areas.\n{
-      ", ".join(options_array_japanese)}.
-Return all region names verbatim that satisfy user's query in comma separately list on the first line. Do not end sentence with period. Do not format. Do not be conversational.
-On your following lines, explain why you chose each one of those locations. Use the language of the user's query in your explanation.
-Example answer:
-浅草, 銀座, 東銀座
-User said they'll be shopping in Ginza, which translates to 銀座 and 東銀座 subregion. 浅草 is a nearby subregion.
-    """
-    answer = get_response_from_chatgpt(query, system_message, "gpt-4")
     return parse_answer_from_chatgpt(answer, True)
 
 
@@ -135,28 +115,3 @@ Example answer:
         return group_locations_and_reasons(answer)
     except:
         raise Exception("Failed to get response from GPT-4")
-
-
-def restaurant_list_in_human_readable_string(all_restaurants, filtered):
-    all_results = ""
-    for restaurant in all_restaurants:
-        output = get_human_readable_restaurant_info_blob(restaurant, filtered)
-        if output:
-            all_results += output + "\n\n"
-    return all_results
-
-
-def get_gpt_recommendations(query, search_group, all_restaurants, start_date, end_date):
-    all_restaurants_info = restaurant_list_in_human_readable_string(
-        all_restaurants, True
-    )
-    locations_string = ", ".join(search_group[LOCATIONS])
-    main_prompt_file_path = os.path.join(
-        get_resources_dir_path(), "divide_and_conquer_gpt_prompt_criteria.txt"
-    )
-    main_prompt = read_content_from_file(main_prompt_file_path)
-
-    system_message = f"You are helping the user pick good dates to visit one region according to restaurant availabilities in that region. User's query is {query}, and we broke it into several restaurant searches, with each search catering one part of their query. For example, if they are visiting many attractions in Tokyo, one search will be for one group of geographically nearby attractions. And there may have a few searches depending on how many regions the query covers.\n Now, you are looking at one search. Locations in this search are {locations_string}. This is because {search_group[REASON]}\n User's trip is from {start_date} to {end_date}. {main_prompt}\n Here are all the restaurants and their info:\n{all_restaurants_info}\n"
-    print("🤖 Asking GPT: ", system_message)
-    answer = get_response_from_chatgpt(query, system_message, "gpt-4")
-    return answer

@@ -28,10 +28,6 @@ def write_json_to_file_full_path(full_path, json_object):
         json.dump(json_object, f, ensure_ascii=False, indent=4)
 
 
-def get_resources_dir_path():
-    return os.path.join(os.path.dirname(__file__), "..", "resources")
-
-
 def write_content_to_file(content, filename):
     with open(filename, "w", encoding="utf-8") as f:
         f.write(content)

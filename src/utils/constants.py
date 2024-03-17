@@ -8,6 +8,7 @@ FOOD_TYPE = "Food Type"
 LUNCH_PRICE = "Lunch Price (円)"
 DINNER_PRICE = "Dinner Price (円)"
 RATING = "Rating"
+IKYU_RATING = "Ikyu Rating"
 TABLOG_LINK = "Tablog Link"
 RESERVATION_LINK = "Reservation Link"
 WALKING_TIME = "Walking Time"
@@ -15,7 +16,6 @@ AVAILABILITY = "Availability"
 IKYU_ID = "Ikyu ID"
 EARLIEST_TARGET_RESERVATION_DATE = "2024-3-17"
 LATEST_TARGET_RESERVATION_DATE = "2024-4-3"
-UPDATED_TIME = "Updated Time"
 DATE = "date"
 RESERVATION_STATUS = "Reservation Status"
 LUNCH = "lunch"
@@ -45,3 +45,6 @@ def fill_dates(start_date, end_date):
     return date_list
 
 ALL_DAYS_IN_RANGE = fill_dates(EARLIEST_TARGET_RESERVATION_DATE, LATEST_TARGET_RESERVATION_DATE)
+
+def get_all_dates_in_range():
+    return ALL_DAYS_IN_RANGE

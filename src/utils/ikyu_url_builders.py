@@ -1,7 +1,7 @@
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from config import PAGES_TO_SEARCH
-from utils.constants import LOCATIONS, TOKYO_LOCATION_CODE
+from utils.constants import TOKYO_LOCATION_CODE
 
 
 def build_ikyu_query_url_for_tokyo(

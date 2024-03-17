@@ -1,10 +1,9 @@
 import os
-from utils.plan_reservation import get_all_dates_in_range
+from utils.constants import get_all_dates_in_range
 from utils.cache_utils import (
     get_all_cached_restaurant_info,
     get_full_output_path,
     get_output_dir,
-    store_cached_restaurant_info_by_ikyu_id,
 )
 from utils.constants import *
 from utils.file_utils import write_json_to_file_full_path
@@ -70,14 +69,6 @@ def remove_duplicate_restaurants(all_restaurant):
             unique_restaurants.append(restaurant)
             seen.add(restaurant[IKYU_ID])
     return unique_restaurants
-
-
-def fix_restaurant_info():
-    all_restaurants_by_id = get_all_cached_restaurant_info()
-    for key in all_restaurants_by_id.keys():
-        restaurant_info = all_restaurants_by_id[key]
-        restaurant_info[IKYU_ID] = key
-        store_cached_restaurant_info_by_ikyu_id(key, restaurant_info)
 
 
 def restaurant_availability_by_date():

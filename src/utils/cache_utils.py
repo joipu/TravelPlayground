@@ -1,6 +1,5 @@
 import os
 import re
-from googletrans import Translator
 
 from utils.constants import IKYU_ID
 from utils.file_utils import (
@@ -61,11 +60,6 @@ def get_all_cached_restaurant_info():
     return {}
 
 
-def store_all_cached_restaurant_info(restaurant_info_cache):
-    cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
-    write_json_to_file_full_path(cache_file_path, restaurant_info_cache)
-
-
 def get_cached_restaurant_info_by_ikyu_id(ikyu_id):
     cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
     if os.path.exists(cache_file_path):
@@ -95,20 +89,7 @@ def translate_from_japanese_name(japanese_name, mapping_file_path, output_langua
     print(
         f"🚨 Couldn't find {japanese_name} in {mapping_file_path}. Check if mapping has been updated on Ikyu.com"
     )
-    # translator = Translator()
-    # result = translator.translate(japanese_name, src='ja', dest='zh-cn')
-    # print("⚠️ Using Google translation result: ", result.text)
     return japanese_name
-
-
-def get_all_restaurant_type_codes():
-    type_mapping = read_json_from_file_in_resources("category_code_mapping.json")
-    return [item["code"] for item in type_mapping]
-
-
-def get_all_restaurant_type_japanese():
-    type_mapping = read_json_from_file_in_resources("category_code_mapping.json")
-    return [item["japanese"] for item in type_mapping]
 
 
 def convert_tokyo_sub_regions_in_japanese_to_location_code(tokyo_sub_regions):
@@ -133,13 +114,7 @@ def lookup_restaurant_type_code(restaurant_type):
     return translate_from_japanese_name(
         restaurant_type, "category_code_mapping.json", "code"
     )
-
-
-def lookup_location_code(location_name):
-    return translate_from_japanese_name(
-        location_name, "location_code_mapping.json", "code"
-    )
-
+    
 
 def type_japanese_to_chinese(type_japanese):
     return translate_from_japanese_name(
@@ -151,14 +126,6 @@ def lookup_tokyo_subregion_code(subregion_name):
     return translate_from_japanese_name(
         subregion_name, "tokyo_subregion_code_mapping.json", "code"
     )
-
-
-def get_cache_location_groups_from_query():
-    full_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "search_groups.json",
-    )
-    return read_json_from_file(full_path)
 
 
 def get_cache_file_for_location_group(location_group):
