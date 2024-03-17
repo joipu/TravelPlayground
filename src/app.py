@@ -51,11 +51,8 @@ def convert_restaurant_info_for_web(restaurant_info):
     return {
         "name": restaurant_info[RESTAURANT_NAME],
         "type": type_japanese_to_chinese(restaurant_info[FOOD_TYPE]),
-        "lunchPrice": restaurant_info[LUNCH_PRICE],
-        "dinnerPrice": restaurant_info[DINNER_PRICE],
         "rating": restaurant_info[RATING],
         "reservationLink": restaurant_info[RESERVATION_LINK],
-        "walkingTime": restaurant_info[WALKING_TIME],
         "ikyuId": restaurant_info[IKYU_ID],
         "availability": newAvailability,
     }

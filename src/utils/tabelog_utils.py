@@ -5,6 +5,27 @@ from utils.html_utils import get_html_from_browser
 from utils.ikyu_search_utils import get_html_from_url
 from .constants import *
 
+def get_tabelog_rating_for_restaurant(restaurant_info, restaurant_name, food_type, walking_time):
+    if (
+        restaurant_info
+        and TABLOG_LINK in restaurant_info.keys()
+        and restaurant_info[TABLOG_LINK]
+    ):
+        tabelog_link = restaurant_info[TABLOG_LINK]
+        rating = get_tabelog_rating_from_tabelog_link(tabelog_link)
+    else:
+        tabelog_link = get_tabelog_link_from_restaurant_name(
+            restaurant_name + " " + food_type + " " + walking_time
+        )
+        if tabelog_link is None:
+            tabelog_link = ""
+            print(
+                f"❗ Couldn't find tabelog link for: {restaurant_name}, using 0 for rating."
+            )
+            rating = 0
+        else:
+            rating = get_tabelog_rating_from_tabelog_link(tabelog_link)
+    return rating
 
 def get_tabelog_link_from_restaurant_name(search_words):
     try:

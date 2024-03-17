@@ -79,18 +79,19 @@ def store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant_info):
     restaurant_info_cache[ikyu_id] = restaurant_info
     write_json_to_file_full_path(cache_file_path, restaurant_info_cache)
 
-
 def translate_from_japanese_name(japanese_name, mapping_file_path, output_language):
-    japanese_name = japanese_name.strip()
     table = read_json_from_file_in_resources(mapping_file_path)
-    for item in table:
-        if item["japanese"] == japanese_name:
-            return item[output_language]
-    print(
-        f"🚨 Couldn't find {japanese_name} in {mapping_file_path}. Check if mapping has been updated on Ikyu.com"
-    )
-    return japanese_name
-
+    japanese_name = japanese_name.strip()
+    all_names = japanese_name.split("・")
+    all_translated_names = []
+    for name in all_names:
+        for item in table:
+            if item["japanese"] == name:
+                all_translated_names.append(item[output_language])
+                break
+        else:
+            all_translated_names.append(name)
+    return "・".join(all_translated_names)    
 
 def convert_tokyo_sub_regions_in_japanese_to_location_code(tokyo_sub_regions):
     return [lookup_tokyo_subregion_code(region) for region in tokyo_sub_regions]
