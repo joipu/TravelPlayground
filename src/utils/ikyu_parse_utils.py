@@ -133,7 +133,7 @@ def get_availability_ikyu(ikyu_id):
     
     # Check if reservation is open
     is_reservation_open = False
-    if raw_availability[DINNER].keys():
+    if DINNER in raw_availability.keys() and raw_availability[DINNER].keys():
         is_reservation_open = has_available_dates_after(
             raw_availability[DINNER], EARLIEST_TARGET_RESERVATION_DATE
         )

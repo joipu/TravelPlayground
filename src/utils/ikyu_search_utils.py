@@ -74,7 +74,6 @@ def restaurants_from_search_url_yield(url):
             )
             restaurant[IKYU_ID] = ikyu_id
             restaurant[RESERVATION_LINK] = base_url + link["href"]
-            print(restaurant[RESTAURANT_NAME])
             restaurant[AVAILABILITY] = get_availability_ikyu(ikyu_id)
             restaurant[DINNER_PRICE] = get_dinner_price_from_availability(restaurant[AVAILABILITY])
             restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(restaurant[AVAILABILITY])
