@@ -28,6 +28,47 @@ TOKYO_LOCATION_CODE = "03001"
 REASON = "reason"
 LOCATIONS = "locations"
 LOCATION_STRING = "location_string"
+HARD_TO_RESERVE = "Hard to Reserve"
+
+HARD_TO_RESERVE_THRESHOLD = 8
+
+ALL_FOOD_TYPES_EXCEPT_CHINESE =  [
+        "洋食",
+        "フランス料理",
+        "イタリア料理",
+        "スペイン料理",
+        "ステーキ／グリル料理",
+        "洋食その他",
+        "和食",
+        "懐石・会席料理",
+        "割烹・小料理",
+        "京料理",
+        "魚介・海鮮料理",
+        "鉄板焼",
+        "寿司",
+        "天ぷら",
+        "すき焼き／しゃぶしゃぶ",
+        "焼鳥",
+        "鍋",
+        "うなぎ料理",
+        "和食その他",
+        "中華",
+        "中国料理",
+        "飲茶・点心",
+        "中華その他",
+        "アジア・エスニック",
+        "焼肉",
+        "韓国料理",
+        "タイ料理",
+        "ベトナム料理",
+        "インド料理",
+        "アジア・エスニックその他",
+        "ブッフェ",
+        "ラウンジ",
+        "バー",
+        "ワインバー",
+        "ビアガーデン・BBQ"
+    ]
 
 def fill_dates(start_date, end_date):
     # Convert string dates to datetime objects

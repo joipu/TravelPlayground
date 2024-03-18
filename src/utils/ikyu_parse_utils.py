@@ -1,7 +1,9 @@
+import datetime
+import json
 import re
 
 import requests
-from utils.constants import DINNER, EARLIEST_TARGET_RESERVATION_DATE, LATEST_TARGET_RESERVATION_DATE, LUNCH, RESERVATION_STATUS
+from utils.constants import *
 from utils.ikyu_availability_utils import filter_availability, has_available_dates_after
 
 
@@ -62,7 +64,7 @@ def get_availability_json_for_ikyu_id(ikuy_id):
                     day_num = day["day"]
                     mon_num = day["month"]
                     year_num = day["year"]
-                    date_string = f"{year_num}-{mon_num}-{day_num}"
+                    date_string = f"{year_num:04d}-{mon_num:02d}-{day_num:02d}"
                     if meal not in availability:
                         availability[meal] = {}
                     availability[meal][date_string] = day["best_price"]
@@ -71,7 +73,60 @@ def get_availability_json_for_ikyu_id(ikuy_id):
     availability = dict(sorted(availability.items()))
     return availability
     
+def get_hard_to_reserve_value(availability):
+    # """
+    # {
+    #     "2024-03-17": 3800,
+    #     "2024-03-18": 3800,
+    #     "2024-03-20": 3800,
+    #     ...
+    # }
+    # """
+    # Only available dates are in the dictionary
+    # If there is less than 5 days in next 30 days that are available, return True
+    # Get all the dates in the next 30 days
+    available_reservation_dates = list(availability.keys())
+    # Make sure reservation dates have availability after 30 days from today
+    has_reservation_after_30_days = has_available_dates_after(availability, str(datetime.today().date() + timedelta(days=30)))
+    if not has_reservation_after_30_days:
+        return False
+    next_30_days = [str(datetime.today().date() + timedelta(days=i)) for i in range(0, 30)]
+    available_next_30_days = [date for date in next_30_days if date in available_reservation_dates]
     
+    
+    
+    
+    if len(available_next_30_days) < HARD_TO_RESERVE_THRESHOLD:
+        hard_to_reserve = True
+    else:
+        hard_to_reserve = False
+    
+    return hard_to_reserve
+
+def trim_availability_by_target_date_range(availability):
+    if DINNER not in availability:
+        filtered_dinner_json = {}
+    else:
+        filtered_dinner_json = filter_availability(
+            availability[DINNER],
+            EARLIEST_TARGET_RESERVATION_DATE,
+            LATEST_TARGET_RESERVATION_DATE,
+        )
+        
+    if LUNCH not in availability:
+        filtered_lunch_json = {}
+    else:
+        filtered_lunch_json = filter_availability(
+            availability[LUNCH],
+            EARLIEST_TARGET_RESERVATION_DATE,
+            LATEST_TARGET_RESERVATION_DATE,
+        )
+    
+    availability = {
+        DINNER: filtered_dinner_json,
+        LUNCH: filtered_lunch_json
+    }
+    return availability 
 
 def get_availability_ikyu(ikyu_id):
     raw_availability = get_availability_json_for_ikyu_id(ikyu_id)
@@ -87,33 +142,13 @@ def get_availability_ikyu(ikyu_id):
             raw_availability[LUNCH], EARLIEST_TARGET_RESERVATION_DATE
         )
 
-    if DINNER not in raw_availability:
-        filtered_dinner_json = {}
-    else:
-        filtered_dinner_json = filter_availability(
-            raw_availability[DINNER],
-            EARLIEST_TARGET_RESERVATION_DATE,
-            LATEST_TARGET_RESERVATION_DATE,
-        )
-        
-    if LUNCH not in raw_availability:
-        filtered_lunch_json = {}
-    else:
-        filtered_lunch_json = filter_availability(
-            raw_availability[LUNCH],
-            EARLIEST_TARGET_RESERVATION_DATE,
-            LATEST_TARGET_RESERVATION_DATE,
-        )
-        
-    availability = {}
+    availability = raw_availability
+    hard_to_reserve_lunch = (LUNCH in raw_availability) and get_hard_to_reserve_value(raw_availability[LUNCH])
+    hard_to_reserve_dinner = (DINNER in raw_availability) and get_hard_to_reserve_value(raw_availability[DINNER])
+    availability[HARD_TO_RESERVE] = hard_to_reserve_lunch or hard_to_reserve_dinner
     availability[
         RESERVATION_STATUS
     ] = f"Likely open for reservation after {EARLIEST_TARGET_RESERVATION_DATE}: {is_reservation_open}"
-    if filtered_dinner_json.keys():
-        availability[DINNER] = filtered_dinner_json
-
-    if filtered_lunch_json.keys():
-        availability[LUNCH] = filtered_lunch_json
 
     return availability
         

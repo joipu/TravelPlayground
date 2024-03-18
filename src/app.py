@@ -2,6 +2,8 @@ import json
 import uuid
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from utils.ikyu_parse_utils import trim_availability_by_target_date_range
+from utils.ikyu_search_utils import get_lunch_price_from_availability, get_dinner_price_from_availability
 from utils.constants import get_all_dates_in_range
 from utils.cache_utils import (
     convert_food_types_in_japanese_to_chinese,
@@ -37,6 +39,7 @@ def say_hello():
     return jsonify({"message": "Hello World!"})
 
 def convert_restaurant_info_for_web(restaurant_info):
+    # rewrite availability for web
     newAvailability = {}
     if AVAILABILITY in restaurant_info.keys():
         if RESERVATION_STATUS in restaurant_info[AVAILABILITY].keys():
@@ -47,6 +50,7 @@ def convert_restaurant_info_for_web(restaurant_info):
             newAvailability[LUNCH] = restaurant_info[AVAILABILITY][LUNCH]
         if DINNER in restaurant_info[AVAILABILITY].keys():
             newAvailability[DINNER] = restaurant_info[AVAILABILITY][DINNER]
+        newAvailability = trim_availability_by_target_date_range(newAvailability)
 
     return {
         "name": restaurant_info[RESTAURANT_NAME],
@@ -55,6 +59,9 @@ def convert_restaurant_info_for_web(restaurant_info):
         "reservationLink": restaurant_info[RESERVATION_LINK],
         "ikyuId": restaurant_info[IKYU_ID],
         "availability": newAvailability,
+        "hardToReserve": restaurant_info[AVAILABILITY][HARD_TO_RESERVE],
+        "lunchPrice": get_lunch_price_from_availability(restaurant_info[AVAILABILITY]),
+        "dinnerPrice": get_dinner_price_from_availability(restaurant_info[AVAILABILITY]),
     }
 
 
@@ -194,6 +201,21 @@ def sse():
     locationGroup = json.loads(locationGroupString)
     return Response(
         stream_restaurant_for_food_types_and_locations(foodTypes, locationGroup),
+        content_type="text/event-stream",
+    )
+    
+@app.route("/api/restaurant_search_stream_v2")
+def restaurant_search_stream_v2():
+    print("🔍 Getting restaurant search stream...")
+    locationGroup = {
+        "locations": [
+            # "押上",
+            # "スカイツリー周辺"
+        ],
+        "reason": "您提到将去晴空塔，这对应于押上和スカイツリー周辺地区"
+    }
+    return Response(
+        stream_restaurant_for_food_types_and_locations(ALL_FOOD_TYPES_EXCEPT_CHINESE, locationGroup),
         content_type="text/event-stream",
     )
 
