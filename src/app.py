@@ -215,4 +215,4 @@ def restaurant_search_stream_v2():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=6002)
+    app.run(debug=True, host="0.0.0.0", port=6003)

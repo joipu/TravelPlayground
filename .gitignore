@@ -12,3 +12,4 @@ food_finder.egg-info/
 __pycache__
 search_groups.json
 user_session_cache/
+venv/
