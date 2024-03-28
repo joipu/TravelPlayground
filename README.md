@@ -1,4 +1,16 @@
-# Set up the website backend service
+# Set up venv
+```
+sudo apt-get install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+On a new server, it's possible the firewall doesn't allow incoming request. Allow requests on the port:
+```
+sudo ufw allow 6003/tcp
+```
+
+# Start the website backend service
 
 1. Assuming fish shell, enable the python virtual environment:
 

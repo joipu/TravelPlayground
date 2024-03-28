@@ -13,3 +13,5 @@ __pycache__
 search_groups.json
 user_session_cache/
 venv/
+.vscode/
+cache_data/
