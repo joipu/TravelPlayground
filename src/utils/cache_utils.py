@@ -1,7 +1,8 @@
+import datetime
 import os
 import re
 
-from utils.constants import IKYU_ID
+from utils.constants import *
 from utils.file_utils import (
     read_json_from_file,
     read_json_from_file_in_resources,
@@ -39,19 +40,6 @@ def get_ikyu_id_from_url(ikyu_url):
         return None
 
 
-def get_cached_restaurant_info_by_url(ikyu_url):
-    ikyu_id = get_ikyu_id_from_url(ikyu_url)
-    cached_info = get_cached_restaurant_info_by_ikyu_id(ikyu_id)
-    if cached_info:
-        cached_info[IKYU_ID] = ikyu_id
-    return cached_info
-
-
-def store_cached_restaurant_info_by_url(ikyu_url, restaurant_info):
-    ikuy_id = get_ikyu_id_from_url(ikyu_url)
-    return store_cached_restaurant_info_by_ikyu_id(ikuy_id, restaurant_info)
-
-
 def get_all_cached_restaurant_info():
     cache_file_path = os.path.join(CACHE_DIR, RESTAURANT_INFO_CACHE_FILE_NAME)
     if os.path.exists(cache_file_path):
@@ -65,9 +53,15 @@ def get_cached_restaurant_info_by_ikyu_id(ikyu_id):
     if os.path.exists(cache_file_path):
         restaurant_info_cache = read_json_from_file(cache_file_path)
         if ikyu_id in restaurant_info_cache:
-            return restaurant_info_cache[ikyu_id]
-    else:
-        return {}
+            if LAST_UPDATE_TIME in restaurant_info_cache[ikyu_id]:
+                last_update_time = restaurant_info_cache[ikyu_id][LAST_UPDATE_TIME]
+                if (
+                    datetime.now()
+                    - datetime.strptime(last_update_time, "%Y-%m-%d %H:%M:%S")
+                    < timedelta(hours=1)
+                ):
+                    return restaurant_info_cache[ikyu_id]
+    return {}
 
 
 def store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant_info):
@@ -76,8 +70,20 @@ def store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant_info):
         restaurant_info_cache = read_json_from_file(cache_file_path)
     else:
         restaurant_info_cache = {}
+    restaurant_info[LAST_UPDATE_TIME] = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
     restaurant_info_cache[ikyu_id] = restaurant_info
     write_json_to_file_full_path(cache_file_path, restaurant_info_cache)
+
+def translate_from_japanese_name_to_code(japanese_name, mapping_file_path, output_language):
+    table = read_json_from_file_in_resources(mapping_file_path)
+    japanese_name = japanese_name.strip()
+    for item in table:
+        if item["japanese"] == japanese_name:
+            return item[output_language]
+    return japanese_name
+    
 
 def translate_from_japanese_name(japanese_name, mapping_file_path, output_language):
     table = read_json_from_file_in_resources(mapping_file_path)
@@ -124,8 +130,8 @@ def type_japanese_to_chinese(type_japanese):
 
 
 def lookup_tokyo_subregion_code(subregion_name):
-    return translate_from_japanese_name(
-        subregion_name, "tokyo_subregion_code_mapping.json", "code"
+    return translate_from_japanese_name_to_code(
+        subregion_name, "tokyo_region_code_mapping.json", "code"
     )
 
 

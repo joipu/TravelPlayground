@@ -4,14 +4,12 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from utils.ikyu_parse_utils import trim_availability_by_target_date_range
 from utils.ikyu_search_utils import get_lunch_price_from_availability, get_dinner_price_from_availability
-from utils.constants import get_all_dates_in_range
 from utils.cache_utils import (
     convert_food_types_in_japanese_to_chinese,
     convert_food_types_in_japanese_to_code,
     convert_tokyo_sub_regions_in_japanese_to_location_code,
     type_japanese_to_chinese,
 )
-from utils.constants import IKYU_ID
 from utils.gpt_utils import (
     build_location_groups_for_tokyo,
     get_suggested_restaurant_type_codes,
@@ -173,9 +171,9 @@ def get_schedule_from_locations():
     return jsonify(plansForDay)
 
 
-def stream_restaurant_for_food_types_and_locations(foodTypes, locationGroup):
+def stream_restaurant_for_food_types_and_locations(foodTypes, locations):
     all_restaurants = search_restaurants_in_tokyo_yield(
-        locationGroup["locations"], foodTypes
+        locations, foodTypes
     )
     for restaurant in all_restaurants:
         converted_restaurant = convert_restaurant_info_for_web(restaurant)
@@ -200,22 +198,18 @@ def sse():
     print("locationGroupString: ", locationGroupString)
     locationGroup = json.loads(locationGroupString)
     return Response(
-        stream_restaurant_for_food_types_and_locations(foodTypes, locationGroup),
+        stream_restaurant_for_food_types_and_locations(foodTypes, locationGroup["locations"]),
         content_type="text/event-stream",
     )
     
 @app.route("/api/restaurant_search_stream_v2")
 def restaurant_search_stream_v2():
     print("🔍 Getting restaurant search stream...")
-    locationGroup = {
-        "locations": [
-            # "押上",
-            # "スカイツリー周辺"
-        ],
-        "reason": "您提到将去晴空塔，这对应于押上和スカイツリー周辺地区"
-    }
+    locationsAndFoodTypesString = request.args.get("locationsAndFoodTypes", None)
+    locationsAndFoodTypes = json.loads(locationsAndFoodTypesString)
+    
     return Response(
-        stream_restaurant_for_food_types_and_locations(ALL_FOOD_TYPES_EXCEPT_CHINESE, locationGroup),
+        stream_restaurant_for_food_types_and_locations(locationsAndFoodTypes["foodTypes"], locationsAndFoodTypes["locations"]),
         content_type="text/event-stream",
     )
 
