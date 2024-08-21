@@ -25,12 +25,12 @@ from utils.ikyu_url_builders import (
 from utils.user_session_utils import get_user_session, save_user_session
 
 app = Flask(__name__)
+
 CORS(
     app,
     origins="*",
     methods=["GET", "POST"],
 )
-
 
 @app.route("/api/say_hello", methods=["GET"])
 def say_hello():
