@@ -2,6 +2,9 @@ import json
 import os
 
 
+def proj_root_dir():
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 def read_json_from_file_in_resources(filename):
     # Build the full path to the JSON file to avoid depending on the current working directory from which the script is run
     # Get the directory where the current main.py is located

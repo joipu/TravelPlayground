@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import requests
 from config import *
 from utils.ikyu_parse_utils import get_availability_ikyu
+import os
+from .file_utils import proj_root_dir
 
 from .cache_utils import (
     convert_food_types_in_japanese_to_code,
@@ -53,13 +55,25 @@ def get_lunch_price_from_availability(availability):
 def restaurants_from_search_url_yield(url):
     # Send a GET request to the URL
     response = requests.get(url)
+    # Write response content to debug log file
+    debug_log_dir = os.path.join(proj_root_dir(), "debug_log")
+    if not os.path.exists(debug_log_dir):
+        os.makedirs(debug_log_dir)
+    
+    with open(os.path.join(debug_log_dir, "ikyu_search_link_raw_content.html"), "w", encoding="utf-8") as f:
+        f.write(response.content.decode("utf-8"))
 
     # Parse the HTML content of the page with BeautifulSoup
     soup = BeautifulSoup(response.content, "html.parser")
 
     # Find all "section" elements with class "restaurantCard_jpBMy"
     sections = soup.find_all("section", class_="restaurantCard_jpBMy")
-
+    if len(sections) == 0:
+        print("No sections found in link: ", url)
+        return
+    else:
+        print("Found ", len(sections), " sections in link: ", url)
+        
     # Base URL for concatenation
     base_url = "https://restaurant.ikyu.com"
     # Find all restaurants per url
