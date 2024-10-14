@@ -1,8 +1,7 @@
 import datetime
-import json
 import re
 
-import requests
+from utils.network import get_html_from_browser_with_headers
 from utils.constants import *
 from utils.ikyu_availability_utils import filter_availability, has_available_dates_after
 
@@ -37,22 +36,7 @@ def get_walking_time_ikyu(ikyu_html_soup):
 def get_availability_json_for_ikyu_id(ikuy_id):
     url = f"https://restaurant.ikyu.com/api/v1/restaurants/{ikuy_id}/calendar"
 
-    # HTTP headers as specified
-    headers = {
-        "authority": "restaurant.ikyu.com",
-        "accept": "application/json, text/plain, */*",
-        "accept-language": "en-US,en;q=0.9,zh-CN;q=0.8,zh-TW;q=0.7,zh;q=0.6",
-        "referer": f"https://restaurant.ikyu.com/{ikuy_id}/lunch?num_guests=2",
-        "sec-ch-ua": '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    }
-
-    response = requests.get(url, headers=headers)
+    response = get_html_from_browser_with_headers(url)
     data = response.json()
 
     meal_types = ["breakfast", "lunch", "dinner", "teatime"]
@@ -92,9 +76,6 @@ def get_hard_to_reserve_value(availability):
         return False
     next_30_days = [str(datetime.today().date() + timedelta(days=i)) for i in range(0, 30)]
     available_next_30_days = [date for date in next_30_days if date in available_reservation_dates]
-    
-    
-    
     
     if len(available_next_30_days) < HARD_TO_RESERVE_THRESHOLD:
         hard_to_reserve = True
