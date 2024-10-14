@@ -4,7 +4,16 @@ def get_html_from_url(url):
     response = requests.get(url)
     return response.content.decode("utf-8")
 
-def get_html_from_browser_with_headers(url):
+def get_response_json_from_url_with_headers(url):
+    response = get_response_from_browser_with_headers(url)
+    return response.json()
+
+def get_response_html_from_url_with_headers(url):
+    response = get_response_from_browser_with_headers(url)
+    return response.content.decode("utf-8")
+
+
+def get_response_from_browser_with_headers(url):
     headers = {
         "authority": "restaurant.ikyu.com",
         "accept": "application/json, text/plain, */*",
@@ -19,4 +28,4 @@ def get_html_from_browser_with_headers(url):
     }
 
     response = requests.get(url, headers=headers)
-    return response.text
+    return response

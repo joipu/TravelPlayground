@@ -1,7 +1,7 @@
 import datetime
 import re
 
-from utils.network import get_html_from_browser_with_headers
+from utils.network import get_response_json_from_url_with_headers
 from utils.constants import *
 from utils.ikyu_availability_utils import filter_availability, has_available_dates_after
 
@@ -36,8 +36,7 @@ def get_walking_time_ikyu(ikyu_html_soup):
 def get_availability_json_for_ikyu_id(ikuy_id):
     url = f"https://restaurant.ikyu.com/api/v1/restaurants/{ikuy_id}/calendar"
 
-    response = get_html_from_browser_with_headers(url)
-    data = response.json()
+    data = get_response_json_from_url_with_headers(url)
 
     meal_types = ["breakfast", "lunch", "dinner", "teatime"]
     availability = {}
