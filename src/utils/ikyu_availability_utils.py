@@ -1,5 +1,4 @@
 import datetime
-import re
 
 
 def has_available_dates_after(availability_json, date_string):

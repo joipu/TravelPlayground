@@ -1,5 +1,5 @@
 import datetime
-import re
+from config import EARLIEST_TARGET_RESERVATION_DATE, LATEST_TARGET_RESERVATION_DATE
 
 from utils.network import get_response_json_from_url_with_headers
 from utils.constants import *
@@ -9,28 +9,6 @@ from utils.ikyu_availability_utils import filter_availability, has_available_dat
 def clean_string(input_string):
     cleaned_string = " ".join(input_string.split()).strip()
     return cleaned_string
-
-def get_restaurant_rating_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(class_="ratingContainer_2inv_")
-    if not content:
-        return "No rating available"
-    parts = content[0].get_text().split("（")
-    rating = clean_string(parts[0])
-    if not rating:
-        return "No rating available"
-    return rating
-
-def get_restaurant_name_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(class_="restaurantName_dvSu5")
-    return clean_string(content[0].get_text().strip())
-
-
-def get_walking_time_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(
-        class_="contentHeaderItem_2RHAO contentHeaderAccessesButton_1Jl7k"
-    )
-    text_content = [item.get_text() for item in content][0]
-    return clean_string(text_content)
 
 
 def get_availability_json_for_ikyu_id(ikuy_id):
@@ -51,11 +29,12 @@ def get_availability_json_for_ikyu_id(ikuy_id):
                     if meal not in availability:
                         availability[meal] = {}
                     availability[meal][date_string] = day["best_price"]
-            
+
     # sort the dictionary by date
     availability = dict(sorted(availability.items()))
     return availability
-    
+
+
 def get_hard_to_reserve_value(availability):
     # """
     # {
@@ -70,18 +49,22 @@ def get_hard_to_reserve_value(availability):
     # Get all the dates in the next 30 days
     available_reservation_dates = list(availability.keys())
     # Make sure reservation dates have availability after 30 days from today
-    has_reservation_after_30_days = has_available_dates_after(availability, str(datetime.today().date() + timedelta(days=30)))
+    has_reservation_after_30_days = has_available_dates_after(
+        availability, str(datetime.today().date() + timedelta(days=30)))
     if not has_reservation_after_30_days:
         return False
-    next_30_days = [str(datetime.today().date() + timedelta(days=i)) for i in range(0, 30)]
-    available_next_30_days = [date for date in next_30_days if date in available_reservation_dates]
-    
+    next_30_days = [str(datetime.today().date() + timedelta(days=i))
+                    for i in range(0, 30)]
+    available_next_30_days = [
+        date for date in next_30_days if date in available_reservation_dates]
+
     if len(available_next_30_days) < HARD_TO_RESERVE_THRESHOLD:
         hard_to_reserve = True
     else:
         hard_to_reserve = False
-    
+
     return hard_to_reserve
+
 
 def trim_availability_by_target_date_range(availability):
     if DINNER not in availability:
@@ -92,7 +75,7 @@ def trim_availability_by_target_date_range(availability):
             EARLIEST_TARGET_RESERVATION_DATE,
             LATEST_TARGET_RESERVATION_DATE,
         )
-        
+
     if LUNCH not in availability:
         filtered_lunch_json = {}
     else:
@@ -101,16 +84,17 @@ def trim_availability_by_target_date_range(availability):
             EARLIEST_TARGET_RESERVATION_DATE,
             LATEST_TARGET_RESERVATION_DATE,
         )
-    
+
     availability = {
         DINNER: filtered_dinner_json,
         LUNCH: filtered_lunch_json
     }
-    return availability 
+    return availability
+
 
 def get_availability_ikyu(ikyu_id):
     raw_availability = get_availability_json_for_ikyu_id(ikyu_id)
-    
+
     # Check if reservation is open
     is_reservation_open = False
     if DINNER in raw_availability.keys() and raw_availability[DINNER].keys():
@@ -123,59 +107,13 @@ def get_availability_ikyu(ikyu_id):
         )
 
     availability = raw_availability
-    hard_to_reserve_lunch = (LUNCH in raw_availability) and get_hard_to_reserve_value(raw_availability[LUNCH])
-    hard_to_reserve_dinner = (DINNER in raw_availability) and get_hard_to_reserve_value(raw_availability[DINNER])
+    hard_to_reserve_lunch = (LUNCH in raw_availability) and get_hard_to_reserve_value(
+        raw_availability[LUNCH])
+    hard_to_reserve_dinner = (DINNER in raw_availability) and get_hard_to_reserve_value(
+        raw_availability[DINNER])
     availability[HARD_TO_RESERVE] = hard_to_reserve_lunch or hard_to_reserve_dinner
     availability[
         RESERVATION_STATUS
     ] = f"Likely open for reservation after {EARLIEST_TARGET_RESERVATION_DATE}: {is_reservation_open}"
 
     return availability
-        
-    
-
-
-def get_food_type_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(class_="contentHeaderItem_2RHAO")
-    text_content = [item.get_text() for item in content][1]
-    return clean_string(text_content)
-
-
-def get_lunch_price_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(class_="timeZoneListItem_3bRvf")
-    lunch_content = None
-    for element in content:
-        if "ランチ" in element.get_text():
-            lunch_content = element
-            break
-    if lunch_content == None:
-        return 0
-    lunch_price = lunch_content.get_text().replace("ランチ", "")
-    cleaned_lunch_price = clean_string(lunch_price)
-    return extract_numeric_value(cleaned_lunch_price)
-
-
-def get_dinner_price_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all(class_="timeZoneListItem_3bRvf")
-    dinner_content = None
-    for element in content:
-        if "ディナー" in element.get_text():
-            dinner_content = element
-            break
-    if dinner_content == None:
-        return 0
-    dinner_price = dinner_content.get_text().replace("ディナー", "")
-    cleaned_dinner_price = clean_string(dinner_price)
-    return extract_numeric_value(cleaned_dinner_price)
-
-
-def extract_numeric_value(s):
-    if s is None:
-        return 0
-    # Find all digits and comma characters and join them into a single string
-    numeric_str = "".join(re.findall(r"[0-9,]", s))
-    # Remove the comma and convert to an integer
-    try:
-        return int(numeric_str.replace(",", ""))
-    except ValueError:
-        return 0

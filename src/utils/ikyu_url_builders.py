@@ -60,10 +60,3 @@ def build_ikyu_query_urls_from_known_url(known_url, pages_to_search=PAGES_TO_SEA
         urls.append(new_url)
 
     return urls
-
-
-def build_search_url_from_location_group_tokyo(subregion_codes, restaurant_type_codes):
-    url = build_ikyu_query_url(
-        restaurant_type_codes, TOKYO_LOCATION_CODE, subregion_codes
-    )
-    return url
