@@ -52,6 +52,7 @@ def convert_restaurant_info_for_web(restaurant_info):
 
     return {
         "name": restaurant_info[RESTAURANT_NAME],
+        "coverImageUrl": restaurant_info[COVER_IMAGE_URL],
         "type": type_japanese_to_chinese(restaurant_info[FOOD_TYPE]),
         "rating": restaurant_info[RATING],
         "reservationLink": restaurant_info[RESERVATION_LINK],

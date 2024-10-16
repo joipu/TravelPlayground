@@ -85,32 +85,41 @@ def restaurants_from_search_url_yield(url):
         ikyu_id = link["href"].split("?")[0][1:]
         restaurant = get_cached_restaurant_info_by_ikyu_id(ikyu_id)
         if restaurant:
-            yield restaurant
-        else:
-            try:
-                restaurant = get_restaurant_info_from_ikyu_search_card_soup(
-                    sections[i]
-                )
-                restaurant[IKYU_ID] = ikyu_id
-                restaurant[RESERVATION_LINK] = base_url + link["href"]
-                restaurant[AVAILABILITY] = get_availability_ikyu(ikyu_id)
-                restaurant[DINNER_PRICE] = get_dinner_price_from_availability(restaurant[AVAILABILITY])
-                restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(restaurant[AVAILABILITY])
-                if restaurant is None:
-                    continue
-                store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
+            # Make sure we have everything we need. Otherwise, we'll have to scrape it.
+            has_all_info = (    
+                RESTAURANT_NAME in restaurant.keys()
+                and FOOD_TYPE in restaurant.keys()
+                and RATING in restaurant.keys()
+                and COVER_IMAGE_URL in restaurant.keys()
+            )
+            if has_all_info:
                 yield restaurant
-            except Exception as error:
-                print(
-                    "❌ Error in getting restaurant info from link: ",
-                    base_url + link["href"],
-                )
-                print("Error: ", error)
-                print("Stack trace:")
-                print(traceback.format_exc())
+                continue
+        try:
+            restaurant = get_restaurant_info_from_ikyu_search_card_soup(
+                sections[i]
+            )
+            restaurant[IKYU_ID] = ikyu_id
+            restaurant[RESERVATION_LINK] = base_url + link["href"]
+            restaurant[AVAILABILITY] = get_availability_ikyu(ikyu_id)
+            restaurant[DINNER_PRICE] = get_dinner_price_from_availability(restaurant[AVAILABILITY])
+            restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(restaurant[AVAILABILITY])
+            if restaurant is None:
+                continue
+            store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
+            yield restaurant
+        except Exception as error:
+            print(
+                "❌ Error in getting restaurant info from link: ",
+                base_url + link["href"],
+            )
+            print("Error: ", error)
+            print("Stack trace:")
+            print(traceback.format_exc())
 
 def get_restaurant_info_from_ikyu_search_card_soup(soup):
     name = soup.find("h3", class_="restaurantName_2s_sg").text.strip()
+    cover_image_url = get_restaurant_cover_image_url_ikyu(soup)
     description = soup.find("div", class_="retaurantArea_s9Crj").text
     parts = description.split("／")
     food_type = parts[1].strip()
@@ -123,5 +132,15 @@ def get_restaurant_info_from_ikyu_search_card_soup(soup):
         RESTAURANT_NAME: name,
         FOOD_TYPE: food_type,
         RATING: rating,
+        COVER_IMAGE_URL: cover_image_url,
     }
+    
+def get_restaurant_cover_image_url_ikyu(ikyu_html_soup):
+    content = ikyu_html_soup.find_all("div", class_="coverImages_3VYi2")
+    if not content:
+        return None
+    image_element = content[0].find("meta")
+    if not image_element:
+        return None
+    return image_element["content"]
     
