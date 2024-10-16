@@ -1,8 +1,13 @@
-# Set up venv
+# Set up venv in Debian system.
 ```
 sudo apt-get install python3-venv
+```
+
+# Set up virtual venv
+
+```
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate # for bash only. Use `source venv/bin/activate.fish` for fish.
 pip3 install -r requirements.txt
 ```
 On a new server, it's possible the firewall doesn't allow incoming request. Allow requests on the port:
@@ -15,7 +20,12 @@ sudo ufw allow 6003/tcp
 1. Assuming fish shell, enable the python virtual environment:
 
 ```
-source .venv/bin/activate.fish
+source venv/bin/activate.fish
+```
+
+If using bash, use
+```
+source venv/bin/activate
 ```
 
 2. Start the backend service
