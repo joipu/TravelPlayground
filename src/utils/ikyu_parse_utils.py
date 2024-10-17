@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 from config import EARLIEST_TARGET_RESERVATION_DATE, LATEST_TARGET_RESERVATION_DATE
 
 from utils.network import get_response_json_from_url_with_headers
@@ -50,10 +50,10 @@ def get_hard_to_reserve_value(availability):
     available_reservation_dates = list(availability.keys())
     # Make sure reservation dates have availability after 30 days from today
     has_reservation_after_30_days = has_available_dates_after(
-        availability, str(datetime.today().date() + timedelta(days=30)))
+        availability, str(datetime.now().date() + timedelta(days=30)))
     if not has_reservation_after_30_days:
         return False
-    next_30_days = [str(datetime.today().date() + timedelta(days=i))
+    next_30_days = [str(datetime.now().date() + timedelta(days=i))
                     for i in range(0, 30)]
     available_next_30_days = [
         date for date in next_30_days if date in available_reservation_dates]
