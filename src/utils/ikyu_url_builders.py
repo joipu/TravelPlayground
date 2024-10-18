@@ -26,7 +26,7 @@ def build_ikyu_query_url(
     print("🔍 Sub region codes: ", sub_region_codes)
     codes_param = ",".join(restaurant_type_codes)
     params = {
-        "pups": 4,
+        "pups": 2,
         "rtpc": codes_param,
         "rac1": location_code,
         "rac2": ",".join(sub_region_codes),

@@ -53,6 +53,11 @@ def get_lunch_price_from_availability(availability):
 
 
 def restaurants_from_search_url_yield(url):
+    """
+    GET request to ikyu to get restaurant information.
+    :param url: the URL to send GET request
+    :return: the parsed/beautified Restaurant info
+    """
     # Send a GET request to the URL
     response = get_response_html_from_url_with_headers(url)
     # Write response content to debug log file
@@ -107,6 +112,7 @@ def restaurants_from_search_url_yield(url):
             if restaurant is None:
                 continue
             store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
+
             yield restaurant
         except Exception as error:
             print(
