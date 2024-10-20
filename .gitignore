@@ -16,3 +16,4 @@ venv/
 .vscode/
 cache_data/
 debug_log
+.idea/

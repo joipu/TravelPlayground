@@ -14,6 +14,7 @@ from .cache_utils import (
     store_cached_restaurant_info_by_ikyu_id,
 )
 from .constants import *
+from .sort_options import SORT_OPTIONS
 
 from utils.ikyu_url_builders import (
     build_ikyu_query_url_for_tokyo,
@@ -22,13 +23,14 @@ from utils.ikyu_url_builders import (
 
 
 def search_restaurants_in_tokyo_yield(
-    sub_regions_japanese, restaurant_types_japanese
+    sub_regions_japanese, restaurant_types_japanese, sort_option
 ):
     restaurant_codes = convert_food_types_in_japanese_to_code(restaurant_types_japanese)
     subregion_codes = convert_tokyo_sub_regions_in_japanese_to_location_code(
         sub_regions_japanese
     )
-    search_root_url = build_ikyu_query_url_for_tokyo(restaurant_codes, subregion_codes)
+    sort_code = SORT_OPTIONS[sort_option]
+    search_root_url = build_ikyu_query_url_for_tokyo(restaurant_codes, subregion_codes, sort_code)
     all_urls = build_ikyu_query_urls_from_known_url(
         search_root_url, pages_to_search=PAGES_TO_SEARCH
     )
@@ -53,6 +55,11 @@ def get_lunch_price_from_availability(availability):
 
 
 def restaurants_from_search_url_yield(url):
+    """
+    GET request to ikyu to get restaurant information.
+    :param url: the URL to send GET request
+    :return: the parsed/beautified Restaurant info
+    """
     # Send a GET request to the URL
     response = get_response_html_from_url_with_headers(url)
     # Write response content to debug log file
@@ -107,6 +114,7 @@ def restaurants_from_search_url_yield(url):
             if restaurant is None:
                 continue
             store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
+
             yield restaurant
         except Exception as error:
             print(
