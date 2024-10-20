@@ -7,11 +7,13 @@ from utils.constants import TOKYO_LOCATION_CODE
 def build_ikyu_query_url_for_tokyo(
     restaurant_type_codes,
     sub_region_codes,
+    sort_code,
 ):
     return build_ikyu_query_url(
         restaurant_type_codes,
         TOKYO_LOCATION_CODE,
         sub_region_codes,
+        sort_code,
     )
 
 
@@ -19,6 +21,7 @@ def build_ikyu_query_url(
     restaurant_type_codes,
     location_code,
     sub_region_codes,
+    sort_code
 ):
     print("🔍 Building query URL...")
     print("🔍 Restaurant type codes: ", restaurant_type_codes)
@@ -32,7 +35,7 @@ def build_ikyu_query_url(
         "rac2": ",".join(sub_region_codes),
         "pndt": 1,
         "ptaround": 0,
-        "xsrt": "gourmet",
+        "xsrt": sort_code,
         "xpge": 1,
     }
 

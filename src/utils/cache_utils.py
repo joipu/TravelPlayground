@@ -87,7 +87,6 @@ def convert_food_types_in_japanese_to_code(restaurant_types):
         for restaurant_type in restaurant_types
     ]
 
-
 def lookup_restaurant_type_code(restaurant_type):
     return translate_from_japanese_name(
         restaurant_type, "category_code_mapping.json", "code"

@@ -56,9 +56,9 @@ def convert_restaurant_info_for_web(restaurant_info):
     }
 
 
-def stream_restaurant_for_food_types_and_locations(foodTypes, locations):
+def stream_restaurant_for_food_types_and_locations(food_types, locations, sort_option):
     all_restaurants = search_restaurants_in_tokyo_yield(
-        locations, foodTypes
+        locations, food_types, sort_option
     )
     for restaurant in all_restaurants:
         converted_restaurant = convert_restaurant_info_for_web(restaurant)
@@ -72,10 +72,11 @@ def restaurant_search_stream_v2():
     locationsAndFoodTypesString = request.args.get(
         "locationsAndFoodTypes", None)
     locationsAndFoodTypes = json.loads(locationsAndFoodTypesString)
+    sortOption = request.args.get("sortOption", "top-picks")
 
     return Response(
         stream_restaurant_for_food_types_and_locations(
-            locationsAndFoodTypes["foodTypes"], locationsAndFoodTypes["locations"]),
+            locationsAndFoodTypes["foodTypes"], locationsAndFoodTypes["locations"], sortOption),
         content_type="text/event-stream",
     )
 
