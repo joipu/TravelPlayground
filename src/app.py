@@ -1,4 +1,6 @@
 import json
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from utils.ikyu_parse_utils import trim_availability_by_target_date_range
@@ -26,21 +28,48 @@ def say_hello():
     # For testing
     return jsonify({"message": "Hello World!"})
 
+def parse_dates_str_from_request(request):
+    DATE_FORMAT = '%Y-%m-%d'
+    start_date_str = request.args.get('startDate')
+    end_date_str = request.args.get('endDate')
 
-def convert_restaurant_info_for_web(restaurant_info):
+    if start_date_str:
+        try:
+            start_date = datetime.strptime(start_date_str, DATE_FORMAT).date()
+        except ValueError:
+            return "Invalid startDate format. Expected YYYY-MM-DD.", 400
+    else:
+        start_date = datetime.today().date()
+
+    if end_date_str:
+        try:
+            end_date = datetime.strptime(end_date_str, DATE_FORMAT).date()
+        except ValueError:
+            return "Invalid endDate format. Expected YYYY-MM-DD.", 400
+    else:
+        end_date = start_date + relativedelta(months=1)
+
+    # Validate dates
+    if end_date < start_date:
+        return "endDate must be after startDate.", 400
+
+    return start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT)
+
+
+def convert_restaurant_info_for_web(restaurant_info, start_date, end_date):
     # rewrite availability for web
-    newAvailability = {}
+    new_availability = {}
     if AVAILABILITY in restaurant_info.keys():
         if RESERVATION_STATUS in restaurant_info[AVAILABILITY].keys():
-            newAvailability["reservationStatus"] = restaurant_info[AVAILABILITY][
+            new_availability["reservationStatus"] = restaurant_info[AVAILABILITY][
                 RESERVATION_STATUS
             ]
         if LUNCH in restaurant_info[AVAILABILITY].keys():
-            newAvailability[LUNCH] = restaurant_info[AVAILABILITY][LUNCH]
+            new_availability[LUNCH] = restaurant_info[AVAILABILITY][LUNCH]
         if DINNER in restaurant_info[AVAILABILITY].keys():
-            newAvailability[DINNER] = restaurant_info[AVAILABILITY][DINNER]
-        newAvailability = trim_availability_by_target_date_range(
-            newAvailability)
+            new_availability[DINNER] = restaurant_info[AVAILABILITY][DINNER]
+        new_availability = trim_availability_by_target_date_range(
+            new_availability, start_date, end_date)
 
     return {
         "name": restaurant_info[RESTAURANT_NAME],
@@ -49,19 +78,25 @@ def convert_restaurant_info_for_web(restaurant_info):
         "rating": restaurant_info[RATING],
         "reservationLink": restaurant_info[RESERVATION_LINK],
         "ikyuId": restaurant_info[IKYU_ID],
-        "availability": newAvailability,
+        "availability": new_availability,
         "hardToReserve": restaurant_info[AVAILABILITY][HARD_TO_RESERVE],
         "lunchPrice": get_lunch_price_from_availability(restaurant_info[AVAILABILITY]),
         "dinnerPrice": get_dinner_price_from_availability(restaurant_info[AVAILABILITY]),
     }
 
 
-def stream_restaurant_for_food_types_and_locations(food_types, locations, sort_option):
+def stream_restaurant_for_food_types_and_locations(
+        food_types,
+        locations,
+        sort_option,
+        start_date: str,
+        end_date: str
+):
     all_restaurants = search_restaurants_in_tokyo_yield(
-        locations, food_types, sort_option
+        locations, food_types, sort_option, start_date
     )
     for restaurant in all_restaurants:
-        converted_restaurant = convert_restaurant_info_for_web(restaurant)
+        converted_restaurant = convert_restaurant_info_for_web(restaurant, start_date, end_date)
         yield f"data: {json.dumps(converted_restaurant)}\n\n"
     yield f"event: close\ndata: \n\n"
 
@@ -69,14 +104,20 @@ def stream_restaurant_for_food_types_and_locations(food_types, locations, sort_o
 @app.route("/api/restaurant_search_stream_v2")
 def restaurant_search_stream_v2():
     print("🔍 Getting restaurant search stream...")
-    locationsAndFoodTypesString = request.args.get(
+    locations_and_food_types_string = request.args.get(
         "locationsAndFoodTypes", None)
-    locationsAndFoodTypes = json.loads(locationsAndFoodTypesString)
-    sortOption = request.args.get("sortOption", "top-picks")
+    locations_and_food_types = json.loads(locations_and_food_types_string)
+    sort_option = request.args.get("sortOption", "top-picks")
+    start_date, end_date = parse_dates_str_from_request(request)
 
     return Response(
         stream_restaurant_for_food_types_and_locations(
-            locationsAndFoodTypes["foodTypes"], locationsAndFoodTypes["locations"], sortOption),
+            locations_and_food_types["foodTypes"],
+            locations_and_food_types["locations"],
+            sort_option,
+            start_date,
+            end_date
+        ),
         content_type="text/event-stream",
     )
 

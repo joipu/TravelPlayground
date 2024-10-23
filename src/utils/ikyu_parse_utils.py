@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from config import EARLIEST_TARGET_RESERVATION_DATE, LATEST_TARGET_RESERVATION_DATE
 
 from utils.network import get_response_json_from_url_with_headers
 from utils.constants import *
@@ -66,14 +65,14 @@ def get_hard_to_reserve_value(availability):
     return hard_to_reserve
 
 
-def trim_availability_by_target_date_range(availability):
+def trim_availability_by_target_date_range(availability, start_date: str, end_date: str):
     if DINNER not in availability:
         filtered_dinner_json = {}
     else:
         filtered_dinner_json = filter_availability(
             availability[DINNER],
-            EARLIEST_TARGET_RESERVATION_DATE,
-            LATEST_TARGET_RESERVATION_DATE,
+            start_date,
+            end_date,
         )
 
     if LUNCH not in availability:
@@ -81,8 +80,8 @@ def trim_availability_by_target_date_range(availability):
     else:
         filtered_lunch_json = filter_availability(
             availability[LUNCH],
-            EARLIEST_TARGET_RESERVATION_DATE,
-            LATEST_TARGET_RESERVATION_DATE,
+            start_date,
+            end_date,
         )
 
     availability = {
@@ -92,18 +91,18 @@ def trim_availability_by_target_date_range(availability):
     return availability
 
 
-def get_availability_ikyu(ikyu_id):
+def get_availability_ikyu(ikyu_id, start_date: str):
     raw_availability = get_availability_json_for_ikyu_id(ikyu_id)
 
     # Check if reservation is open
     is_reservation_open = False
     if DINNER in raw_availability.keys() and raw_availability[DINNER].keys():
         is_reservation_open = has_available_dates_after(
-            raw_availability[DINNER], EARLIEST_TARGET_RESERVATION_DATE
+            raw_availability[DINNER], start_date
         )
     if not is_reservation_open:
         is_reservation_open = has_available_dates_after(
-            raw_availability[LUNCH], EARLIEST_TARGET_RESERVATION_DATE
+            raw_availability[LUNCH], start_date
         )
 
     availability = raw_availability
@@ -114,6 +113,6 @@ def get_availability_ikyu(ikyu_id):
     availability[HARD_TO_RESERVE] = hard_to_reserve_lunch or hard_to_reserve_dinner
     availability[
         RESERVATION_STATUS
-    ] = f"Likely open for reservation after {EARLIEST_TARGET_RESERVATION_DATE}: {is_reservation_open}"
+    ] = f"Likely open for reservation after {start_date}: {is_reservation_open}"
 
     return availability

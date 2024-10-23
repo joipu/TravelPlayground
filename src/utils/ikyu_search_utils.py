@@ -23,7 +23,7 @@ from utils.ikyu_url_builders import (
 
 
 def search_restaurants_in_tokyo_yield(
-    sub_regions_japanese, restaurant_types_japanese, sort_option
+    sub_regions_japanese, restaurant_types_japanese, sort_option, start_date: str
 ):
     restaurant_codes = convert_food_types_in_japanese_to_code(restaurant_types_japanese)
     subregion_codes = convert_tokyo_sub_regions_in_japanese_to_location_code(
@@ -34,12 +34,12 @@ def search_restaurants_in_tokyo_yield(
     all_urls = build_ikyu_query_urls_from_known_url(
         search_root_url, pages_to_search=PAGES_TO_SEARCH
     )
-    yield from restaurants_from_search_urls_yield(all_urls)
+    yield from restaurants_from_search_urls_yield(all_urls, start_date)
 
 
-def restaurants_from_search_urls_yield(urls):
+def restaurants_from_search_urls_yield(urls, start_date: str):
     for url in urls:
-        yield from restaurants_from_search_url_yield(url)
+        yield from restaurants_from_search_url_yield(url, start_date)
 
 def get_dinner_price_from_availability(availability):
     if DINNER in availability.keys():
@@ -54,7 +54,7 @@ def get_lunch_price_from_availability(availability):
         return "Not available"
 
 
-def restaurants_from_search_url_yield(url):
+def restaurants_from_search_url_yield(url, start_date: str):
     """
     GET request to ikyu to get restaurant information.
     :param url: the URL to send GET request
@@ -108,7 +108,7 @@ def restaurants_from_search_url_yield(url):
             )
             restaurant[IKYU_ID] = ikyu_id
             restaurant[RESERVATION_LINK] = base_url + link["href"]
-            restaurant[AVAILABILITY] = get_availability_ikyu(ikyu_id)
+            restaurant[AVAILABILITY] = get_availability_ikyu(ikyu_id, start_date)
             restaurant[DINNER_PRICE] = get_dinner_price_from_availability(restaurant[AVAILABILITY])
             restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(restaurant[AVAILABILITY])
             if restaurant is None:
