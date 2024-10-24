@@ -8,12 +8,14 @@ def build_ikyu_query_url_for_tokyo(
     restaurant_type_codes,
     sub_region_codes,
     sort_code,
+    num_people
 ):
     return build_ikyu_query_url(
         restaurant_type_codes,
         TOKYO_LOCATION_CODE,
         sub_region_codes,
         sort_code,
+        num_people
     )
 
 
@@ -21,15 +23,18 @@ def build_ikyu_query_url(
     restaurant_type_codes,
     location_code,
     sub_region_codes,
-    sort_code
+    sort_code,
+    num_people
 ):
     print("🔍 Building query URL...")
     print("🔍 Restaurant type codes: ", restaurant_type_codes)
     print("🔍 Location code: ", location_code)
     print("🔍 Sub region codes: ", sub_region_codes)
+    print("🔍 Sort code: ", sort_code)
+    print("🔍 Number of people: ", num_people)
     codes_param = ",".join(restaurant_type_codes)
     params = {
-        "pups": 2,
+        "pups": num_people,
         "rtpc": codes_param,
         "rac1": location_code,
         "rac2": ",".join(sub_region_codes),

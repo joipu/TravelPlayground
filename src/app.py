@@ -90,10 +90,11 @@ def stream_restaurant_for_food_types_and_locations(
         locations,
         sort_option,
         start_date: str,
-        end_date: str
+        end_date: str,
+        num_people
 ):
     all_restaurants = search_restaurants_in_tokyo_yield(
-        locations, food_types, sort_option, start_date
+        locations, food_types, sort_option, start_date, num_people
     )
     for restaurant in all_restaurants:
         converted_restaurant = convert_restaurant_info_for_web(restaurant, start_date, end_date)
@@ -109,6 +110,7 @@ def restaurant_search_stream_v2():
     locations_and_food_types = json.loads(locations_and_food_types_string)
     sort_option = request.args.get("sortOption", "top-picks")
     start_date, end_date = parse_dates_str_from_request(request)
+    num_people = request.args.get("numPeople", 2)
 
     return Response(
         stream_restaurant_for_food_types_and_locations(
@@ -116,7 +118,8 @@ def restaurant_search_stream_v2():
             locations_and_food_types["locations"],
             sort_option,
             start_date,
-            end_date
+            end_date,
+            num_people
         ),
         content_type="text/event-stream",
     )
