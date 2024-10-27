@@ -1,8 +1,10 @@
 import requests
+from utils.constants import *
+
 
 def get_html_from_url(url):
     response = requests.get(url)
-    return response.content.decode("utf-8")
+    return response.content.decode(UTF_8_ENCODING)
 
 def get_response_json_from_url_with_headers(url):
     response = get_response_from_browser_with_headers(url)
@@ -10,7 +12,7 @@ def get_response_json_from_url_with_headers(url):
 
 def get_response_html_from_url_with_headers(url):
     response = get_response_from_browser_with_headers(url)
-    return response.content.decode("utf-8")
+    return response.content.decode(UTF_8_ENCODING)
 
 
 def get_response_from_browser_with_headers(url):

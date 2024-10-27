@@ -1,4 +1,5 @@
 import json
+import urllib.parse
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from flask import Flask, request, jsonify, Response
@@ -8,10 +9,11 @@ from utils.ikyu_search_utils import get_lunch_price_from_availability, get_dinne
 from utils.cache_utils import (
     type_japanese_to_chinese,
 )
-
 from utils.ikyu_search_utils import (
     search_restaurants_in_tokyo_yield,
 )
+
+from utils.tabelog_search_utils import search_score_from_tabelog
 from utils.constants import *
 
 app = Flask(__name__)
@@ -102,6 +104,13 @@ def stream_restaurant_for_food_types_and_locations(
     yield f"event: close\ndata: \n\n"
 
 
+def stream_tabelog_score_for_restaurants(restaurant_names):
+    for restaurant_name in restaurant_names:
+        score = search_score_from_tabelog(restaurant_name)
+        yield f"data: {json.dumps({'name': restaurant_name, 'score': score})}\n\n"
+    yield "event: close\ndata: \n\n"
+
+
 @app.route("/api/restaurant_search_stream_v2")
 def restaurant_search_stream_v2():
     print("🔍 Getting restaurant search stream...")
@@ -123,6 +132,20 @@ def restaurant_search_stream_v2():
         ),
         content_type="text/event-stream",
     )
+
+
+@app.route("/api/v2/restaurant_tabelog_scores", methods=["GET"])
+def restaurant_tabelog_scores():
+    print("🔍 Getting tabelog restaurant score stream...")
+    restaurant_names_string = request.args.get("restaurantNames", None)
+    if restaurant_names_string:
+        restaurant_names = json.loads(restaurant_names_string)
+        return Response(
+            stream_tabelog_score_for_restaurants(restaurant_names),
+            content_type="text/event-stream"
+        )
+    else:
+        return Response("No restaurant names provided", status=400)
 
 
 if __name__ == "__main__":
