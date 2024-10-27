@@ -1,11 +1,10 @@
-
 import traceback
+
 from bs4 import BeautifulSoup
 from config import *
 from utils.network import get_response_html_from_url_with_headers
 from utils.ikyu_parse_utils import get_availability_ikyu
-import os
-from .file_utils import proj_root_dir
+from .file_utils import write_response_to_debug_log_file
 
 from .cache_utils import (
     convert_food_types_in_japanese_to_code,
@@ -63,12 +62,7 @@ def restaurants_from_search_url_yield(url, start_date: str):
     # Send a GET request to the URL
     response = get_response_html_from_url_with_headers(url)
     # Write response content to debug log file
-    debug_log_dir = os.path.join(proj_root_dir(), "debug_log")
-    if not os.path.exists(debug_log_dir):
-        os.makedirs(debug_log_dir)
-    
-    with open(os.path.join(debug_log_dir, "ikyu_search_link_raw_content.html"), "w", encoding="utf-8") as f:
-        f.write(response)
+    write_response_to_debug_log_file(response, "debug_log", "ikyu_search_link_raw_content.html")
 
     # Parse the HTML content of the page with BeautifulSoup
     soup = BeautifulSoup(response, "html.parser")
@@ -135,7 +129,7 @@ def get_restaurant_info_from_ikyu_search_card_soup(soup):
     if rating_element:
         rating = rating_element.text
     else:
-        rating = "No rating available"
+        rating = None
     return {
         RESTAURANT_NAME: name,
         FOOD_TYPE: food_type,
