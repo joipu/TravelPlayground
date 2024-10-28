@@ -15,9 +15,9 @@ kakasi_instance.setMode("K", "a")  # Katakana to ASCII
 kakasi_instance.setMode("J", "a")  # Kanji to ASCII
 converter = kakasi_instance.getConverter()
 
-def search_score_from_tabelog(restaurant_search_name):
+def get_tabelog_data(restaurant_search_name):
     tabelog_url = build_tabelog_query_url_for_restaurant(restaurant_search_name)
-    return score_from_search_tabelog_url_yield(
+    return request_and_parse_tabelog_result(
         tabelog_url,
         urllib.parse.unquote(restaurant_search_name)
     )
@@ -33,11 +33,10 @@ def build_tabelog_query_url_for_restaurant(restaurant_name):
 
     query_string = urlencode(params, doseq=True)
     full_url = f"https://tabelog.com/rstLst/?{query_string}"
-    print("🍜 Tabelog Query URL: ", full_url)
     return full_url
 
 
-def score_from_search_tabelog_url_yield(url, restaurant_search_name):
+def request_and_parse_tabelog_result(url, restaurant_search_name):
     response = get_response_html_from_url_with_headers(url)
 
     write_response_to_debug_log_file(response, "debug_log", "tabelog_search_link_raw_content.html")
@@ -49,19 +48,19 @@ def score_from_search_tabelog_url_yield(url, restaurant_search_name):
     restaurant_name_tags = soup.find_all("a", class_="list-rst__rst-name-target cpy-rst-name")
     for restaurant_name_tag in restaurant_name_tags:
         restaurant_name = restaurant_name_tag.text.strip()
+        restaurant_link = restaurant_name_tag.get('href')
 
         # Find the target restaurant by comparing restaurant title strings
         if are_restaurant_names_matching(restaurant_name, restaurant_search_name):
             parent_element = restaurant_name_tag.find_parent("div", class_="list-rst__rst-data")
-            score_tag = parent_element.find("span", class_="c-rating__val c-rating__val--strong list-rst__rating-val")
-            score = score_tag.text.strip() if score_tag else None
+            rating_tag = parent_element.find("span", class_="c-rating__val c-rating__val--strong list-rst__rating-val")
+            rating = rating_tag.text.strip() if rating_tag else None
 
-            return score
+            return rating, restaurant_link
 
-        else:
-            print("⚠️ Cannot find matched restaurant on Tabelog! "
-                  "restaurant_name: ", restaurant_name, "restaurant_search_name: ", restaurant_search_name)
-
+    print("⚠️️ Cannot find matched restaurant on Tabelog! "
+          "restaurant_search_name: ", restaurant_search_name,
+          "search url: ", url)
     return None
 
 
@@ -80,6 +79,7 @@ def are_restaurant_names_matching(name_1, name_2, threshold=90):
     # Fuzzy match using token_set_ratio
     similarity = fuzz.token_set_ratio(normalized_name_1, normalized_name_2)
     return similarity >= threshold
+
 
 def normalize_string(s):
     # Transliterate Japanese scripts to Romaji using pykakasi
