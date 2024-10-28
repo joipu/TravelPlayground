@@ -104,14 +104,14 @@ def stream_restaurant_for_food_types_and_locations(
     yield f"event: close\ndata: \n\n"
 
 
-def stream_tabelog_score_and_link_for_restaurants(restaurant_names):
+def stream_tabelog_rating_and_link_for_restaurants(restaurant_names):
     for restaurant_name in restaurant_names:
         tabelog_data = get_tabelog_data(restaurant_name)
         if tabelog_data is not None:
-            score, link = tabelog_data
-            yield f"data: {json.dumps({'name': restaurant_name, 'score': score, 'link': link})}\n\n"
+            rating, link = tabelog_data
+            yield f"data: {json.dumps({'name': restaurant_name, 'rating': rating, 'link': link})}\n\n"
         else:
-            yield f"data: {json.dumps({'name': restaurant_name, 'score': None, 'link': None})}\n\n"
+            yield f"data: {json.dumps({'name': restaurant_name, 'rating': None, 'link': None})}\n\n"
     yield "event: close\ndata: \n\n"
 
 
@@ -138,14 +138,14 @@ def restaurant_search_stream_v2():
     )
 
 
-@app.route("/api/v1/restaurant_tabelog_score_link", methods=["GET"])
-def restaurant_tabelog_score_link_v1():
-    print("🔍 Getting tabelog restaurant score and link stream...")
+@app.route("/api/v1/restaurant_tabelog_rating_and_link", methods=["GET"])
+def restaurant_tabelog_rating_and_link_v1():
+    print("🔍 Getting tabelog restaurant rating and link stream...")
     restaurant_names_string = request.args.get("restaurantNames", None)
     if restaurant_names_string:
         restaurant_names = json.loads(restaurant_names_string)
         return Response(
-            stream_tabelog_score_and_link_for_restaurants(restaurant_names),
+            stream_tabelog_rating_and_link_for_restaurants(restaurant_names),
             content_type="text/event-stream"
         )
     else:

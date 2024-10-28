@@ -53,10 +53,10 @@ def request_and_parse_tabelog_result(url, restaurant_search_name):
         # Find the target restaurant by comparing restaurant title strings
         if are_restaurant_names_matching(restaurant_name, restaurant_search_name):
             parent_element = restaurant_name_tag.find_parent("div", class_="list-rst__rst-data")
-            score_tag = parent_element.find("span", class_="c-rating__val c-rating__val--strong list-rst__rating-val")
-            score = score_tag.text.strip() if score_tag else None
+            rating_tag = parent_element.find("span", class_="c-rating__val c-rating__val--strong list-rst__rating-val")
+            rating = rating_tag.text.strip() if rating_tag else None
 
-            return score, restaurant_link
+            return rating, restaurant_link
 
     print("⚠️️ Cannot find matched restaurant on Tabelog! "
           "restaurant_search_name: ", restaurant_search_name,
