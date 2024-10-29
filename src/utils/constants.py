@@ -15,7 +15,9 @@ LUNCH = "lunch"
 DINNER = "dinner"
 TOKYO_LOCATION_CODE = "03001"
 HARD_TO_RESERVE = "Hard to Reserve"
-
 HARD_TO_RESERVE_THRESHOLD = 8
+TABELOG_RATING = "tabelogRating"
+TABELOG_LINK = "tabelogLink"
+GOOGLE_RATING = "googleRating"
 
 UTF_8_ENCODING = "utf-8"
