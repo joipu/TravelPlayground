@@ -1,5 +1,4 @@
 import json
-import urllib.parse
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from flask import Flask, request, jsonify, Response
@@ -9,12 +8,11 @@ from utils.ikyu_search_utils import get_lunch_price_from_availability, get_dinne
 from utils.cache_utils import (
     type_japanese_to_chinese,
 )
+from utils.constants import *
 from utils.ikyu_search_utils import (
     search_restaurants_in_tokyo_yield,
 )
-
-from utils.tabelog_search_utils import get_tabelog_data
-from utils.constants import *
+from utils.ratings_search_utils import fetch_ratings_and_links_async
 
 app = Flask(__name__)
 
@@ -95,28 +93,66 @@ def stream_restaurant_for_food_types_and_locations(
         end_date: str,
         num_people
 ):
+    collected_restaurants = []
+    restaurant_names = []
+
+    # Generator that yields restaurants from Ikyu
     all_restaurants = search_restaurants_in_tokyo_yield(
         locations, food_types, sort_option, start_date, num_people
     )
     for restaurant in all_restaurants:
         converted_restaurant = convert_restaurant_info_for_web(restaurant, start_date, end_date)
+        collected_restaurants.append(converted_restaurant)
+        restaurant_names.append(converted_restaurant['name'])
+
         yield f"data: {json.dumps(converted_restaurant)}\n\n"
+
+        # If collecting at least 20 restaurants, start async fetching ratings/links from Tabelog & Google
+        if len(collected_restaurants) % 20 == 0:
+            ratings_and_links_futures = fetch_ratings_and_links_async(restaurant_names)
+            updated_restaurants = update_restaurants_with_ratings_and_links(
+                collected_restaurants,
+                ratings_and_links_futures
+            )
+            for updated_restaurant in updated_restaurants:
+                yield f"data: {json.dumps(updated_restaurant)}\n\n"
+            # Clear the lists for the next batch
+            collected_restaurants = []
+            restaurant_names = []
+
+
+    # Handle any remaining collected restaurants after fetching restaurants from Ikyu is done
+    if collected_restaurants:
+        rem_ratings_and_links = fetch_ratings_and_links_async(restaurant_names)
+        updated_restaurants = update_restaurants_with_ratings_and_links(
+            collected_restaurants,
+            rem_ratings_and_links
+        )
+        for updated_restaurant in updated_restaurants:
+            yield f"data: {json.dumps(updated_restaurant)}\n\n"
+
     yield f"event: close\ndata: \n\n"
 
 
-def stream_tabelog_rating_and_link_for_restaurants(restaurant_names):
-    for restaurant_name in restaurant_names:
-        tabelog_data = get_tabelog_data(restaurant_name)
-        if tabelog_data is not None:
-            rating, link = tabelog_data
-            yield f"data: {json.dumps({'name': restaurant_name, 'rating': rating, 'link': link})}\n\n"
-        else:
-            yield f"data: {json.dumps({'name': restaurant_name, 'rating': None, 'link': None})}\n\n"
-    yield "event: close\ndata: \n\n"
+def update_restaurants_with_ratings_and_links(restaurants, ratings_and_links):
+    """
+    Update the collected restaurants with the fetched ratings.
+
+    :param restaurants: A list of restaurants
+    :param ratings_and_links: A map of restaurants with their Google rating, and Tabelog rating and link
+    :return: updated restaurant with ratings and link info
+    """
+    for restaurant in restaurants:
+        restaurant_name = restaurant['name']
+        if restaurant_name in ratings_and_links:
+            restaurant['tabelogRating'] = ratings_and_links[restaurant_name].get('tabelogRating')
+            restaurant['tabelogLink'] = ratings_and_links[restaurant_name].get('tabelogLink')
+            restaurant['googleRating'] = ratings_and_links[restaurant_name].get('googleRating')
+        yield restaurant
 
 
-@app.route("/api/restaurant_search_stream_v2")
-def restaurant_search_stream_v2():
+@app.route("/api/v1/restaurant_search_stream", methods=["GET"])
+def restaurant_search_stream_v1():
     print("🔍 Getting restaurant search stream...")
     locations_and_food_types_string = request.args.get(
         "locationsAndFoodTypes", None)
@@ -136,20 +172,6 @@ def restaurant_search_stream_v2():
         ),
         content_type="text/event-stream",
     )
-
-
-@app.route("/api/v1/restaurant_tabelog_rating_and_link", methods=["GET"])
-def restaurant_tabelog_rating_and_link_v1():
-    print("🔍 Getting tabelog restaurant rating and link stream...")
-    restaurant_names_string = request.args.get("restaurantNames", None)
-    if restaurant_names_string:
-        restaurant_names = json.loads(restaurant_names_string)
-        return Response(
-            stream_tabelog_rating_and_link_for_restaurants(restaurant_names),
-            content_type="text/event-stream"
-        )
-    else:
-        return Response("No restaurant names provided", status=400)
 
 
 if __name__ == "__main__":

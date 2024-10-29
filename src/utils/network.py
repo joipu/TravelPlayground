@@ -1,4 +1,7 @@
+import os
 import requests
+from config import GOOGLE_PLACES_API_URL
+from dotenv import load_dotenv
 from utils.constants import *
 
 
@@ -31,3 +34,22 @@ def get_response_from_browser_with_headers(url):
 
     response = requests.get(url, headers=headers)
     return response
+
+
+def get_response_from_google_place_text_search_api(
+        text_query,
+        url=GOOGLE_PLACES_API_URL
+):
+    load_dotenv()
+    google_api_key = os.getenv("GOOGLE_API_KEY")
+
+    headers = {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": google_api_key,
+        "X-Goog-FieldMask": "places.displayName,places.rating"
+    }
+    data = {
+        "textQuery": text_query
+    }
+
+    return requests.post(url, headers=headers, json=data)
