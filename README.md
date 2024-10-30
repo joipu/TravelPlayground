@@ -47,3 +47,19 @@ TRAVEL_PLAYGROUND_OPENAI_API_KEY='<key>'.
 4. Run `pip install -e .`
 5. After that, you should be able to run `food_finder "sushi in tokyo"` to execute the code.
 6. Any new changes should be automatically picked up when you execute this command again.
+
+
+# Set up and Use Redis locally
+1. First, install Redis on your machine: `brew install redis`
+2. Install the Redis Python client: `pip3 install redis`
+3. Spin up the Redis server (local): `redis-server`. By default, it should run at port 6379.
+4. Open a new command and run `redis-cli`
+5. To authenticate (if required): `AUTH your_password`  
+
+### Common queries to check caches on Redis:
+* `KEYS *`: List all the keys in cache
+* `KEYS tabelog:restaurant:*`
+* `KEYS tabelog:restaurant:<ikyu_id>`, e.g. `EXISTS tabelog:restaurant:109656`: Check if a specific key exists
+* `GET tabelog:restaurant:109656`: Get the value of a key
+* `TTL tabelog:restaurant:109656`: Check the TTL of a key
+* `DEL tabelog:restaurant:109656`: Delete a key
