@@ -46,7 +46,7 @@ def get_response_from_google_place_text_search_api(
     headers = {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": google_api_key,
-        "X-Goog-FieldMask": "places.displayName,places.rating"
+        "X-Goog-FieldMask": "places.displayName,places.rating,places.googleMapsUri"
     }
     data = {
         "textQuery": text_query

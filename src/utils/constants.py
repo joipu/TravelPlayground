@@ -19,5 +19,6 @@ HARD_TO_RESERVE_THRESHOLD = 8
 TABELOG_RATING = "tabelogRating"
 TABELOG_LINK = "tabelogLink"
 GOOGLE_RATING = "googleRating"
+GOOGLE_LINK = "googleLink"
 
 UTF_8_ENCODING = "utf-8"
