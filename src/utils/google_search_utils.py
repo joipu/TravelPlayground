@@ -1,7 +1,7 @@
 from utils.network import get_response_from_google_place_text_search_api
 
 
-def get_google_rating(restaurant_search_name):
+def get_google_data(restaurant_search_name):
     response_data = get_response_from_google_place_text_search_api(
         f"{restaurant_search_name} in Tokyo, Japan",
     )
@@ -23,7 +23,7 @@ def get_google_rating(restaurant_search_name):
     """
     places = response.get("places")
     if places and "rating" in places[0]:
-        return places[0]["rating"]
+        return places[0]["rating"], places[0]["googleMapsUri"]
     else:
         print(f"❌ Restaurant not found in Google. "
               f"response: {response}"

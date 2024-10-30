@@ -136,11 +136,11 @@ def stream_restaurant_for_food_types_and_locations(
 
 def update_restaurants_with_ratings_and_links(restaurants, ratings_and_links):
     """
-    Update the collected restaurants with the fetched ratings.
+    Update the collected restaurants with the fetched ratings and links.
 
     :param restaurants: A list of restaurants
-    :param ratings_and_links: A map of restaurants with their Google rating, and Tabelog rating and link
-    :return: updated restaurant with ratings and link info
+    :param ratings_and_links: A map of restaurants with their Google and Tabelog ratings and links
+    :return: updated restaurant with ratings and links info
     """
     for restaurant in restaurants:
         restaurant_name = restaurant['name']
@@ -148,6 +148,7 @@ def update_restaurants_with_ratings_and_links(restaurants, ratings_and_links):
             restaurant['tabelogRating'] = ratings_and_links[restaurant_name].get('tabelogRating')
             restaurant['tabelogLink'] = ratings_and_links[restaurant_name].get('tabelogLink')
             restaurant['googleRating'] = ratings_and_links[restaurant_name].get('googleRating')
+            restaurant['googleLink'] = ratings_and_links[restaurant_name].get('googleLink')
         yield restaurant
 
 
