@@ -103,3 +103,11 @@ def lookup_tokyo_subregion_code(subregion_name):
     return translate_from_japanese_name_to_code(
         subregion_name, "tokyo_region_code_mapping.json", "code"
     )
+
+
+def get_cache_key_for_tabelog(ikyu_id):
+    return f"tabelog:restaurant:{ikyu_id}"
+
+
+def get_cache_key_for_google(ikyu_id):
+    return f"google:restaurant:{ikyu_id}"

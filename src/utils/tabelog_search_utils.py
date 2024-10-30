@@ -1,4 +1,6 @@
 import re
+
+import json
 import unidecode
 import urllib.parse
 from bs4 import BeautifulSoup
@@ -6,7 +8,10 @@ from pykakasi import kakasi
 from rapidfuzz import fuzz
 from urllib.parse import urlencode
 from utils.network import get_response_html_from_url_with_headers
+from .cache_utils import get_cache_key_for_tabelog
 from .file_utils import write_response_to_debug_log_file
+from utils.redis_client import redis_client
+
 
 # Initialize Kakasi for transliteration
 kakasi_instance = kakasi()
@@ -15,12 +20,22 @@ kakasi_instance.setMode("K", "a")  # Katakana to ASCII
 kakasi_instance.setMode("J", "a")  # Kanji to ASCII
 converter = kakasi_instance.getConverter()
 
-def get_tabelog_data(restaurant_search_name):
-    tabelog_url = build_tabelog_query_url_for_restaurant(restaurant_search_name)
-    return request_and_parse_tabelog_result(
-        tabelog_url,
-        urllib.parse.unquote(restaurant_search_name)
-    )
+
+def get_tabelog_data(ikyu_id, restaurant_search_name):
+    cache_key = get_cache_key_for_tabelog(ikyu_id)
+    cached_data = redis_client.get(cache_key)
+
+    if cached_data:
+        return json.loads(cached_data)
+    else:
+        tabelog_url = build_tabelog_query_url_for_restaurant(restaurant_search_name)
+        response = request_and_parse_tabelog_result(
+            tabelog_url,
+            urllib.parse.unquote(restaurant_search_name)
+        )
+        redis_client.set(cache_key, json.dumps(response), ex=86400)
+
+        return response
 
 
 def build_tabelog_query_url_for_restaurant(restaurant_name):

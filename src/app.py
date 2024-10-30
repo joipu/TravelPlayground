@@ -94,7 +94,7 @@ def stream_restaurant_for_food_types_and_locations(
         num_people
 ):
     collected_restaurants = []
-    restaurant_names = []
+    restaurant_ids_and_names = []
 
     # Generator that yields restaurants from Ikyu
     all_restaurants = search_restaurants_in_tokyo_yield(
@@ -103,27 +103,27 @@ def stream_restaurant_for_food_types_and_locations(
     for restaurant in all_restaurants:
         converted_restaurant = convert_restaurant_info_for_web(restaurant, start_date, end_date)
         collected_restaurants.append(converted_restaurant)
-        restaurant_names.append(converted_restaurant['name'])
+        restaurant_ids_and_names.append((converted_restaurant['ikyuId'], converted_restaurant['name']))
 
         yield f"data: {json.dumps(converted_restaurant)}\n\n"
 
         # If collecting at least 20 restaurants, start async fetching ratings/links from Tabelog & Google
-        if len(collected_restaurants) % 20 == 0:
-            ratings_and_links_futures = fetch_ratings_and_links_async(restaurant_names)
+        if len(collected_restaurants) % 20 == 0: # collected_restaurants's size = 7
+            ratings_and_links = fetch_ratings_and_links_async(restaurant_ids_and_names)
             updated_restaurants = update_restaurants_with_ratings_and_links(
                 collected_restaurants,
-                ratings_and_links_futures
+                ratings_and_links
             )
             for updated_restaurant in updated_restaurants:
                 yield f"data: {json.dumps(updated_restaurant)}\n\n"
             # Clear the lists for the next batch
             collected_restaurants = []
-            restaurant_names = []
+            restaurant_ids_and_names = []
 
 
     # Handle any remaining collected restaurants after fetching restaurants from Ikyu is done
     if collected_restaurants:
-        rem_ratings_and_links = fetch_ratings_and_links_async(restaurant_names)
+        rem_ratings_and_links = fetch_ratings_and_links_async(restaurant_ids_and_names)
         updated_restaurants = update_restaurants_with_ratings_and_links(
             collected_restaurants,
             rem_ratings_and_links
@@ -139,16 +139,17 @@ def update_restaurants_with_ratings_and_links(restaurants, ratings_and_links):
     Update the collected restaurants with the fetched ratings and links.
 
     :param restaurants: A list of restaurants
-    :param ratings_and_links: A map of restaurants with their Google and Tabelog ratings and links
+    :param ratings_and_links: A dict of restaurants with their Google and Tabelog ratings and links
+    (key: ikyu_id -> a dict of Google or Tabelog ratings and links)
     :return: updated restaurant with ratings and links info
     """
     for restaurant in restaurants:
-        restaurant_name = restaurant['name']
-        if restaurant_name in ratings_and_links:
-            restaurant['tabelogRating'] = ratings_and_links[restaurant_name].get('tabelogRating')
-            restaurant['tabelogLink'] = ratings_and_links[restaurant_name].get('tabelogLink')
-            restaurant['googleRating'] = ratings_and_links[restaurant_name].get('googleRating')
-            restaurant['googleLink'] = ratings_and_links[restaurant_name].get('googleLink')
+        ikyu_id = restaurant['ikyuId']
+        if ikyu_id in ratings_and_links:
+            restaurant['tabelogRating'] = ratings_and_links[ikyu_id].get('tabelogRating')
+            restaurant['tabelogLink'] = ratings_and_links[ikyu_id].get('tabelogLink')
+            restaurant['googleRating'] = ratings_and_links[ikyu_id].get('googleRating')
+            restaurant['googleLink'] = ratings_and_links[ikyu_id].get('googleLink')
         yield restaurant
 
 
