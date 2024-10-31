@@ -52,8 +52,11 @@ TRAVEL_PLAYGROUND_OPENAI_API_KEY='<key>'.
 # Set up and Use Redis locally
 1. First, install Redis on your machine: `brew install redis`
 2. Install the Redis Python client: `pip3 install redis`
-3. Spin up the Redis server (local): `redis-server`. By default, it should run at port 6379.
+3. Spin up the Redis server (local): `redis-server`. 
+   * Check if the port is 6379 (local) or 6380 (remote server).
+   * e.g. `redis-server --port 6380`
 4. Open a new command and run `redis-cli`
+   * e.g. `redis-cli -p 6380`
 5. To authenticate (if required): `AUTH your_password`  
 
 ### Common queries to check caches on Redis:
