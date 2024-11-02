@@ -9,8 +9,6 @@ from .file_utils import write_response_to_debug_log_file
 from .cache_utils import (
     convert_food_types_in_japanese_to_code,
     convert_tokyo_sub_regions_in_japanese_to_location_code,
-    get_cached_restaurant_info_by_ikyu_id,
-    store_cached_restaurant_info_by_ikyu_id,
 )
 from .constants import *
 from .sort_options import SORT_OPTIONS
@@ -84,18 +82,19 @@ def restaurants_from_search_url_yield(url, start_date: str):
         link = sections[i].find("a", href=True)
         # Link looks like /111516?num_guests=2&... 
         ikyu_id = link["href"].split("?")[0][1:]
-        restaurant = get_cached_restaurant_info_by_ikyu_id(ikyu_id)
-        if restaurant:
-            # Make sure we have everything we need. Otherwise, we'll have to scrape it.
-            has_all_info = (    
-                RESTAURANT_NAME in restaurant.keys()
-                and FOOD_TYPE in restaurant.keys()
-                and RATING in restaurant.keys()
-                and COVER_IMAGE_URL in restaurant.keys()
-            )
-            if has_all_info:
-                yield restaurant
-                continue
+        # restaurant = get_cached_restaurant_info_by_ikyu_id(ikyu_id)
+        restaurant = {}
+        # if restaurant:
+        #     # Make sure we have everything we need. Otherwise, we'll have to scrape it.
+        #     has_all_info = (
+        #         RESTAURANT_NAME in restaurant.keys()
+        #         and FOOD_TYPE in restaurant.keys()
+        #         and RATING in restaurant.keys()
+        #         and COVER_IMAGE_URL in restaurant.keys()
+        #     )
+        #     if has_all_info:
+        #         yield restaurant
+        #         continue
         try:
             restaurant = get_restaurant_info_from_ikyu_search_card_soup(
                 sections[i]
@@ -107,7 +106,7 @@ def restaurants_from_search_url_yield(url, start_date: str):
             restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(restaurant[AVAILABILITY])
             if restaurant is None:
                 continue
-            store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
+            # store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
 
             yield restaurant
         except Exception as error:
@@ -118,6 +117,7 @@ def restaurants_from_search_url_yield(url, start_date: str):
             print("Error: ", error)
             print("Stack trace:")
             print(traceback.format_exc())
+
 
 def get_restaurant_info_from_ikyu_search_card_soup(soup):
     name = soup.find("h3", class_="restaurantName_2s_sg").text.strip()
