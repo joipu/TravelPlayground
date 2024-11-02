@@ -5,14 +5,12 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from utils.ikyu_parse_utils import trim_availability_by_target_date_range
 from utils.ikyu_search_utils import get_lunch_price_from_availability, get_dinner_price_from_availability
-from utils.cache_utils import (
-    type_japanese_to_chinese,
-)
 from utils.constants import *
 from utils.ikyu_search_utils import (
     search_restaurants_in_tokyo_yield,
 )
 from utils.ratings_search_utils import fetch_ratings_and_links_async
+from utils.translation_utils import get_english_translation
 
 app = Flask(__name__)
 
@@ -74,7 +72,7 @@ def convert_restaurant_info_for_web(restaurant_info, start_date, end_date):
     return {
         "name": restaurant_info[RESTAURANT_NAME],
         "coverImageUrl": restaurant_info[COVER_IMAGE_URL],
-        "type": type_japanese_to_chinese(restaurant_info[FOOD_TYPE]),
+        "type": get_english_translation(restaurant_info[FOOD_TYPE]),
         "rating": restaurant_info[RATING],
         "reservationLink": restaurant_info[RESERVATION_LINK],
         "ikyuId": restaurant_info[IKYU_ID],
