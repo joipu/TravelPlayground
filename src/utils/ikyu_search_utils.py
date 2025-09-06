@@ -66,7 +66,7 @@ def restaurants_from_search_url_yield(url, start_date: str):
     soup = BeautifulSoup(response, "html.parser")
 
     # Find all "section" elements with class "restaurantCard_jpBMy"
-    sections = soup.find_all("section", class_="restaurantCard_jpBMy")
+    sections = soup.find_all("section", class_="panda-jTWvec")
     if len(sections) == 0:
         print("No sections found in link: ", url)
         return
@@ -80,7 +80,7 @@ def restaurants_from_search_url_yield(url, start_date: str):
     for i in range(len(sections)):
         # Find the first href link in the section
         link = sections[i].find("a", href=True)
-        # Link looks like /111516?num_guests=2&... 
+        # Link looks like href="/108103?visitorsCount=2"
         ikyu_id = link["href"].split("?")[0][1:]
         # restaurant = get_cached_restaurant_info_by_ikyu_id(ikyu_id)
         restaurant = {}
@@ -107,8 +107,8 @@ def restaurants_from_search_url_yield(url, start_date: str):
             if restaurant is None:
                 continue
             # store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
-
             yield restaurant
+
         except Exception as error:
             print(
                 "❌ Error in getting restaurant info from link: ",
@@ -120,29 +120,37 @@ def restaurants_from_search_url_yield(url, start_date: str):
 
 
 def get_restaurant_info_from_ikyu_search_card_soup(soup):
-    name = soup.find("h3", class_="restaurantName_2s_sg").text.strip()
-    cover_image_url = get_restaurant_cover_image_url_ikyu(soup)
-    description = soup.find("div", class_="retaurantArea_s9Crj").text
-    parts = description.split("／")
-    food_type = parts[1].strip()
-    rating_element = soup.find("span", class_="restaurantCount_29PeJ")
-    if rating_element:
-        rating = rating_element.text
+    name = soup.find("a", class_="panda-dOmORn panda-hGHvhs panda-hdaWRu panda-ibbkAC").text.strip()
+    # cover_image_url = get_restaurant_cover_image_url_ikyu(soup)
+
+    # Try to find cover image
+    cover_image_url = soup.find("span", class_="panda-cAlrFB panda-dltTHI panda-cGFOJB panda-gnlqYH panda-jTWvec").find("img")
+    if cover_image_url and cover_image_url.has_attr("src"):
+        cover_image_url = cover_image_url["src"]
     else:
-        rating = None
+        cover_image_url = None
+    
+    # Try to find food type in description
+    description_element = soup.find("div", class_="panda-fPSBzf panda-bYPztT panda-qbege panda-cMGtQw panda-xYowz panda-fzpbKY")
+    if description_element and description_element.text:
+        description = description_element.text
+        parts = description.split("／")
+        if len(parts) > 1:
+            food_type = parts[1].strip()
+        else:
+            food_type = "Unknown"
+    else:
+        food_type = "Unknown"
+
+    # Try to find rating of the restaurant
+    rating = None
+    rating_element = soup.find("div", itemprop="ratingValue")
+    if rating_element and rating_element.text:
+        rating = rating_element.text.strip()
+
     return {
         RESTAURANT_NAME: name,
         FOOD_TYPE: food_type,
         RATING: rating,
         COVER_IMAGE_URL: cover_image_url,
     }
-    
-def get_restaurant_cover_image_url_ikyu(ikyu_html_soup):
-    content = ikyu_html_soup.find_all("div", class_="coverImages_3VYi2")
-    if not content:
-        return None
-    image_element = content[0].find("meta")
-    if not image_element:
-        return None
-    return image_element["content"]
-    

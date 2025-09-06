@@ -9,6 +9,7 @@ output/
 .DS_Store
 .venv/
 food_finder.egg-info/
+*.egg-info/
 __pycache__
 search_groups.json
 user_session_cache/
