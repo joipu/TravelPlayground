@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: travel-playground
+Version: 0.1.0
+Summary: Tokyo restaurant search application
+Author-email: Your Name <your.email@example.com>
+Requires-Dist: beautifulsoup4==4.12.2
+Requires-Dist: Requests==2.31.0
+Requires-Dist: selenium==4.12.0
+Requires-Dist: openai==0.27.2
+Requires-Dist: python-dotenv==1.0.0
+Requires-Dist: flask
+Requires-Dist: flask-cors
