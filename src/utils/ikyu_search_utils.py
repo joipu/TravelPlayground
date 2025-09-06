@@ -107,8 +107,8 @@ def restaurants_from_search_url_yield(url, start_date: str):
             if restaurant is None:
                 continue
             # store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
-            yield restaurant
 
+            yield restaurant
         except Exception as error:
             print(
                 "❌ Error in getting restaurant info from link: ",
@@ -121,7 +121,6 @@ def restaurants_from_search_url_yield(url, start_date: str):
 
 def get_restaurant_info_from_ikyu_search_card_soup(soup):
     name = soup.find("a", class_="panda-dOmORn panda-hGHvhs panda-hdaWRu panda-ibbkAC").text.strip()
-    # cover_image_url = get_restaurant_cover_image_url_ikyu(soup)
 
     # Try to find cover image
     cover_image_url = soup.find("span", class_="panda-cAlrFB panda-dltTHI panda-cGFOJB panda-gnlqYH panda-jTWvec").find("img")
