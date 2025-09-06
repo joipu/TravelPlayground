@@ -156,7 +156,18 @@ def restaurant_search_stream_v1():
     print("🔍 Getting restaurant search stream...")
     locations_and_food_types_string = request.args.get(
         "locationsAndFoodTypes", None)
-    locations_and_food_types = json.loads(locations_and_food_types_string)
+    
+    print("🔍 Locations and food types: ", locations_and_food_types_string)
+
+    # Check if the required parameter is provided
+    if locations_and_food_types_string is None:
+        return jsonify({"error": "Missing required parameter: locationsAndFoodTypes"}), 400
+    
+    try:
+        locations_and_food_types = json.loads(locations_and_food_types_string)
+    except json.JSONDecodeError as e:
+        return jsonify({"error": f"Invalid JSON in locationsAndFoodTypes: {str(e)}"}), 400
+    
     sort_option = request.args.get("sortOption", "top-picks")
     start_date, end_date = parse_dates_str_from_request(request)
     num_people = request.args.get("numPeople", 2)
