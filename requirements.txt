@@ -5,3 +5,11 @@ openai==0.27.2
 python-dotenv==1.0.0
 flask
 flask-cors
+# --- required by src/ but previously missing from this file ---
+python-dateutil
+redis
+Unidecode
+pykakasi
+rapidfuzz
+# --- production WSGI server (pm2 runs this) ---
+gunicorn
