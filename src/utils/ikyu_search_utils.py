@@ -1,33 +1,39 @@
+import re
 import traceback
 
 from bs4 import BeautifulSoup
 from config import *
-from utils.network import get_response_html_from_url_with_headers
 from utils.ikyu_parse_utils import get_availability_ikyu
-from .file_utils import write_response_to_debug_log_file
+from utils.ikyu_url_builders import (
+    build_ikyu_query_url_for_tokyo,
+    build_ikyu_query_urls_from_known_url,
+)
+from utils.network import get_response_html_from_url_with_headers
 
 from .cache_utils import (
     convert_food_types_in_japanese_to_code,
     convert_tokyo_sub_regions_in_japanese_to_location_code,
 )
 from .constants import *
+from .file_utils import write_response_to_debug_log_file
 from .sort_options import SORT_OPTIONS
-
-from utils.ikyu_url_builders import (
-    build_ikyu_query_url_for_tokyo,
-    build_ikyu_query_urls_from_known_url,
-)
 
 
 def search_restaurants_in_tokyo_yield(
-    sub_regions_japanese, restaurant_types_japanese, sort_option, start_date: str, num_people
+    sub_regions_japanese,
+    restaurant_types_japanese,
+    sort_option,
+    start_date: str,
+    num_people,
 ):
     restaurant_codes = convert_food_types_in_japanese_to_code(restaurant_types_japanese)
     subregion_codes = convert_tokyo_sub_regions_in_japanese_to_location_code(
         sub_regions_japanese
     )
     sort_code = SORT_OPTIONS[sort_option]
-    search_root_url = build_ikyu_query_url_for_tokyo(restaurant_codes, subregion_codes, sort_code, num_people)
+    search_root_url = build_ikyu_query_url_for_tokyo(
+        restaurant_codes, subregion_codes, sort_code, num_people
+    )
     all_urls = build_ikyu_query_urls_from_known_url(
         search_root_url, pages_to_search=PAGES_TO_SEARCH
     )
@@ -38,11 +44,13 @@ def restaurants_from_search_urls_yield(urls, start_date: str):
     for url in urls:
         yield from restaurants_from_search_url_yield(url, start_date)
 
+
 def get_dinner_price_from_availability(availability):
     if DINNER in availability.keys():
         return list(availability[DINNER].values())[0]
     else:
         return "Not available"
+
 
 def get_lunch_price_from_availability(availability):
     if LUNCH in availability.keys():
@@ -60,7 +68,9 @@ def restaurants_from_search_url_yield(url, start_date: str):
     # Send a GET request to the URL
     response = get_response_html_from_url_with_headers(url)
     # Write response content to debug log file
-    write_response_to_debug_log_file(response, "debug_log", "ikyu_search_link_raw_content.html")
+    write_response_to_debug_log_file(
+        response, "debug_log", "ikyu_search_link_raw_content.html"
+    )
 
     # Parse the HTML content of the page with BeautifulSoup
     soup = BeautifulSoup(response, "html.parser")
@@ -72,7 +82,7 @@ def restaurants_from_search_url_yield(url, start_date: str):
         return
     else:
         print("Found ", len(sections), " sections in link: ", url)
-        
+
     # Base URL for concatenation
     base_url = "https://restaurant.ikyu.com"
     # Find all restaurants per url
@@ -96,14 +106,16 @@ def restaurants_from_search_url_yield(url, start_date: str):
         #         yield restaurant
         #         continue
         try:
-            restaurant = get_restaurant_info_from_ikyu_search_card_soup(
-                sections[i]
-            )
+            restaurant = get_restaurant_info_from_ikyu_search_card_soup(sections[i])
             restaurant[IKYU_ID] = ikyu_id
             restaurant[RESERVATION_LINK] = base_url + link["href"]
             restaurant[AVAILABILITY] = get_availability_ikyu(ikyu_id, start_date)
-            restaurant[DINNER_PRICE] = get_dinner_price_from_availability(restaurant[AVAILABILITY])
-            restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(restaurant[AVAILABILITY])
+            restaurant[DINNER_PRICE] = get_dinner_price_from_availability(
+                restaurant[AVAILABILITY]
+            )
+            restaurant[LUNCH_PRICE] = get_lunch_price_from_availability(
+                restaurant[AVAILABILITY]
+            )
             if restaurant is None:
                 continue
             # store_cached_restaurant_info_by_ikyu_id(ikyu_id, restaurant)
@@ -120,28 +132,40 @@ def restaurants_from_search_url_yield(url, start_date: str):
 
 
 def get_restaurant_info_from_ikyu_search_card_soup(soup):
-    name = soup.find("a", class_="panda-dOmORn panda-hGHvhs panda-hdaWRu panda-ibbkAC").text.strip()
+    # The name is the card's restaurant link (href="/<ikyu_id>?...") whose text
+    # isn't the bare review count. Matched structurally rather than by the hashed
+    # CSS-module classes, which change every time Ikyu rebuilds their styles.
+    name = None
+    for link in soup.find_all("a", href=True):
+        if re.match(r"^/\d+(\?|$)", link["href"]):
+            link_text = link.get_text(strip=True)
+            if link_text and not link_text.isdigit():
+                name = link_text
+                break
+    if name is None:
+        raise ValueError("Could not find restaurant name in search card")
 
-    # Try to find cover image
-    cover_image_url = soup.find("span", class_="panda-cAlrFB panda-dltTHI panda-cGFOJB panda-gnlqYH panda-jTWvec").find("img")
-    if cover_image_url and cover_image_url.has_attr("src"):
-        cover_image_url = cover_image_url["src"]
-    else:
-        cover_image_url = None
-    
-    # Try to find food type in description
-    description_element = soup.find("div", class_="panda-fPSBzf panda-bYPztT panda-qbege panda-cMGtQw panda-xYowz panda-fzpbKY")
-    if description_element and description_element.text:
-        description = description_element.text
-        parts = description.split("／")
-        if len(parts) > 1:
-            food_type = parts[1].strip()
-        else:
-            food_type = "Unknown"
-    else:
-        food_type = "Unknown"
+    # Cover photos are lazy-loaded client-side, so the server HTML only carries
+    # placeholder/label/icon assets. Skip those; None means "no photo".
+    cover_image_url = None
+    cover_image = soup.find(
+        "img",
+        src=re.compile(r"restaurant\.img-ikyu\.com/(?!rsImg/(guide|label|icon)/)"),
+    )
+    if cover_image and cover_image.has_attr("src"):
+        cover_image_url = cover_image["src"]
 
-    # Try to find rating of the restaurant
+    # Description reads "<station> <distance>／<cuisine>". Take the leaf div, or
+    # we'd match an ancestor holding the whole card's concatenated text.
+    food_type = "Unknown"
+    for element in soup.find_all("div"):
+        text = element.get_text(strip=True)
+        if "／" in text and len(text) < 80 and not element.find("div"):
+            parts = text.split("／")
+            if len(parts) > 1 and parts[1].strip():
+                food_type = parts[1].strip()
+                break
+
     rating = None
     rating_element = soup.find("div", itemprop="ratingValue")
     if rating_element and rating_element.text:
